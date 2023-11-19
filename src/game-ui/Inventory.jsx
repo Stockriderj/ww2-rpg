@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {usePlayer} from "../context/PlayerContext";
 
 const InventoryContainer = styled.div`
   margin-top: 6rem; /* To account for the fixed HUD */
@@ -19,7 +20,9 @@ const Item = styled.li`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-export default function Inventory({items, setItems}) {
+export default function Inventory() {
+  const {items, setItems, player, setPlayer} = usePlayer();
+
   return (
     <InventoryContainer>
       <h2>Inventory</h2>
@@ -32,7 +35,15 @@ export default function Inventory({items, setItems}) {
                 <small>x{item.ammunition} Ammo</small>
                 <button
                   onClick={() => {
-                    items[0].shoot();
+                    player.weapon = item;
+                    setPlayer(player);
+                  }}
+                >
+                  equip
+                </button>
+                <button
+                  onClick={() => {
+                    item.shoot();
                     setItems([...items]);
                   }}
                 >

@@ -25,6 +25,7 @@ const battleRound = (player, enemy, playerAction) => {
   // Check if enemy is defeated
   if (enemy.health <= 0) {
     console.log("Enemy defeated!");
+    player.addXp(enemy.maxHealth);
   } else if (player.health <= 0) {
     console.log("You've been defeated!");
   }

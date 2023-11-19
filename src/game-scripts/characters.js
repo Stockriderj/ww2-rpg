@@ -1,9 +1,14 @@
 class Character {
-  constructor(meleeDamage, weapon = null) {
-    this.health = 100;
-    this.stamina = 100;
+  constructor({meleeDamage, level = 1, weapon = null}) {
     this.weapon = weapon;
     this.meleeDamage = meleeDamage;
+
+    this.level = level;
+    this.maxXp = 50 + (level - 1) * 50;
+    this.xp = 0;
+
+    this.maxHealth = 100 + (level - 1) * 10;
+    this.health = this.maxHealth;
   }
 
   calculateDamage() {
@@ -27,11 +32,21 @@ class Character {
 }
 
 class Player extends Character {
-  constructor(meleeDamage, weapon = null) {
-    super(health);
-    super(stamina);
-    super(weapon);
-    super(meleeDamage);
+  constructor({meleeDamage, level = 1, weapon = null}) {
+    super({meleeDamage, level, weapon});
+
+    this.addedXp;
+  }
+
+  addXp(amount) {
+    this.xp += amount;
+    if (this.xp > this.maxXp) {
+      this.level++;
+      this.xp -= this.maxXp;
+      this.maxXp = 50 + (this.level - 1) * 50;
+    }
+
+    this.addedXp = amount;
   }
 }
 

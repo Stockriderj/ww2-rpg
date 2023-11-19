@@ -9,15 +9,13 @@ import Inventory from "./game-ui/Inventory";
 import {BoltAction, Pistol} from "./game-scripts/inventoryItems";
 import {battleRound} from "./game-scripts/battle";
 import {Character, Player} from "./game-scripts/characters";
+import {usePlayer} from "./context/PlayerContext";
 
 function App() {
-  const [items, setItems] = useState([
-    new BoltAction(1),
-    {name: "Medkit", quantity: 1},
-    {name: "Secret Documents", quantity: 29109310},
-  ]);
-  const [player, setPlayer] = useState(new Character(10, items[0]));
-  const [enemy, setEnemy] = useState(new Character(50, new Pistol(1))); // Example enemy
+  const {items, setItems, player, setPlayer} = usePlayer();
+  const [enemy, setEnemy] = useState(
+    new Character({meleeDamage: 50, weapon: new Pistol(1)})
+  ); // Example enemy
 
   const handleShoot = () => {
     const {updatedPlayer, updatedEnemy} = battleRound(player, enemy, "shoot");
@@ -39,7 +37,7 @@ function App() {
           ) : (
             <>
               <h1>WW2 Text Adventure Game</h1>
-              <Inventory items={items} setItems={setItems} />
+              <Inventory />
               <p>
                 Enemy: {enemy.health} | U: {player.health}
               </p>
