@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {GrAddCircle} from "react-icons/gr";
 import {GiPerpendicularRings} from "react-icons/gi";
 import {useEffect, useRef, useState} from "react";
-// import {fadeOut} from "../styles/GlobalStyles";
+import {fadeOutDrop, jumpIn} from "../styles/GlobalStyles";
 
 const HudContainer = styled.header`
   display: grid;
@@ -11,7 +11,7 @@ const HudContainer = styled.header`
 
   background-color: #1a1a1a;
   color: #fff;
-  padding: 2rem;
+  padding: 2rem 7.2rem;
   position: fixed;
   top: 0;
   width: 100%;
@@ -40,39 +40,73 @@ const Stat = styled.p`
 `;
 
 export default function HUD({player}) {
-  //   const [xpChanged, setXpChanged] = useState(false);
-  //   const [oldXp, setOldXp] = useState(0);
+  const isInitialRender = useRef(true);
 
-  //   const [xpPopupPosition, setXpPopupPosition] = useState({left: 0, top: 0});
-  //   const xpDisplayRef = useRef(null); // Create a ref
+  const [oldLvl, setOldLvl] = useState(player.level);
 
-  //   useEffect(() => {
-  //     if (player.xp !== oldXp) {
-  //       setXpChanged(true);
+  const [popupPositions, setPopupPositions] = useState({
+    xp: {left: 0, top: 0},
+    lvl: {left: 0, top: 0},
+  });
+  const xpDisplayRef = useRef(null); // Create a ref
+  const lvlDisplayRef = useRef(null); // Create a ref
 
-  //       //   get coords of xp display so the popup goes to the right spot
-  //       if (xpDisplayRef.current) {
-  //         const rect = xpDisplayRef.current.getBoundingClientRect();
-  //         setXpPopupPosition({
-  //           left: rect.left,
-  //           top: rect.bottom,
-  //         });
-  //       }
-  //     } else {
-  //       setXpChanged(false);
-  //     } // If xp changes then it'll show popup
-  //   }, [player.xp, oldXp]);
-  //   console.log(xpChanged);
+  const [popups, setPopups] = useState([]);
+
+  useEffect(() => {
+    const xpRect = xpDisplayRef.current.getBoundingClientRect();
+    const lvlRect = lvlDisplayRef.current.getBoundingClientRect();
+
+    //   get coords of xp display so the popup goes to the right spot
+    setPopupPositions({
+      xp: {
+        left: xpRect.left,
+        top: xpRect.bottom,
+      },
+      lvl: {
+        left: lvlRect.left,
+        top: lvlRect.bottom,
+      },
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(isInitialRender.current);
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+    } else {
+      ["xp", "lvl"].map(dependency => {
+        if (
+          (dependency === "lvl" && oldLvl !== player.level) ||
+          dependency === "xp"
+        ) {
+          setPopups(popups => [
+            ...popups,
+            <Popup
+              key={popups.length}
+              pos={popupPositions[dependency]}
+              change={
+                dependency === "xp" ? player.addedXp : player.level - oldLvl
+              }
+            />,
+          ]); // Add a popup to the DOM
+          setTimeout(() => {
+            setPopups(popups => popups.slice(0, -1));
+          }, 1500); // Remove the popup when it's done animating
+          dependency === "lvl" && setOldLvl(player.level);
+        }
+      });
+    }
+  }, [player.xp, player.level]);
 
   return (
     <HudContainer>
       <Col>
-        <Stat>
-          <GiPerpendicularRings /> {player.level}
+        <Stat fontSize={1.6} ref={lvlDisplayRef}>
+          {player.level}
         </Stat>
-        {/*ref={xpDisplayRef} VVV */}
-        <Stat>
-          {player.xp} / {player.maxXp}
+        <Stat ref={xpDisplayRef}>
+          <GiPerpendicularRings /> {player.xp} / {player.maxXp}
         </Stat>
       </Col>
 
@@ -80,36 +114,24 @@ export default function HUD({player}) {
         <GrAddCircle /> {player.health} / {player.maxHealth}
       </Stat>
 
-      {/* {xpChanged ? (
-        <XpPopup
-          pos={xpPopupPosition}
-          xpChange={player.addedXp}
-          onDone={() => {
-            setOldXp(player.xp);
-          }}
-        />
-      ) : (
-        ""
-      )} */}
+      {popups}
     </HudContainer>
   );
 }
 
 // Styled component for the text
-// const StyledXpPopup = styled.div`
-//   position: absolute;
-//   left: ${props => props.pos.left}px;
-//   top: ${props => props.pos.top}px;
-//   font-size: 3.6rem;
+const StyledPopup = styled.div`
+  position: absolute;
+  left: ${props => props.pos.left}px;
+  top: ${props => props.pos.top}px;
+  font-size: 3.6rem;
 
-//   color: green; // Green text
-//   font-weight: bold;
-//   animation: ${fadeOut} 1s ease-out; // Animation lasting 1 second
-// `;
-// function XpPopup({xpChange, onDone, pos}) {
-//   setTimeout(() => {
-//     onDone();
-//   }, 1000);
-
-//   return <StyledXpPopup pos={pos}>+{xpChange}</StyledXpPopup>;
-// }
+  color: green; // Green text
+  font-family: sans-serif;
+  font-weight: bolder;
+  animation: ${jumpIn} 1s ease-in-out forwards; // Animation lasting 1 second
+`;
+function Popup({change, pos}) {
+  if (!pos) return null;
+  return <StyledPopup pos={pos}>+{change}</StyledPopup>;
+}

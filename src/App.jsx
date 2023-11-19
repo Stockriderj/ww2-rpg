@@ -6,23 +6,30 @@ import HUD from "./game-ui/HUD";
 import Inventory from "./game-ui/Inventory";
 
 // Game scripts
-import {BoltAction, Pistol} from "./game-scripts/inventoryItems";
+import {Pistol} from "./game-scripts/items/guns.js";
 import {battleRound} from "./game-scripts/battle";
 import {Character, Player} from "./game-scripts/characters";
 import {usePlayer} from "./context/PlayerContext";
 
 function App() {
-  const {items, setItems, player, setPlayer} = usePlayer();
+  const {inventory, setInventory, player, setPlayer, updatePlayer} =
+    usePlayer();
   const [enemy, setEnemy] = useState(
-    new Character({meleeDamage: 50, weapon: new Pistol(1)})
+    new Character({meleeDamage: 10}) // , weapon: new Pistol(1)
   ); // Example enemy
 
-  const handleShoot = () => {
-    const {updatedPlayer, updatedEnemy} = battleRound(player, enemy, "shoot");
+  const handleBattle = () => {
+    const {updatedPlayer, updatedEnemy, playerWon} = battleRound(
+      player,
+      enemy,
+      "shoot"
+    );
 
-    setItems([...items]); // Update state to reflect ammo change
-    setPlayer(updatedPlayer);
+    setInventory([...inventory]); // Update state to reflect ammo change
+    updatePlayer();
     setEnemy(updatedEnemy); // Update enemy state
+
+    if (playerWon) setEnemy(new Character({meleeDamage: player.xp / 100}));
   };
 
   return (
@@ -38,10 +45,8 @@ function App() {
             <>
               <h1>WW2 Text Adventure Game</h1>
               <Inventory />
-              <p>
-                Enemy: {enemy.health} | U: {player.health}
-              </p>
-              <button onClick={handleShoot}>doiyoiyoiyoing</button>
+              <p>Enemy: {enemy.health} HP</p>
+              <button onClick={handleBattle}>Fight</button>
             </>
           )}
         </main>

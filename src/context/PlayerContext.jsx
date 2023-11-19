@@ -1,22 +1,32 @@
-import {createContext, useContext, useState} from "react";
-import {BoltAction, Pistol} from "../game-scripts/inventoryItems";
+import {createContext, useContext, useReducer, useState} from "react";
+import {BoltAction, Pistol} from "../game-scripts/items/guns";
 import {Player} from "../game-scripts/characters";
+import {Medkit} from "../game-scripts/items/inventoryItems";
 
 const PlayerContext = createContext();
 
 function PlayerProvider({children}) {
-  const [items, setItems] = useState([
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+  const [inventory, setInventory] = useState([
     new BoltAction({quantity: 1}),
     new Pistol({quantity: 3}),
-    {name: "Medkit", quantity: 1},
+    new Medkit({quantity: 5}),
     {name: "Secret Documents", quantity: 29109310},
   ]);
   const [player, setPlayer] = useState(
-    new Player({meleeDamage: 10, weapon: items[0]})
+    new Player({meleeDamage: 10, weapon: inventory[0]})
   );
 
+  function updatePlayer(el) {
+    setPlayer(player);
+    forceUpdate();
+  }
+
   return (
-    <PlayerContext.Provider value={{items, setItems, player, setPlayer}}>
+    <PlayerContext.Provider
+      value={{inventory, setInventory, player, setPlayer, updatePlayer}}
+    >
       {children}
     </PlayerContext.Provider>
   );

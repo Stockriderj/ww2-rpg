@@ -18,6 +18,7 @@ class Enemy {
 const battleRound = (player, enemy, playerAction) => {
   const playerDamage = enemy.calculateDamage();
   const enemyDamage = player.calculateDamage();
+  let playerWon = false;
 
   player.takeDamage(playerDamage);
   enemy.takeDamage(enemyDamage);
@@ -25,12 +26,13 @@ const battleRound = (player, enemy, playerAction) => {
   // Check if enemy is defeated
   if (enemy.health <= 0) {
     console.log("Enemy defeated!");
+    playerWon = true;
     player.addXp(enemy.maxHealth);
   } else if (player.health <= 0) {
     console.log("You've been defeated!");
   }
 
-  return {updatedPlayer: player, updatedEnemy: enemy};
+  return {updatedPlayer: player, updatedEnemy: enemy, playerWon};
 };
 
 export {Enemy, battleRound};

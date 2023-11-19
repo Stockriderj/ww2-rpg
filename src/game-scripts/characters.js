@@ -1,3 +1,8 @@
+/**
+ * Creates a new character. Parameters must be placed in an object.
+ * @param {number} meleeDamage How much damage the character deals without a weapon.
+ * @param {level}
+ */
 class Character {
   constructor({meleeDamage, level = 1, weapon = null}) {
     this.weapon = weapon;
@@ -13,10 +18,10 @@ class Character {
 
   calculateDamage() {
     if (this.health === 0) return 0; // you cant deal damage if ur dead
-    if (this.weapon?.shoot()) {
+    if (this.weapon?.actions.shoot.run()) {
       return this.weapon.damage;
     } else {
-      return this.meleeDamage * (this.health / 100);
+      return Math.round(this.meleeDamage * (this.health / 100));
     }
   }
 
@@ -36,14 +41,23 @@ class Player extends Character {
     super({meleeDamage, level, weapon});
 
     this.addedXp;
+    this.lastMaxXp = this.maxXp;
   }
 
+  /**
+   * Grants xp to the player. The leveling up system follows a Fibonacci sequence.
+   * @param {number} amount
+   */
   addXp(amount) {
     this.xp += amount;
-    if (this.xp > this.maxXp) {
+
+    while (this.xp >= this.maxXp) {
       this.level++;
-      this.xp -= this.maxXp;
-      this.maxXp = 50 + (this.level - 1) * 50;
+
+      // Update maxXp based on Fibonacci sequence
+      let newMaxXp = this.maxXp + this.lastMaxXp;
+      this.lastMaxXp = this.maxXp;
+      this.maxXp += newMaxXp;
     }
 
     this.addedXp = amount;

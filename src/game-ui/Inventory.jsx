@@ -21,13 +21,13 @@ const Item = styled.li`
 `;
 
 export default function Inventory() {
-  const {items, setItems, player, setPlayer} = usePlayer();
+  const {inventory, setInventory, player, setPlayer} = usePlayer();
 
   return (
     <InventoryContainer>
       <h2>Inventory</h2>
       <ItemList>
-        {items.map(item => (
+        {inventory.map(item => (
           <Item key={item.name}>
             {item.name} <small>x{item.quantity}</small>{" "}
             {item.type === "Gun" && (
@@ -41,16 +41,27 @@ export default function Inventory() {
                 >
                   equip
                 </button>
-                <button
-                  onClick={() => {
-                    item.shoot();
-                    setItems([...items]);
-                  }}
-                >
-                  shoot
-                </button>
               </>
             )}
+            {Object.values(item?.actions || []).map(action => (
+              <button
+                onClick={() => {
+                  let params = {};
+                  (action?.accepts || []).map(dependency => {
+                    switch (dependency) {
+                      case "player":
+                        params.player = player;
+                    }
+                  });
+                  action.run(params);
+                  setInventory([...inventory]);
+                  setPlayer(player);
+                }}
+                key={action.name}
+              >
+                {action.name}
+              </button>
+            ))}
           </Item>
         ))}
       </ItemList>
