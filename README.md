@@ -1,8 +1,6 @@
-# React + Vite
+# ww2 rpg
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## just writing some stuff down so i dont forget them
+Killing an enemy will grant you XP equivalent to the enemy's max health.
+Characters have both melee damage and a gun slot. Melee damage varies based on the character's health, but gun damage stays constant no matter what health the character has (unless they're dead).
+When fighting with a gun with no ammo, characters deal melee damage instead of gun damage.
