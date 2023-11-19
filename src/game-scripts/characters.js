@@ -7,8 +7,7 @@ class Character {
   }
 
   calculateDamage() {
-    if (this.health < 0) return 0; // you cant deal damage if ur dead
-
+    if (this.health === 0) return 0; // you cant deal damage if ur dead
     if (this.weapon?.shoot()) {
       return this.weapon.damage;
     } else {

@@ -6,7 +6,7 @@ import HUD from "./game-ui/HUD";
 import Inventory from "./game-ui/Inventory";
 
 // Game scripts
-import {BoltAction} from "./game-scripts/inventoryItems";
+import {BoltAction, Pistol} from "./game-scripts/inventoryItems";
 import {battleRound} from "./game-scripts/battle";
 import {Character, Player} from "./game-scripts/characters";
 
@@ -17,7 +17,7 @@ function App() {
     {name: "Secret Documents", quantity: 29109310},
   ]);
   const [player, setPlayer] = useState(new Character(10, items[0]));
-  const [enemy, setEnemy] = useState(new Character(50)); // Example enemy
+  const [enemy, setEnemy] = useState(new Character(50, new Pistol(1))); // Example enemy
 
   const handleShoot = () => {
     const {updatedPlayer, updatedEnemy} = battleRound(player, enemy, "shoot");
@@ -26,9 +26,6 @@ function App() {
     setPlayer(updatedPlayer);
     setEnemy(updatedEnemy); // Update enemy state
   };
-
-  console.log(player);
-  console.log(enemy);
 
   return (
     <>

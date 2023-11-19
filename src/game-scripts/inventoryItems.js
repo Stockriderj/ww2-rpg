@@ -12,11 +12,14 @@ class Gun extends Item {
     this.name = name;
     this.damage = damage;
     this.ammunition = ammunition;
+
+    this.shootSound = new Audio("sounds/bolt-action.mp3");
   }
 
   shoot() {
     if (this.ammunition > 0) {
       this.ammunition--;
+      this.shootSound.play();
       return true;
     } else {
       alert(
@@ -34,8 +37,20 @@ class BoltAction extends Gun {
     this.name = "Bolt Action Rifle";
     this.damage = 70;
     this.ammunition = 20;
-    this.quantity = quantity;
+
+    this.shootSound = new Audio("sounds/bolt-action.mp3");
   }
 }
 
-export {BoltAction};
+class Pistol extends Gun {
+  constructor(quantity) {
+    super(quantity);
+    this.name = "Pistol";
+    this.damage = 30;
+    this.ammunition = 100;
+
+    this.shootSound = new Audio("sounds/pistol.mp3");
+  }
+}
+
+export {BoltAction, Pistol};
