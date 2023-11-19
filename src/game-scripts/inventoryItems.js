@@ -19,7 +19,9 @@ class Gun extends Item {
       this.ammunition--;
       return true;
     } else {
-      alert("Bruh ur ass outta ammo better go REFILL bozo!");
+      alert(
+        "You're out of ammo! Good luck fighting. Maybe try a melee attack or sum 💀💀💀💀"
+      );
       return false;
     }
   }

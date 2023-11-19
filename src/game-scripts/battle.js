@@ -16,28 +16,16 @@ class Enemy {
 }
 
 const battleRound = (player, enemy, playerAction) => {
-  // Player's action (e.g., shooting)
-  if (playerAction === "shoot") {
-    if (player.weapon.shoot()) {
-      enemy.takeDamage(player.weapon.damage);
-    } else {
-      alert(
-        "You're out of ammo! Good luck fighting. Maybe try a melee attack or sum 💀💀💀💀"
-      );
-    }
-  }
+  const playerDamage = enemy.calculateDamage();
+  const enemyDamage = player.calculateDamage();
+
+  player.takeDamage(playerDamage);
+  enemy.takeDamage(enemyDamage);
 
   // Check if enemy is defeated
   if (enemy.health <= 0) {
     console.log("Enemy defeated!");
-    return;
-  }
-
-  // Enemy's turn to attack
-  enemy.attack(player);
-
-  // Check player's health
-  if (player.health <= 0) {
+  } else if (player.health <= 0) {
     console.log("You've been defeated!");
   }
 

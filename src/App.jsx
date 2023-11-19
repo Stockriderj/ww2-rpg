@@ -7,8 +7,8 @@ import Inventory from "./game-ui/Inventory";
 
 // Game scripts
 import {BoltAction} from "./game-scripts/inventoryItems";
-import {Enemy, battleRound} from "./game-scripts/battle";
-import {Player} from "./game-scripts/characters";
+import {battleRound} from "./game-scripts/battle";
+import {Character, Player} from "./game-scripts/characters";
 
 function App() {
   const [items, setItems] = useState([
@@ -16,8 +16,8 @@ function App() {
     {name: "Medkit", quantity: 1},
     {name: "Secret Documents", quantity: 29109310},
   ]);
-  const [player, setPlayer] = useState(new Player(items[0]));
-  const [enemy, setEnemy] = useState(new Enemy(1000, 10)); // Example enemy
+  const [player, setPlayer] = useState(new Character(10, items[0]));
+  const [enemy, setEnemy] = useState(new Character(50)); // Example enemy
 
   const handleShoot = () => {
     const {updatedPlayer, updatedEnemy} = battleRound(player, enemy, "shoot");
