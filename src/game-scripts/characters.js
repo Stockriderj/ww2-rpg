@@ -7,12 +7,12 @@ class Character {
   }
 
   calculateDamage() {
-    if (this.health > 0) {
-      if (this.weapon?.shoot()) {
-        return this.weapon.damage;
-      } else {
-        return this.meleeDamage * (this.health / 100);
-      }
+    if (this.health < 0) return 0; // you cant deal damage if ur dead
+
+    if (this.weapon?.shoot()) {
+      return this.weapon.damage;
+    } else {
+      return this.meleeDamage * (this.health / 100);
     }
   }
 
