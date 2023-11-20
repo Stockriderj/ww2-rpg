@@ -23,12 +23,12 @@ const Item = styled.li`
 `;
 
 export default function Inventory(enemy) {
-  const {inventory, updateInventory, player, setPlayer} = usePlayer();
+  const {inventory, updateInventory, player, updatePlayer} = usePlayer();
   function handleEquip(item, itemType) {
     player[itemType] !== item
       ? (player[itemType] = item)
       : (player[itemType] = null);
-    setPlayer(player);
+    updatePlayer();
     updateInventory();
   }
 
@@ -61,7 +61,7 @@ export default function Inventory(enemy) {
                   });
                   action.run(params);
                   updateInventory();
-                  setPlayer(player);
+                  updatePlayer();
                 }}
                 key={action.name}
               >

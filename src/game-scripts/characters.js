@@ -15,7 +15,7 @@ class Character {
     this.meleeDamage = meleeDamage;
 
     this.level = level;
-    this.maxXp = 50 + (level - 1) * 50;
+    this.maxXp = 100;
     this.xp = 0;
 
     this.maxHealth = 100 + (level - 1) * 10;

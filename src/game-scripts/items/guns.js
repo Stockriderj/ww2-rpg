@@ -13,7 +13,8 @@ class Gun extends Item {
   constructor({damage, ammunition, quantity}) {
     super({quantity});
     this.type = "Gun";
-    this.playerSlot = "weapon";
+    this.ranged = true;
+    this.playerSlot = "primaryWeapon";
     this.name = "Gun";
     this.damage = damage;
     this.ammunition = ammunition;
@@ -46,6 +47,7 @@ export class BoltAction extends Gun {
   constructor({quantity}) {
     super({damage: 70, ammunition: 20, quantity});
     this.name = "Bolt Action Rifle";
+    this.ranged = true;
 
     this.shootSound = "sounds/bolt-action.mp3";
     this.initActions(this);
@@ -56,6 +58,7 @@ export class Pistol extends Gun {
   constructor({quantity}) {
     super({damage: 30, ammunition: 100, quantity});
     this.name = "Pistol";
+    this.ranged = false;
 
     this.shootSound = "sounds/pistol.mp3";
     this.initActions(this);

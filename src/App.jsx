@@ -8,17 +8,24 @@ import Inventory from "./game-ui/Inventory";
 import Button from "./game-ui/Button";
 
 // Game scripts
-import {battleRound} from "./game-scripts/battle";
+import battleRound from "./game-scripts/battle";
 import {Character} from "./game-scripts/characters";
 import {usePlayer} from "./context/PlayerContext";
 import preloadSounds from "./game-scripts/preload-sounds";
 import {randomNumber} from "./utils/helpers";
+import {BoltAction, Pistol} from "./game-scripts/items/guns";
 
 preloadSounds();
 
 function App() {
-  const {inventory, setInventory, player, setPlayer, updatePlayer} =
-    usePlayer();
+  const {
+    inventory,
+    setInventory,
+    updateInventory,
+    player,
+    setPlayer,
+    updatePlayer,
+  } = usePlayer();
   const [enemy, setEnemy] = useState(
     new Character({meleeDamage: 10}) // , weapon: new Pistol(1)
   ); // Example enemy
@@ -42,7 +49,20 @@ function App() {
         }
       });
 
-      setEnemy(new Character({meleeDamage: player.xp / 100}));
+      let enemyWeaponNum = randomNumber(5);
+      console.log(enemyWeaponNum);
+      let enemyWeapon =
+        enemyWeaponNum === 5
+          ? new BoltAction({quantity: 1})
+          : enemyWeaponNum <= 4 && enemyWeaponNum >= 2
+          ? new Pistol({quantity: 1})
+          : null;
+      setEnemy(
+        new Character({
+          meleeDamage: player.xp / 100,
+          primaryWeapon: enemyWeapon,
+        })
+      );
     }
   };
 
@@ -64,7 +84,10 @@ function App() {
                 Toggle inventory
               </Button>
               {showInventory && <Inventory />}
-              <p>Enemy: {enemy.health} HP</p>
+              <p>
+                Enemy: {enemy.health} HP | Weapon:{" "}
+                {enemy.primaryWeapon?.name || "Bare hands"}
+              </p>
               <div>
                 <Button onClick={() => handleBattle("primaryWeapon")}>
                   Attack with {player.primaryWeapon?.name || "bare hands"}
@@ -74,7 +97,12 @@ function App() {
                     Attack with {player.secondaryWeapon.name}
                   </Button>
                 )}
-                <Button onClick={() => medkit.actions.use.run({player})}>
+                <Button
+                  onClick={() => {
+                    medkit.actions.use.run({player});
+                    updateInventory();
+                  }}
+                >
                   Use medkit
                 </Button>
               </div>

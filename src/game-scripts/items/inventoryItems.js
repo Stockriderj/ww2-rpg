@@ -54,6 +54,7 @@ export class Grenade extends Item {
     this.name = "Grenade";
     this.type = "Grenade";
     this.playerSlot = "secondaryWeapon";
+    this.ranged = true;
     this.damage = 100;
 
     this.actions = {
@@ -61,6 +62,7 @@ export class Grenade extends Item {
         name: "Throw Grenade",
         run() {
           if (this.quantity <= 0) return;
+          new Audio("sounds/grenade-explosion.mp3").play();
           this.quantity--;
         },
       },

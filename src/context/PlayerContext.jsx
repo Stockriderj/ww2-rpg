@@ -19,12 +19,12 @@ function PlayerProvider({children}) {
     new Player({meleeDamage: 10, primaryWeapon: inventory[0]})
   );
 
-  function updatePlayer(el) {
+  function updatePlayer() {
     setPlayer(player);
     // forceUpdate();
   }
 
-  function updateInventory(newInv) {
+  function updateInventory() {
     setInventory(inventory.filter(item => item.checkQuantity()));
     // forceUpdate();
   }
