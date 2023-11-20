@@ -11,6 +11,9 @@ import {battleRound} from "./game-scripts/battle";
 import {Character, Player} from "./game-scripts/characters";
 import {usePlayer} from "./context/PlayerContext";
 import Button from "./game-ui/Button.jsx";
+import preloadSounds from "./game-scripts/preload-sounds.js";
+
+preloadSounds();
 
 function App() {
   const {inventory, setInventory, player, setPlayer, updatePlayer} =

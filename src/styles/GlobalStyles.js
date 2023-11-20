@@ -25,10 +25,13 @@ const GlobalStyles = createGlobalStyle`
   }
 
   h1 {
-    font-family: 'Special Elite', cursive;
     font-size: 4.8rem; // Make it big
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // A little shadow for depth
     text-align: center;
+  }
+
+  h1, .old-font {
+    font-family: 'Special Elite', cursive;
   }
 `;
 

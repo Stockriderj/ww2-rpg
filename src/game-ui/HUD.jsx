@@ -6,8 +6,9 @@ import {useEffect, useRef, useState} from "react";
 import {fadeOutDrop, jumpIn} from "../styles/GlobalStyles";
 
 const HudContainer = styled.header`
+  position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr 5fr;
+  grid-template-columns: 1fr 1fr 1fr 3fr;
 
   background-color: rgba(26, 26, 26, 0.6);
   /* background: center
@@ -29,9 +30,27 @@ const Col = styled.div`
   gap: 1.2rem;
 `;
 
+const LevelIndicator = styled.div`
+  position: relative;
+
+  width: 69px;
+  height: 100%;
+  background: url("level-badge.png") no-repeat center;
+  background-size: 69px;
+  color: #fff8ee;
+  text-align: center;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 4.8rem;
+`;
+
 const Stat = styled.p`
-  margin: 0 1.5rem;
-  font-size: 1.4rem;
+  margin: 0;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
 
@@ -68,7 +87,7 @@ export default function HUD({player}) {
         top: xpRect.bottom,
       },
       lvl: {
-        left: lvlRect.left,
+        left: lvlRect.left + 75,
         top: lvlRect.bottom,
       },
     });
@@ -95,7 +114,7 @@ export default function HUD({player}) {
           ]); // Add a popup to the DOM
           setTimeout(() => {
             setPopups(popups => popups.slice(0, -1));
-          }, 1500); // Remove the popup when it's done animating
+          }, 1000); // Remove the popup when it's done animating
           dependency === "lvl" && setOldLvl(player.level);
         }
       });
@@ -104,14 +123,10 @@ export default function HUD({player}) {
 
   return (
     <HudContainer>
-      <Col>
-        <Stat fontSize={1.6} ref={lvlDisplayRef}>
-          {player.level}
-        </Stat>
-        <Stat ref={xpDisplayRef}>
-          <GiPerpendicularRings /> {player.xp} / {player.maxXp}
-        </Stat>
-      </Col>
+      <LevelIndicator ref={lvlDisplayRef}>{player.level}</LevelIndicator>
+      <Stat ref={xpDisplayRef}>
+        <GiPerpendicularRings /> {player.xp} / {player.maxXp}
+      </Stat>
 
       <Stat>
         <GrAddCircle /> {player.health} / {player.maxHealth}
