@@ -9,6 +9,10 @@ const GlobalStyles = createGlobalStyle`
 
   * {
     font-family: 'Special Elite', cursive;
+
+    &::selection {
+        background: none;
+    }
   }
 
   body {
@@ -26,12 +30,12 @@ const GlobalStyles = createGlobalStyle`
 
   h1 {
     font-size: 4.8rem; // Make it big
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // A little shadow for depth
     text-align: center;
   }
 
-  h1, .old-font {
+  h1, h2, .old-font {
     font-family: 'Special Elite', cursive;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // A little shadow for depth
   }
 `;
 

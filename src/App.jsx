@@ -83,7 +83,9 @@ function App() {
               <Button onClick={() => setShowInventory(!showInventory)}>
                 Toggle inventory
               </Button>
-              {showInventory && <Inventory />}
+              {showInventory && (
+                <Inventory onClose={() => setShowInventory(false)} />
+              )}
               <p>
                 Enemy: {enemy.health} HP | Weapon:{" "}
                 {enemy.primaryWeapon?.name || "Bare hands"}

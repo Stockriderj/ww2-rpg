@@ -1,4 +1,10 @@
-const sounds = ["bolt-action", "click", "no-ammo", "pistol"];
+const sounds = [
+  "bolt-action",
+  "click",
+  "no-ammo",
+  "pistol",
+  "grenade-explosion",
+];
 
 export default function preloadSounds() {
   sounds.map(sound => {

@@ -2,13 +2,11 @@ import toast from "react-hot-toast";
 
 const battleRound = (player, enemy, weapon) => {
   const playerWeapon = player[weapon] || "";
-  const enemyWeapon = enemy['primaryWeapon'] || "";
+  const enemyWeapon = enemy["primaryWeapon"] || "";
   const playerWeaponName = player[weapon]?.name || "bare hands";
   const enemyWeaponName = enemy.primaryWeapon?.name || "bare hands";
 
   //   Initialize damage variables
-  let playerDamage = enemy.calculateDamage("primaryWeapon");
-  let enemyDamage = player.calculateDamage(weapon);
   let playerCanAttack = true;
   let enemyCanAttack = true;
   //   RANGE - Characters with ranged weapons can attack without the enemy being able to deal damage back to them
@@ -30,6 +28,8 @@ const battleRound = (player, enemy, weapon) => {
 
   let playerWon = false;
 
+  let playerDamage = enemyCanAttack && enemy.calculateDamage("primaryWeapon");
+  let enemyDamage = playerCanAttack && player.calculateDamage(weapon);
   if (enemyCanAttack) {
     player.takeDamage(playerDamage);
     toast(

@@ -20,7 +20,7 @@ const HudContainer = styled.header`
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 100;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px); // Little blur effect for that frosted glass vibe
 `;
