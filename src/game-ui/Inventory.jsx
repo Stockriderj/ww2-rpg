@@ -24,6 +24,11 @@ const Item = styled.li`
 
 export default function Inventory() {
   const {inventory, updateInventory, player, setPlayer} = usePlayer();
+  function handleEquip(item) {
+    player.weapon !== item ? (player.weapon = item) : (player.weapon = null);
+    setPlayer(player);
+    updateInventory();
+  }
 
   return (
     <InventoryContainer>
@@ -35,13 +40,8 @@ export default function Inventory() {
             {item.type === "Gun" && (
               <>
                 <small>x{item.ammunition} Ammo</small>
-                <Button
-                  onClick={() => {
-                    player.weapon = item;
-                    setPlayer(player);
-                  }}
-                >
-                  equip
+                <Button onClick={() => handleEquip(item)}>
+                  {player.weapon === item ? "Unequip" : "Equip"}
                 </Button>
               </>
             )}

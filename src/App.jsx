@@ -1,17 +1,18 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import GlobalStyles from "./styles/GlobalStyles";
+import toast, {Toaster} from "react-hot-toast";
 
 // Components
 import HUD from "./game-ui/HUD";
 import Inventory from "./game-ui/Inventory";
+import Button from "./game-ui/Button";
 
 // Game scripts
-import {Pistol} from "./game-scripts/items/guns.js";
 import {battleRound} from "./game-scripts/battle";
-import {Character, Player} from "./game-scripts/characters";
+import {Character} from "./game-scripts/characters";
 import {usePlayer} from "./context/PlayerContext";
-import Button from "./game-ui/Button.jsx";
-import preloadSounds from "./game-scripts/preload-sounds.js";
+import preloadSounds from "./game-scripts/preload-sounds";
+import {randomNumber} from "./utils/helpers";
 
 preloadSounds();
 
@@ -35,7 +36,22 @@ function App() {
     updatePlayer();
     setEnemy(updatedEnemy); // Update enemy state
 
-    if (playerWon) setEnemy(new Character({meleeDamage: player.xp / 100}));
+    if (playerWon) {
+      toast(
+        `Congrats! You have defeated an enemy with ${
+          player.weapon?.name || "your bare hands"
+        }.`
+      );
+      inventory.map(item => {
+        if (item?.type === "Gun") {
+          const newAmmo = randomNumber(20);
+          toast(`You looted ${newAmmo} ${item.name} Ammo from the enemy!`);
+          item.ammunition += newAmmo;
+        }
+      });
+
+      setEnemy(new Character({meleeDamage: player.xp / 100}));
+    }
   };
 
   return (
@@ -60,6 +76,8 @@ function App() {
           )}
         </main>
       </div>
+
+      <Toaster position="top-right" />
     </>
   );
 }
