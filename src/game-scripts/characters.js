@@ -76,19 +76,21 @@ class Player extends Character {
    * @param {number} amount
    */
   addXp(amount) {
-    this.xp += amount;
+    if (amount > 0) {
+      this.xp += amount;
 
-    while (this.xp >= this.maxXp) {
-      this.level++;
+      while (this.xp >= this.maxXp) {
+        this.level++;
 
-      // Update maxXp based on Fibonacci sequence
-      let newMaxXp = this.maxXp + this.lastMaxXp;
-      this.lastMaxXp = this.maxXp;
-      this.maxXp += newMaxXp;
+        // Update maxXp based on Fibonacci sequence
+        let newMaxXp = this.maxXp + this.lastMaxXp;
+        this.lastMaxXp = this.maxXp;
+        this.maxXp += newMaxXp;
+      }
+
+      this.addedXp = amount;
+      new Audio("sounds/xp.mp3").play();
     }
-
-    this.addedXp = amount;
-    new Audio("sounds/xp.mp3").play();
   }
 
   addItem(itemName, quantity) {

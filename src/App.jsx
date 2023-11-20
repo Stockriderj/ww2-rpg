@@ -43,7 +43,7 @@ function App() {
         }
       });
       if (randomNumber(1, 5) === 1) {
-        player.addItem(new Medkit({}), 1);
+        player.addItem("Medkit", 1);
         toast(
           "+1 Medkit - You found an unused medkit attached to the enemy's corpse."
         );
