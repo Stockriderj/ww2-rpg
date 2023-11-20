@@ -12,7 +12,7 @@ function PlayerProvider({children}) {
     new BoltAction({quantity: 1}),
     new Pistol({quantity: 3}),
     new Medkit({quantity: 5}),
-    {name: "Secret Documents", quantity: 29109310},
+    // {name: "Secret Documents", quantity: 29109310},
   ]);
   const [player, setPlayer] = useState(
     new Player({meleeDamage: 10, weapon: inventory[0]})
@@ -20,12 +20,24 @@ function PlayerProvider({children}) {
 
   function updatePlayer(el) {
     setPlayer(player);
-    forceUpdate();
+    // forceUpdate();
+  }
+
+  function updateInventory(newInv) {
+    setInventory(inventory.filter(item => item.checkQuantity()));
+    // forceUpdate();
   }
 
   return (
     <PlayerContext.Provider
-      value={{inventory, setInventory, player, setPlayer, updatePlayer}}
+      value={{
+        inventory,
+        setInventory,
+        player,
+        setPlayer,
+        updateInventory,
+        updatePlayer,
+      }}
     >
       {children}
     </PlayerContext.Provider>

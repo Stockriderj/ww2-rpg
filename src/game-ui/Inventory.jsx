@@ -21,7 +21,7 @@ const Item = styled.li`
 `;
 
 export default function Inventory() {
-  const {inventory, setInventory, player, setPlayer} = usePlayer();
+  const {inventory, updateInventory, player, setPlayer} = usePlayer();
 
   return (
     <InventoryContainer>
@@ -54,7 +54,7 @@ export default function Inventory() {
                     }
                   });
                   action.run(params);
-                  setInventory([...inventory]);
+                  updateInventory();
                   setPlayer(player);
                 }}
                 key={action.name}

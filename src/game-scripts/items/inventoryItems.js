@@ -9,6 +9,10 @@ export default class Item {
   constructor({quantity}) {
     this.quantity = quantity;
   }
+
+  checkQuantity() {
+    return !(this.quantity <= 0);
+  }
 }
 
 // items
@@ -24,6 +28,7 @@ export class Medkit extends Item {
     this.name = "Medkit";
 
     this.initActions(this);
+    this.actions.use.run = this.actions.use.run.bind(this);
   }
 
   initActions(item) {
@@ -32,6 +37,7 @@ export class Medkit extends Item {
         name: "Use Medkit",
         accepts: ["player"],
         run({player}) {
+          if (item.quantity <= 0) return;
           player.health = player.maxHealth;
           item.quantity--;
         },

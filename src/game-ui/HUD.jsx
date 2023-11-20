@@ -71,7 +71,6 @@ export default function HUD({player}) {
   }, []);
 
   useEffect(() => {
-    console.log(isInitialRender.current);
     if (isInitialRender.current) {
       isInitialRender.current = false;
     } else {
