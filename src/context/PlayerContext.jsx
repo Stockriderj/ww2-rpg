@@ -10,7 +10,7 @@ function PlayerProvider({children}) {
 
   const [inventory, setInventory] = useState([
     new BoltAction({quantity: 1}),
-    new Pistol({quantity: 3}),
+    new Pistol({quantity: 1}),
     new Medkit({quantity: 5}),
     new Grenade({quantity: 82183829}),
     // {name: "Secret Documents", quantity: 29109310},

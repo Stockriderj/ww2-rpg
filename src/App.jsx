@@ -14,6 +14,7 @@ import {usePlayer} from "./context/PlayerContext";
 import preloadSounds from "./game-scripts/preload-sounds";
 import {randomNumber} from "./utils/helpers";
 import {BoltAction, Pistol} from "./game-scripts/items/guns";
+import {Medkit} from "./game-scripts/items/inventoryItems";
 
 preloadSounds();
 
@@ -39,15 +40,29 @@ function App() {
     updatePlayer();
     setEnemy(updatedEnemy); // Update enemy state
 
+    let medkit;
     if (playerWon) {
       inventory.map(item => {
         if (item?.type === "Gun") {
-          const newAmmo = randomNumber(20);
+          const newAmmo = randomNumber(10);
           if (newAmmo === 0) return;
-          toast(`You looted ${newAmmo} ${item.name} Ammo from the enemy!`);
+          toast(
+            `+${newAmmo} ${item.name} Ammo - You found some ammo in the enemy's bag.`
+          );
           item.ammunition += newAmmo;
         }
+        if (item?.name === "Medkit") medkit = item;
       });
+      if (randomNumber(5) === 1) {
+        if (medkit) {
+          medkit.quantity += 1;
+        } else {
+          inventory.push(new Medkit({quantity: 1}));
+        }
+        toast(
+          "+1 Medkit - You found an unused medkit attached to the enemy's corpse."
+        );
+      }
 
       let enemyWeaponNum = randomNumber(5);
       console.log(enemyWeaponNum);
