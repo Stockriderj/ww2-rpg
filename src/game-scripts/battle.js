@@ -24,6 +24,16 @@ const battleRound = (player, enemy, playerAction) => {
 
   player.takeDamage(playerDamage);
   enemy.takeDamage(enemyDamage);
+  toast(
+    `You dealt ${enemyDamage} damage to the enemy with your ${
+      player.weapon?.name || "bare hands"
+    }.`
+  );
+  toast(
+    `The enemy dealt ${playerDamage} damage to you with their ${
+      enemy.weapon?.name || "bare hands"
+    }.`
+  );
 
   // Check if enemy is defeated
   if (enemy.health <= 0) {
