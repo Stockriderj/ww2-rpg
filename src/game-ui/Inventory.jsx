@@ -119,6 +119,7 @@ export default function Inventory({onClose}) {
               {item?.damage > 0 && (
                 <Button
                   size="small"
+                  playSound={false}
                   onClick={() => handleEquip(item, item.playerSlot)}
                 >
                   {player[item.playerSlot] === item ? "Unequip" : "Equip"}

@@ -51,6 +51,7 @@ class Character {
 
   equip(item, itemType) {
     this[itemType] !== item ? (this[itemType] = item) : (this[itemType] = null);
+    new Audio("sounds/equip.mp3").play();
   }
 }
 
@@ -85,6 +86,7 @@ class Player extends Character {
     }
 
     this.addedXp = amount;
+    new Audio("sounds/xp.mp3").play();
   }
 
   addItem(item, quantity) {
