@@ -9,10 +9,12 @@ class Character {
     level = 1,
     primaryWeapon = null,
     secondaryWeapon = null,
+    inventory = [],
   }) {
     this.primaryWeapon = primaryWeapon;
     this.secondaryWeapon = secondaryWeapon;
     this.meleeDamage = meleeDamage;
+    this.inventory = inventory;
 
     this.level = level;
     this.maxXp = 100;
@@ -26,7 +28,7 @@ class Character {
     if (this.health === 0) return 0; // you cant deal damage if ur dead
     switch (weapon) {
       case "primaryWeapon":
-        if (this.primaryWeapon?.actions.shoot.run()) {
+        if (this.primaryWeapon?.actions.use.run()) {
           return this.primaryWeapon.damage;
         } else {
           return Math.round(this.meleeDamage * (this.health / 100));
@@ -46,6 +48,10 @@ class Character {
     this.health -= dmg;
     if (this.health < 0) this.health = 0;
   }
+
+  equip(item, itemType) {
+    this[itemType] !== item ? (this[itemType] = item) : (this[itemType] = null);
+  }
 }
 
 class Player extends Character {
@@ -54,8 +60,9 @@ class Player extends Character {
     level = 1,
     primaryWeapon = null,
     secondaryWeapon = null,
+    inventory = [],
   }) {
-    super({meleeDamage, level, primaryWeapon, secondaryWeapon});
+    super({meleeDamage, level, primaryWeapon, secondaryWeapon, inventory});
 
     this.addedXp;
     this.lastMaxXp = this.maxXp;
@@ -78,6 +85,15 @@ class Player extends Character {
     }
 
     this.addedXp = amount;
+  }
+
+  addItem(item, quantity) {
+    let existingItem = this.inventory.map(
+      item => item?.name === item.name && item
+    );
+    existingItem
+      ? (existingItem.quantity += 1)
+      : this.inventory.push(new item({quantity}));
   }
 }
 

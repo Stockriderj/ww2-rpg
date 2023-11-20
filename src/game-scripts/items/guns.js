@@ -10,7 +10,7 @@ import Item from "./inventoryItems";
  * @returns {Object} A gun
  */
 class Gun extends Item {
-  constructor({damage, ammunition, quantity}) {
+  constructor({damage, ammunition, quantity = 1}) {
     super({quantity});
     this.type = "Gun";
     this.ranged = true;
@@ -24,7 +24,7 @@ class Gun extends Item {
 
   initActions(item) {
     item.actions = {
-      shoot: {
+      use: {
         name: `Shoot ${item.name}`,
         accepts: ["target"],
         run() {
@@ -44,7 +44,7 @@ class Gun extends Item {
 }
 
 export class BoltAction extends Gun {
-  constructor({quantity}) {
+  constructor({quantity = 1}) {
     super({damage: 70, ammunition: 20, quantity});
     this.name = "Bolt Action Rifle";
     this.ranged = true;
@@ -55,10 +55,11 @@ export class BoltAction extends Gun {
 }
 
 export class Pistol extends Gun {
-  constructor({quantity}) {
+  constructor({quantity = 1}) {
     super({damage: 30, ammunition: 100, quantity});
     this.name = "Pistol";
     this.ranged = false;
+    this.playerSlot = "secondaryWeapon";
 
     this.shootSound = "sounds/pistol.mp3";
     this.initActions(this);

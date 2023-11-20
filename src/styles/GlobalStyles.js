@@ -12,10 +12,12 @@ const GlobalStyles = createGlobalStyle`
 
     &::selection {
         background: none;
+        text-shadow: none;
     }
   }
 
   body {
+    cursor: default;
     width: 100vw;
     height: 100vh;
     font-size: 1.6rem; /* Base font size = 16px */

@@ -37,10 +37,10 @@ const battleRound = (player, enemy, weapon) => {
     );
   } else {
     toast(
-      `You see the enemy running towards you with their ${enemyWeaponName} before you ${
+      `You see the enemy running towards you with their ${enemyWeaponName} before ${
         playerWeapon.type === "Gun"
-          ? "shoot them"
-          : playerWeapon.type === "Grenade" && "blow them up"
+          ? "shooting them"
+          : playerWeapon.type === "Grenade" && "blowing them up"
       } with your ${playerWeaponName}.`
     );
   }

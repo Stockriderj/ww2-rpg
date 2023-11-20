@@ -18,6 +18,7 @@ const StyledButton = styled.button`
   font-family: Arial, Arial, Helvetica, sans-serif;
   font-weight: bolder;
   border: none;
+  cursor: pointer;
 
   &:hover {
     background-color: #ddd;

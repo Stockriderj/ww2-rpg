@@ -4,7 +4,7 @@ import {usePlayer} from "../context/PlayerContext";
 import Button from "./Button";
 import Draggable from "./Draggable";
 
-const InventoryContainer = styled(Draggable)`
+const InventoryContainer = styled.div`
   position: absolute;
   bottom: 0;
   left: 0;
@@ -12,11 +12,10 @@ const InventoryContainer = styled(Draggable)`
   overflow: scroll;
 
   z-index: 999;
-  height: 40%;
   width: 40%;
   background: rgba(0, 0, 0, 0.9)
     url("https://plus.unsplash.com/premium_photo-1675695700239-44153e6bf430?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGFwZXIlMjB0ZXh0dXJlfGVufDB8fDB8fHww");
-  border-radius: 20px;
+  border-radius: 0 20px 0 0;
   margin-top: 6rem; /* To account for the fixed HUD */
   padding: 2rem;
 
@@ -70,13 +69,10 @@ const ItemInfo = styled.div`
 `;
 
 export default function Inventory({onClose}) {
-  const {inventory, updateInventory, player, updatePlayer} = usePlayer();
+  const {player, updatePlayer} = usePlayer();
   function handleEquip(item, itemType) {
-    player[itemType] !== item
-      ? (player[itemType] = item)
-      : (player[itemType] = null);
+    player.equip(item, itemType);
     updatePlayer();
-    updateInventory();
   }
 
   return (
@@ -86,14 +82,16 @@ export default function Inventory({onClose}) {
         <Close onClick={onClose}>X</Close>
       </InventoryHeader>
       <ItemList>
-        {inventory.map(item => (
+        {player.inventory.map(item => (
           <Item key={item.name}>
             <ItemInfo>
               {item.name}
               <div>
                 {" "}
                 <small>x{item.quantity}</small>{" "}
-                {item?.ammunition && <small>x{item.ammunition} Ammo</small>}
+                {item?.ammunition !== undefined && (
+                  <small>x{item.ammunition} Ammo</small>
+                )}
               </div>
             </ItemInfo>
             <div>
@@ -111,7 +109,6 @@ export default function Inventory({onClose}) {
                       }
                     });
                     action.run(params);
-                    updateInventory();
                     updatePlayer();
                   }}
                   key={action.name}

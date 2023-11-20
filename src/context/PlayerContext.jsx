@@ -8,35 +8,30 @@ const PlayerContext = createContext();
 function PlayerProvider({children}) {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const [inventory, setInventory] = useState([
-    new BoltAction({quantity: 1}),
-    new Pistol({quantity: 1}),
-    new Medkit({quantity: 5}),
-    new Grenade({quantity: 82183829}),
-    // {name: "Secret Documents", quantity: 29109310},
-  ]);
   const [player, setPlayer] = useState(
-    new Player({meleeDamage: 10, primaryWeapon: inventory[0]})
+    new Player({
+      meleeDamage: 10,
+      primaryWeapon: null,
+      inventory: [
+        new BoltAction({quantity: 1}),
+        new Pistol({quantity: 1}),
+        new Medkit({quantity: 5}),
+        new Grenade({quantity: 82183829}),
+        // {name: "Secret Documents", quantity: 29109310},
+      ],
+    })
   );
 
   function updatePlayer() {
     setPlayer(player);
-    // forceUpdate();
-  }
-
-  function updateInventory() {
-    setInventory(inventory.filter(item => item.checkQuantity()));
-    // forceUpdate();
+    forceUpdate();
   }
 
   return (
     <PlayerContext.Provider
       value={{
-        inventory,
-        setInventory,
         player,
         setPlayer,
-        updateInventory,
         updatePlayer,
       }}
     >

@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
  * @returns {Object} an item
  */
 export default class Item {
-  constructor({quantity}) {
+  constructor({quantity = 1}) {
     this.quantity = quantity;
   }
 
@@ -26,7 +26,7 @@ export default class Item {
  * @returns {Object} A function to heal a player (which must be passed into the function)
  */
 export class Medkit extends Item {
-  constructor({quantity}) {
+  constructor({quantity = 1}) {
     super({quantity});
     this.name = "Medkit";
 

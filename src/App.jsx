@@ -19,30 +19,19 @@ import {Medkit} from "./game-scripts/items/inventoryItems";
 preloadSounds();
 
 function App() {
-  const {
-    inventory,
-    setInventory,
-    updateInventory,
-    player,
-    setPlayer,
-    updatePlayer,
-  } = usePlayer();
-  const [enemy, setEnemy] = useState(
-    new Character({meleeDamage: 10}) // , weapon: new Pistol(1)
-  ); // Example enemy
+  const {player, setPlayer, updatePlayer} = usePlayer();
+  const [enemy, setEnemy] = useState(new Character({meleeDamage: 10})); // Example enemy
 
   const [showInventory, setShowInventory] = useState(false);
 
   const handleBattle = weapon => {
     const {updatedEnemy, playerWon} = battleRound(player, enemy, weapon);
 
-    setInventory([...inventory]); // Update state to reflect ammo change
     updatePlayer();
     setEnemy(updatedEnemy); // Update enemy state
 
-    let medkit;
     if (playerWon) {
-      inventory.map(item => {
+      player.inventory.map(item => {
         if (item?.type === "Gun") {
           const newAmmo = randomNumber(10);
           if (newAmmo === 0) return;
@@ -51,21 +40,15 @@ function App() {
           );
           item.ammunition += newAmmo;
         }
-        if (item?.name === "Medkit") medkit = item;
       });
       if (randomNumber(5) === 1) {
-        if (medkit) {
-          medkit.quantity += 1;
-        } else {
-          inventory.push(new Medkit({quantity: 1}));
-        }
+        player.addItem(new Medkit({}), 1);
         toast(
           "+1 Medkit - You found an unused medkit attached to the enemy's corpse."
         );
       }
 
       let enemyWeaponNum = randomNumber(5);
-      console.log(enemyWeaponNum);
       let enemyWeapon =
         enemyWeaponNum === 5
           ? new BoltAction({quantity: 1})
@@ -81,7 +64,7 @@ function App() {
     }
   };
 
-  const medkit = inventory.filter(item => item.name === "Medkit")[0];
+  const medkit = player.inventory.filter(item => item.name === "Medkit")[0];
 
   return (
     <>
@@ -125,6 +108,8 @@ function App() {
               </div>
             </>
           )}
+
+          <p>&copy; 2023 stockriderj &lt;3</p>
         </main>
       </div>
 
