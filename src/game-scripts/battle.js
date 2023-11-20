@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 class Enemy {
   constructor(health, damage) {
     this.health = health;
@@ -28,6 +30,11 @@ const battleRound = (player, enemy, playerAction) => {
     console.log("Enemy defeated!");
     playerWon = true;
     player.addXp(enemy.maxHealth);
+    toast(
+      `+${enemy.maxHealth}XP - You have defeated an enemy with ${
+        player.weapon?.name || "your bare hands"
+      }.`
+    );
   } else if (player.health <= 0) {
     console.log("You've been defeated!");
   }

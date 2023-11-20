@@ -37,14 +37,10 @@ function App() {
     setEnemy(updatedEnemy); // Update enemy state
 
     if (playerWon) {
-      toast(
-        `Congrats! You have defeated an enemy with ${
-          player.weapon?.name || "your bare hands"
-        }.`
-      );
       inventory.map(item => {
         if (item?.type === "Gun") {
           const newAmmo = randomNumber(20);
+          if (newAmmo === 0) return;
           toast(`You looted ${newAmmo} ${item.name} Ammo from the enemy!`);
           item.ammunition += newAmmo;
         }
@@ -77,7 +73,7 @@ function App() {
         </main>
       </div>
 
-      <Toaster position="top-right" />
+      <Toaster position="top-right" reverseOrder={true} />
     </>
   );
 }
