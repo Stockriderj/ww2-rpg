@@ -9,8 +9,12 @@ const HudContainer = styled.header`
   display: grid;
   grid-template-columns: 1fr 1fr 5fr;
 
-  background-color: #1a1a1a;
-  color: #fff;
+  background-color: rgba(26, 26, 26, 0.6);
+  /* background: center
+    url("https://driverguides.berlin/wp-content/uploads/2019/10/ED1FCEEF-024A-463F-82AE-18F376E3DDA5.jpeg")
+    no-repeat; */
+  background-size: cover;
+  color: #d3cbbf;
   padding: 2rem 7.2rem;
   position: fixed;
   top: 0;

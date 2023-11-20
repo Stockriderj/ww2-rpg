@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {usePlayer} from "../context/PlayerContext";
+import Button from "./Button";
 
 const InventoryContainer = styled.div`
   margin-top: 6rem; /* To account for the fixed HUD */
@@ -12,7 +13,8 @@ const ItemList = styled.ul`
 `;
 
 const Item = styled.li`
-  background-color: #fff;
+  background-color: #d3cbbf;
+  color: #333;
   border: 1px solid #ddd;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -33,18 +35,18 @@ export default function Inventory() {
             {item.type === "Gun" && (
               <>
                 <small>x{item.ammunition} Ammo</small>
-                <button
+                <Button
                   onClick={() => {
                     player.weapon = item;
                     setPlayer(player);
                   }}
                 >
                   equip
-                </button>
+                </Button>
               </>
             )}
             {Object.values(item?.actions || []).map(action => (
-              <button
+              <Button
                 onClick={() => {
                   let params = {};
                   (action?.accepts || []).map(dependency => {
@@ -60,7 +62,7 @@ export default function Inventory() {
                 key={action.name}
               >
                 {action.name}
-              </button>
+              </Button>
             ))}
           </Item>
         ))}

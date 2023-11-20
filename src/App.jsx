@@ -10,6 +10,7 @@ import {Pistol} from "./game-scripts/items/guns.js";
 import {battleRound} from "./game-scripts/battle";
 import {Character, Player} from "./game-scripts/characters";
 import {usePlayer} from "./context/PlayerContext";
+import Button from "./game-ui/Button.jsx";
 
 function App() {
   const {inventory, setInventory, player, setPlayer, updatePlayer} =
@@ -17,6 +18,8 @@ function App() {
   const [enemy, setEnemy] = useState(
     new Character({meleeDamage: 10}) // , weapon: new Pistol(1)
   ); // Example enemy
+
+  const [showInventory, setShowInventory] = useState(false);
 
   const handleBattle = () => {
     const {updatedPlayer, updatedEnemy, playerWon} = battleRound(
@@ -44,9 +47,12 @@ function App() {
           ) : (
             <>
               <h1>WW2 Text Adventure Game</h1>
-              <Inventory />
+              <Button onClick={() => setShowInventory(!showInventory)}>
+                Toggle inventory
+              </Button>
+              {showInventory && <Inventory />}
               <p>Enemy: {enemy.health} HP</p>
-              <button onClick={handleBattle}>Fight</button>
+              <Button onClick={handleBattle}>Fight</Button>
             </>
           )}
         </main>
