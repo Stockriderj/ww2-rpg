@@ -1,4 +1,7 @@
 // Templates
+
+import toast from "react-hot-toast";
+
 /**
  * Creates a new item. Parameters must be placed in an object.
  * @param {number} quantity
@@ -27,21 +30,41 @@ export class Medkit extends Item {
     super({quantity});
     this.name = "Medkit";
 
-    this.initActions(this);
-    this.actions.use.run = this.actions.use.run.bind(this);
-  }
-
-  initActions(item) {
-    item.actions = {
+    this.actions = {
       use: {
         name: "Use Medkit",
         accepts: ["player"],
         run({player}) {
-          if (item.quantity <= 0) return;
+          if (this.quantity <= 0) return;
           player.health = player.maxHealth;
-          item.quantity--;
+          this.quantity--;
+          toast(
+            "You used a medkit and healed yourself back up to full health."
+          );
         },
       },
     };
+    this.actions.use.run = this.actions.use.run.bind(this);
+  }
+}
+
+export class Grenade extends Item {
+  constructor({quantity}) {
+    super({quantity});
+    this.name = "Grenade";
+    this.type = "Grenade";
+    this.playerSlot = "secondaryWeapon";
+    this.damage = 100;
+
+    this.actions = {
+      use: {
+        name: "Throw Grenade",
+        run() {
+          if (this.quantity <= 0) return;
+          this.quantity--;
+        },
+      },
+    };
+    this.actions.use.run = this.actions.use.run.bind(this);
   }
 }

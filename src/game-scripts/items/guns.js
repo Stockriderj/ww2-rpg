@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import Item from "./inventoryItems";
 
 /**
@@ -12,6 +13,7 @@ class Gun extends Item {
   constructor({damage, ammunition, quantity}) {
     super({quantity});
     this.type = "Gun";
+    this.playerSlot = "weapon";
     this.name = "Gun";
     this.damage = damage;
     this.ammunition = ammunition;
@@ -23,6 +25,7 @@ class Gun extends Item {
     item.actions = {
       shoot: {
         name: `Shoot ${item.name}`,
+        accepts: ["target"],
         run() {
           if (item.ammunition > 0) {
             item.ammunition--;
@@ -30,9 +33,7 @@ class Gun extends Item {
             return true;
           } else {
             new Audio("sounds/no-ammo.mp3").play();
-            // alert(
-            //   "You're out of ammo! Good luck fighting. Maybe try a melee attack or sum 💀💀💀💀"
-            // );
+            toast.error("You're out of ammo.");
             return false;
           }
         },

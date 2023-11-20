@@ -1,7 +1,7 @@
 import {createContext, useContext, useReducer, useState} from "react";
 import {BoltAction, Pistol} from "../game-scripts/items/guns";
 import {Player} from "../game-scripts/characters";
-import {Medkit} from "../game-scripts/items/inventoryItems";
+import {Grenade, Medkit} from "../game-scripts/items/inventoryItems";
 
 const PlayerContext = createContext();
 
@@ -12,10 +12,11 @@ function PlayerProvider({children}) {
     new BoltAction({quantity: 1}),
     new Pistol({quantity: 3}),
     new Medkit({quantity: 5}),
+    new Grenade({quantity: 82183829}),
     // {name: "Secret Documents", quantity: 29109310},
   ]);
   const [player, setPlayer] = useState(
-    new Player({meleeDamage: 10, weapon: inventory[0]})
+    new Player({meleeDamage: 10, primaryWeapon: inventory[0]})
   );
 
   function updatePlayer(el) {

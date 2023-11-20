@@ -25,12 +25,8 @@ function App() {
 
   const [showInventory, setShowInventory] = useState(false);
 
-  const handleBattle = () => {
-    const {updatedPlayer, updatedEnemy, playerWon} = battleRound(
-      player,
-      enemy,
-      "shoot"
-    );
+  const handleBattle = weapon => {
+    const {updatedEnemy, playerWon} = battleRound(player, enemy, weapon);
 
     setInventory([...inventory]); // Update state to reflect ammo change
     updatePlayer();
@@ -50,6 +46,8 @@ function App() {
     }
   };
 
+  const medkit = inventory.filter(item => item.name === "Medkit")[0];
+
   return (
     <>
       <GlobalStyles />
@@ -67,7 +65,19 @@ function App() {
               </Button>
               {showInventory && <Inventory />}
               <p>Enemy: {enemy.health} HP</p>
-              <Button onClick={handleBattle}>Fight</Button>
+              <div>
+                <Button onClick={() => handleBattle("primaryWeapon")}>
+                  Attack with {player.primaryWeapon?.name || "bare hands"}
+                </Button>
+                {player?.secondaryWeapon && (
+                  <Button onClick={() => handleBattle("secondaryWeapon")}>
+                    Attack with {player.secondaryWeapon.name}
+                  </Button>
+                )}
+                <Button onClick={() => medkit.actions.use.run({player})}>
+                  Use medkit
+                </Button>
+              </div>
             </>
           )}
         </main>

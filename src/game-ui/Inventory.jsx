@@ -22,10 +22,12 @@ const Item = styled.li`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-export default function Inventory() {
+export default function Inventory(enemy) {
   const {inventory, updateInventory, player, setPlayer} = usePlayer();
-  function handleEquip(item) {
-    player.weapon !== item ? (player.weapon = item) : (player.weapon = null);
+  function handleEquip(item, itemType) {
+    player[itemType] !== item
+      ? (player[itemType] = item)
+      : (player[itemType] = null);
     setPlayer(player);
     updateInventory();
   }
@@ -37,11 +39,11 @@ export default function Inventory() {
         {inventory.map(item => (
           <Item key={item.name}>
             {item.name} <small>x{item.quantity}</small>{" "}
-            {item.type === "Gun" && (
+            {item?.damage > 0 && (
               <>
-                <small>x{item.ammunition} Ammo</small>
-                <Button onClick={() => handleEquip(item)}>
-                  {player.weapon === item ? "Unequip" : "Equip"}
+                {item?.ammunition && <small>x{item.ammunition} Ammo</small>}
+                <Button onClick={() => handleEquip(item, item.playerSlot)}>
+                  {player[item.playerSlot] === item ? "Unequip" : "Equip"}
                 </Button>
               </>
             )}
@@ -53,6 +55,8 @@ export default function Inventory() {
                     switch (dependency) {
                       case "player":
                         params.player = player;
+                      case "target":
+                        params.target = enemy;
                     }
                   });
                   action.run(params);

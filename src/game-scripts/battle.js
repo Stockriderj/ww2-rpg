@@ -17,21 +17,21 @@ class Enemy {
   }
 }
 
-const battleRound = (player, enemy, playerAction) => {
-  const playerDamage = enemy.calculateDamage();
-  const enemyDamage = player.calculateDamage();
+const battleRound = (player, enemy, weapon) => {
+  const playerDamage = enemy.calculateDamage("primaryWeapon");
+  const enemyDamage = player.calculateDamage(weapon);
   let playerWon = false;
 
   player.takeDamage(playerDamage);
   enemy.takeDamage(enemyDamage);
   toast(
     `You dealt ${enemyDamage} damage to the enemy with your ${
-      player.weapon?.name || "bare hands"
+      player[weapon]?.name || "bare hands"
     }.`
   );
   toast(
     `The enemy dealt ${playerDamage} damage to you with their ${
-      enemy.weapon?.name || "bare hands"
+      enemy.primaryWeapon?.name || "bare hands"
     }.`
   );
 
@@ -42,11 +42,11 @@ const battleRound = (player, enemy, playerAction) => {
     player.addXp(enemy.maxHealth);
     toast(
       `+${enemy.maxHealth}XP - You have defeated an enemy with ${
-        player.weapon?.name || "your bare hands"
+        player[weapon]?.name || "your bare hands"
       }.`
     );
   } else if (player.health <= 0) {
-    console.log("You've been defeated!");
+    toast("You've been defeated!");
   }
 
   return {updatedPlayer: player, updatedEnemy: enemy, playerWon};

@@ -4,8 +4,14 @@
  * @param {level}
  */
 class Character {
-  constructor({meleeDamage, level = 1, weapon = null}) {
-    this.weapon = weapon;
+  constructor({
+    meleeDamage,
+    level = 1,
+    primaryWeapon = null,
+    secondaryWeapon = null,
+  }) {
+    this.primaryWeapon = primaryWeapon;
+    this.secondaryWeapon = secondaryWeapon;
     this.meleeDamage = meleeDamage;
 
     this.level = level;
@@ -16,12 +22,18 @@ class Character {
     this.health = this.maxHealth;
   }
 
-  calculateDamage() {
+  calculateDamage(weapon) {
     if (this.health === 0) return 0; // you cant deal damage if ur dead
-    if (this.weapon?.actions.shoot.run()) {
-      return this.weapon.damage;
-    } else {
-      return Math.round(this.meleeDamage * (this.health / 100));
+    switch (weapon) {
+      case "primaryWeapon":
+        if (this.primaryWeapon?.actions.shoot.run()) {
+          return this.primaryWeapon.damage;
+        } else {
+          return Math.round(this.meleeDamage * (this.health / 100));
+        }
+      case "secondaryWeapon":
+        this.secondaryWeapon.actions.use.run();
+        return this.secondaryWeapon.damage;
     }
   }
 
@@ -37,8 +49,13 @@ class Character {
 }
 
 class Player extends Character {
-  constructor({meleeDamage, level = 1, weapon = null}) {
-    super({meleeDamage, level, weapon});
+  constructor({
+    meleeDamage,
+    level = 1,
+    primaryWeapon = null,
+    secondaryWeapon = null,
+  }) {
+    super({meleeDamage, level, primaryWeapon, secondaryWeapon});
 
     this.addedXp;
     this.lastMaxXp = this.maxXp;
