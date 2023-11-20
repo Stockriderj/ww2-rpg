@@ -15,6 +15,7 @@ import preloadSounds from "./game-scripts/preload-sounds";
 import {randomNumber} from "./utils/helpers";
 import {BoltAction, Pistol} from "./game-scripts/items/guns";
 import {Medkit} from "./game-scripts/items/inventoryItems";
+import scavenge from "./game-scripts/scavenge";
 
 preloadSounds();
 
@@ -33,7 +34,7 @@ function App() {
     if (playerWon) {
       player.inventory.map(item => {
         if (item?.type === "Gun") {
-          const newAmmo = randomNumber(10);
+          const newAmmo = randomNumber(0, 10);
           if (newAmmo === 0) return;
           toast(
             `+${newAmmo} ${item.name} Ammo - You found some ammo in the enemy's bag.`
@@ -41,14 +42,14 @@ function App() {
           item.ammunition += newAmmo;
         }
       });
-      if (randomNumber(5) === 1) {
+      if (randomNumber(1, 5) === 1) {
         player.addItem(new Medkit({}), 1);
         toast(
           "+1 Medkit - You found an unused medkit attached to the enemy's corpse."
         );
       }
 
-      let enemyWeaponNum = randomNumber(5);
+      let enemyWeaponNum = randomNumber(1, 5);
       let enemyWeapon =
         enemyWeaponNum === 5
           ? new BoltAction({quantity: 1})
@@ -100,10 +101,13 @@ function App() {
                 <Button
                   onClick={() => {
                     medkit.actions.use.run({player});
-                    updateInventory();
+                    updatePlayer();
                   }}
                 >
                   Use medkit
+                </Button>
+                <Button onClick={() => scavenge(player, updatePlayer)}>
+                  scavenge
                 </Button>
               </div>
             </>
@@ -113,7 +117,7 @@ function App() {
         </main>
       </div>
 
-      <Toaster position="top-right" reverseOrder={true} />
+      <Toaster position="bottom-right" reverseOrder={true} />
     </>
   );
 }

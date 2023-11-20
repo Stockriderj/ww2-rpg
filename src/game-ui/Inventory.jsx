@@ -12,6 +12,7 @@ const InventoryContainer = styled.div`
   overflow: scroll;
 
   z-index: 999;
+  height: 40%;
   width: 40%;
   background: rgba(0, 0, 0, 0.9)
     url("https://plus.unsplash.com/premium_photo-1675695700239-44153e6bf430?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGFwZXIlMjB0ZXh0dXJlfGVufDB8fDB8fHww");
@@ -42,6 +43,11 @@ const InventoryHeading = styled.h2`
   margin: 0 2.4rem;
   text-transform: uppercase;
   letter-spacing: 20px;
+
+  @media (max-width: 600px) {
+    margin: 0;
+    letter-spacing: 0;
+  }
 `;
 
 const Close = styled(Button)`
@@ -79,7 +85,9 @@ export default function Inventory({onClose}) {
     <InventoryContainer handle=".inventory-header">
       <InventoryHeader className="inventory-header">
         <InventoryHeading>Inventory</InventoryHeading>
-        <Close onClick={onClose}>X</Close>
+        <Close size="small" onClick={onClose}>
+          X
+        </Close>
       </InventoryHeader>
       <ItemList>
         {player.inventory.map(item => (

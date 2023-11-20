@@ -1,3 +1,5 @@
+import {items} from "./items/inventoryItems";
+
 /**
  * Creates a new character. Parameters must be placed in an object.
  * @param {number} meleeDamage How much damage the character deals without a weapon.
@@ -89,13 +91,14 @@ class Player extends Character {
     new Audio("sounds/xp.mp3").play();
   }
 
-  addItem(item, quantity) {
-    let existingItem = this.inventory.map(
-      item => item?.name === item.name && item
-    );
+  addItem(itemName, quantity) {
+    let existingItem = this.inventory.filter(item => {
+      if (item?.name === itemName) return item;
+    });
+
     existingItem
-      ? (existingItem.quantity += 1)
-      : this.inventory.push(new item({quantity}));
+      ? (existingItem[0].quantity += quantity)
+      : this.inventory.push(new items[itemName]({quantity}));
   }
 }
 
