@@ -22,30 +22,18 @@ const initalState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case "update":
-      return {...state, player: state.player};
     case "startScavenge":
       return {...state, scavengeTimer: action.payload};
     case "tick":
-      console.log("balls (tick)");
       return {
         ...state,
-        scavengeTimer:
-          state.scavengeTimer === 0
-            ? state.scavengeTimer
-            : state.scavengeTimer - 1,
+        scavengeTimer: Math.max(0, state.scavengeTimer - 1),
       };
   }
 }
 
 function PlayerProvider({children}) {
   const [{player, scavengeTimer}, dispatch] = useReducer(reducer, initalState);
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
-
-  // function updatePlayer() {
-  //   dispatch({})
-  //   forceUpdate();
-  // }
 
   return (
     <PlayerContext.Provider
@@ -53,7 +41,6 @@ function PlayerProvider({children}) {
         player,
         scavengeTimer,
         dispatch,
-        // updatePlayer,
       }}
     >
       {children}

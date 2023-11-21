@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import {items} from "./items/inventoryItems";
 
 /**
@@ -101,6 +102,18 @@ class Player extends Character {
     existingItem
       ? (existingItem[0].quantity += quantity)
       : this.inventory.push(new items[itemName]({quantity}));
+  }
+
+  addAmmo(gunName, quantity) {
+    let gun = this.inventory.filter(item => {
+      if (item?.name === gunName) return item;
+    });
+
+    gun
+      ? (gun.ammunition += quantity)
+      : toast.error(
+          `You would have gotten ${quantity} ${gunName} Ammo, but you don't have that gun! Don't worry, this feature will be fixed by Stockriderj in the future (when he stops being lazy)`
+        );
   }
 }
 

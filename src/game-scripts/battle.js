@@ -9,10 +9,8 @@ const battleRound = (player, enemy, weapon) => {
   //   Initialize damage variables
   let playerCanAttack = true;
   let enemyCanAttack = true;
+
   //   RANGE - Characters with ranged weapons can attack without the enemy being able to deal damage back to them
-  console.log(
-    `${playerWeapon?.ranged === true} ${enemyWeapon?.ranged === true}`
-  );
   switch (`${playerWeapon?.ranged === true} ${enemyWeapon?.ranged === true}`) {
     case "true true":
       break; // Both sides have ranged weapons. Both can deal damage

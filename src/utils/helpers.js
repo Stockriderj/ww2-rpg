@@ -7,24 +7,25 @@ export function randomNumber(min, max) {
  *
  * @returns {Object} {stackedItems: {name, quantity}, stackedText: "x2 Lorem, x1 Ipsum"}
  */
-export function stackItems(items) {
-  const itemCount = {};
-  items.forEach(item =>
-    itemCount[item] ? itemCount[item]++ : (itemCount[item] = 1)
-  );
+export function stackItems(items, getQuantity = true) {
+  let itemPairs = getQuantity
+    ? Object.entries(
+        items.reduce((acc, item) => {
+          acc[item] = (acc[item] || 0) + 1;
+          return acc;
+        }, {})
+      )
+    : items;
 
-  const stackedItems = [];
-  const stackedArr = Object.entries(itemCount);
-  const stackedText = stackedArr
-    .map(([name, quantity], i) => {
-      stackedItems.push({name, quantity});
-      return i === 0
-        ? `${quantity}x ${name}`
-        : i === stackedArr.length - 1
-        ? ` and ${quantity}x ${name}`
-        : ` ${quantity}x ${name}`;
-    })
-    .toString();
+  let stackedText = "";
+  const stackedItems = itemPairs.map(([name, quantity], i) => {
+    let quantityX = getQuantity ? `${quantity}x ` : "";
+    let separator = i === 0 ? "" : i === itemPairs.length - 1 ? " and " : ", ";
+
+    stackedText += `${separator}${quantityX}${name}`;
+
+    return {name, quantity};
+  });
 
   return {stackedItems, stackedText};
 }

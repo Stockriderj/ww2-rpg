@@ -40,7 +40,6 @@ export function ScavengeButton() {
 
       stackedItems.forEach(item => player.addItem(item.name, item.quantity));
       player.addXp(droppedItems.length * 10);
-      dispatch({type: "update"});
 
       stackedItems.length
         ? toast.success(`You found ${stackedText}!`, {id: loadingToast.current})

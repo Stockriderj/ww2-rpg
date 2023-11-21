@@ -12,7 +12,7 @@ import battleRound from "./game-scripts/battle";
 import {Character} from "./game-scripts/characters";
 import {usePlayer} from "./context/PlayerContext";
 import preloadSounds from "./game-scripts/preload-sounds";
-import {randomNumber} from "./utils/helpers";
+import {randomNumber, stackItems} from "./utils/helpers";
 import {BoltAction, Pistol} from "./game-scripts/items/guns";
 import styled from "styled-components";
 import {ScavengeButton} from "./game-ui/ScavengeButton";
@@ -25,7 +25,7 @@ const Container = styled.main`
 `;
 
 function App() {
-  const {player, scavengeTimer, dispatch} = usePlayer();
+  const {player, dispatch} = usePlayer();
   const [enemy, setEnemy] = useState(new Character({meleeDamage: 10})); // Example enemy
 
   useEffect(() => {
@@ -37,34 +37,44 @@ function App() {
   const handleBattle = weapon => {
     const {updatedEnemy, playerWon} = battleRound(player, enemy, weapon);
 
-    dispatch({type: "update"});
-    setEnemy(updatedEnemy); // Update enemy state
+    setEnemy(updatedEnemy);
 
     if (playerWon) {
+      let battleRewards = [];
+      let rewardNames = [];
+
       player.inventory.forEach(item => {
         if (item?.type === "Gun") {
           const newAmmo = randomNumber(0, 10);
           if (newAmmo === 0) return;
-          toast(
-            `+${newAmmo} ${item.name} Ammo - You found some ammo in the enemy's bag.`
-          );
-          item.ammunition += newAmmo;
+          battleRewards.push({
+            type: "ammo",
+            name: item.name,
+            quantity: newAmmo,
+          });
+          rewardNames.push(`x${newAmmo} ${item.name} Ammo`);
         }
       });
+
       if (randomNumber(1, 5) === 1) {
-        player.addItem("Medkit", 1);
-        toast(
-          "+1 Medkit - You found an unused medkit attached to the enemy's corpse."
-        );
+        battleRewards.push({name: "Medkit", quantity: 1});
+        rewardNames.push("x1 Medkit");
       }
 
-      let enemyWeaponNum = randomNumber(1, 5);
-      let enemyWeapon =
-        enemyWeaponNum === 5
-          ? new BoltAction({quantity: 1})
-          : enemyWeaponNum <= 4 && enemyWeaponNum >= 2
-          ? new Pistol({quantity: 1})
-          : null;
+      const {stackedText} = stackItems(
+        rewardNames.map(name => [name]),
+        false
+      );
+
+      battleRewards.forEach(item => {
+        item?.type === "ammo"
+          ? player.addAmmo(item.name, item.quantity)
+          : player.addItem(item.name, item.quantity);
+      });
+      toast(`You looted ${stackedText} from the enemy!`);
+
+      let enemyWeapon = determineEnemyWeapon(randomNumber(1, 5));
+
       setEnemy(
         new Character({
           meleeDamage: player.xp / 100,
@@ -73,6 +83,19 @@ function App() {
       );
     }
   };
+
+  function determineEnemyWeapon(enemyWeaponNum) {
+    switch (enemyWeaponNum) {
+      case 5:
+        return new BoltAction({quantity: 1});
+      case 2:
+      case 3:
+      case 4:
+        return new Pistol({quantity: 1});
+      default:
+        return null;
+    }
+  }
 
   const medkit = player.inventory.filter(item => item.name === "Medkit")[0];
 
@@ -105,7 +128,6 @@ function App() {
                 <Button
                   onClick={() => {
                     medkit.actions.use.run({player});
-                    dispatch({type: "update"});
                   }}
                 >
                   Use medkit
