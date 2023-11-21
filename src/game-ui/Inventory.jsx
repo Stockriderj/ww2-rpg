@@ -88,12 +88,12 @@ const ItemInfo = styled.div`
 `;
 
 export default function Inventory() {
-  const {player, updatePlayer} = usePlayer();
+  const {player, dispatch} = usePlayer();
   const [isVisible, setIsVisible] = useState(false);
 
   function handleEquip(item, itemType) {
     player.equip(item, itemType);
-    updatePlayer();
+    dispatch({type: "update"});
   }
 
   return (
@@ -134,7 +134,7 @@ export default function Inventory() {
                         }
                       });
                       action.run(params);
-                      updatePlayer();
+                      dispatch({type: "update"});
                     }}
                     key={action.name}
                   >

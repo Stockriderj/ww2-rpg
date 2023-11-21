@@ -2,6 +2,7 @@ import {memo, useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import {GrAddCircle} from "react-icons/gr";
 import {GiPerpendicularRings} from "react-icons/gi";
+import {usePlayer} from "../context/PlayerContext";
 
 const HudContainer = styled.header`
   position: relative;
@@ -66,18 +67,21 @@ const PopupContainer = styled.div`
   left: ${props => props.position.left}px;
   top: ${props => props.position.top}px;
   font-size: 3.6rem;
-  color: green;
+  color: ${props => props.color};
   font-family: "Special Elite", cursive;
   font-weight: bolder;
   animation: ${props => props.animation} 1s ease-in-out forwards;
 `;
 
-export default function HUD({player}) {
+export default function HUD() {
+  const {player} = usePlayer();
   const [popups, setPopups] = useState([]);
   const xpDisplayRef = useRef(null);
   const lvlDisplayRef = useRef(null);
+  const healthDisplayRef = useRef(null);
+  const oldHealth = useRef(100);
 
-  const addPopup = (content, ref, animation) => {
+  const addPopup = (content, ref, color, animation) => {
     if (ref.current) {
       // create a new popup reference
       const rect = ref.current.getBoundingClientRect();
@@ -85,6 +89,7 @@ export default function HUD({player}) {
         id: Math.random(),
         content,
         position: {left: rect.left, top: rect.bottom},
+        color,
         animation,
       };
 
@@ -98,13 +103,29 @@ export default function HUD({player}) {
 
   // add a popup when player xp changes
   useEffect(() => {
-    if (player.xp) addPopup(`+${player.addedXp}`, xpDisplayRef, "jumpIn");
+    if (player.xp)
+      addPopup(`+${player.addedXp}`, xpDisplayRef, "green", "jumpIn");
   }, [player.xp]);
 
   // add a popup when player level changes
   useEffect(() => {
-    if (player.level > 1) addPopup(`Level up!`, lvlDisplayRef, "fadeOutDrop");
+    if (player.level > 1)
+      addPopup(`Level up!`, lvlDisplayRef, "green", "fadeOutDrop");
   }, [player.level]);
+
+  // add a popup when health changes
+  useEffect(() => {
+    if (oldHealth.current !== player.health)
+      addPopup(
+        `${oldHealth.current > player.health ? "-" : "+"}${Math.abs(
+          player.health - oldHealth.current
+        )}`,
+        healthDisplayRef,
+        "red",
+        "fadeOutDrop"
+      );
+    oldHealth.current = player.health;
+  }, [player.health]);
 
   return (
     <HudContainer>
@@ -114,24 +135,20 @@ export default function HUD({player}) {
           <GiPerpendicularRings /> {player.xp} / {player.maxXp}
         </span>
         <progress
-          value={player.xp - player.lastMaxXp}
-          max={player.maxXp - player.lastMaxXp}
+          value={player.xp - (player.level > 1 ? player.lastMaxXp : 0)}
+          max={player.maxXp - (player.level > 1 ? player.lastMaxXp : 0)}
         />
       </Stat>
-      <Stat>
+      <Stat ref={healthDisplayRef}>
         <span>
           <GrAddCircle /> {player.health} / {player.maxHealth}
         </span>
         <progress value={player.health} max={player.maxHealth} color="red" />
       </Stat>
 
-      {popups.map(popup => (
-        <PopupContainer
-          key={popup.id}
-          position={popup.position}
-          animation={popup.animation}
-        >
-          {popup.content}
+      {popups.map(({id, content, ...rest}) => (
+        <PopupContainer key={id} {...rest}>
+          {content}
         </PopupContainer>
       ))}
     </HudContainer>

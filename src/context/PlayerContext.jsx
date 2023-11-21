@@ -5,34 +5,54 @@ import {Grenade, Medkit} from "../game-scripts/items/inventoryItems";
 
 const PlayerContext = createContext();
 
+const initalState = {
+  player: new Player({
+    meleeDamage: 10,
+    primaryWeapon: null,
+    inventory: [
+      new BoltAction({quantity: 1}),
+      new Pistol({quantity: 1}),
+      new Medkit({quantity: 5}),
+      new Grenade({quantity: 82183829}),
+      // {name: "Secret Documents", quantity: 29109310},
+    ],
+  }),
+  scavengeTimer: 0,
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "update":
+      return {...state, player: state.player};
+    case "startScavenge":
+      return {...state, scavengeTimer: action.payload};
+    case "tick":
+      return {
+        ...state,
+        scavengeTimer:
+          state.scavengeTimer - 1 === 0
+            ? state.scavengeTimer
+            : state.scavengeTimer - 1,
+      };
+  }
+}
+
 function PlayerProvider({children}) {
+  const [{player, scavengeTimer}, dispatch] = useReducer(reducer, initalState);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const [player, setPlayer] = useState(
-    new Player({
-      meleeDamage: 10,
-      primaryWeapon: null,
-      inventory: [
-        new BoltAction({quantity: 1}),
-        new Pistol({quantity: 1}),
-        new Medkit({quantity: 5}),
-        new Grenade({quantity: 82183829}),
-        // {name: "Secret Documents", quantity: 29109310},
-      ],
-    })
-  );
-
-  function updatePlayer() {
-    setPlayer(player);
-    forceUpdate();
-  }
+  // function updatePlayer() {
+  //   dispatch({})
+  //   forceUpdate();
+  // }
 
   return (
     <PlayerContext.Provider
       value={{
         player,
-        setPlayer,
-        updatePlayer,
+        scavengeTimer,
+        dispatch,
+        // updatePlayer,
       }}
     >
       {children}

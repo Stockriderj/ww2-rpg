@@ -26,13 +26,13 @@ const Container = styled.main`
 `;
 
 function App() {
-  const {player, setPlayer, updatePlayer} = usePlayer();
+  const {player, dispatch} = usePlayer();
   const [enemy, setEnemy] = useState(new Character({meleeDamage: 10})); // Example enemy
 
   const handleBattle = weapon => {
     const {updatedEnemy, playerWon} = battleRound(player, enemy, weapon);
 
-    updatePlayer();
+    dispatch({type: "update"});
     setEnemy(updatedEnemy); // Update enemy state
 
     if (playerWon) {
@@ -76,7 +76,7 @@ function App() {
       <GlobalStyles />
 
       <div>
-        <HUD player={player} />
+        <HUD />
         <Container>
           {player.health === 0 ? (
             <h1>You died. refresh the page to restart</h1>
@@ -100,12 +100,12 @@ function App() {
                 <Button
                   onClick={() => {
                     medkit.actions.use.run({player});
-                    updatePlayer();
+                    dispatch({type: "update"});
                   }}
                 >
                   Use medkit
                 </Button>
-                <Button onClick={() => scavenge(player, updatePlayer)}>
+                <Button onClick={() => scavenge(player, dispatch)}>
                   scavenge
                 </Button>
               </div>

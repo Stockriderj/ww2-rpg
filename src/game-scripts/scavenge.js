@@ -8,7 +8,7 @@ const scavengeDrops = [
   },
 ];
 
-export default function scavenge(player, updatePlayer) {
+export default function scavenge(player, dispatch) {
   let droppedItems = [];
   for (let i = 0; i < randomNumber(2, 5); i++) {
     scavengeDrops.forEach(drop => {
@@ -20,8 +20,8 @@ export default function scavenge(player, updatePlayer) {
   const {stackedItems, stackedText} = stackItems(droppedItems);
 
   stackedItems.forEach(item => player.addItem(item.name, item.quantity));
-  player.addXp(stackedItems.length * 10);
-  updatePlayer();
+  player.addXp(droppedItems.length * 10);
+  dispatch({type: "update"});
 
   stackedItems.length
     ? toast.success(`You found ${stackedText}!`)
