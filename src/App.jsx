@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import GlobalStyles from "./styles/GlobalStyles";
 import toast, {Toaster} from "react-hot-toast";
 
@@ -14,9 +14,8 @@ import {usePlayer} from "./context/PlayerContext";
 import preloadSounds from "./game-scripts/preload-sounds";
 import {randomNumber} from "./utils/helpers";
 import {BoltAction, Pistol} from "./game-scripts/items/guns";
-import {Medkit} from "./game-scripts/items/inventoryItems";
-import scavenge from "./game-scripts/scavenge";
 import styled from "styled-components";
+import {ScavengeButton} from "./game-ui/ScavengeButton";
 
 preloadSounds();
 
@@ -26,8 +25,14 @@ const Container = styled.main`
 `;
 
 function App() {
-  const {player, dispatch} = usePlayer();
+  const {player, scavengeTimer, dispatch} = usePlayer();
   const [enemy, setEnemy] = useState(new Character({meleeDamage: 10})); // Example enemy
+
+  useEffect(() => {
+    const tick = setInterval(() => dispatch({type: "tick"}), 1000);
+
+    return () => clearInterval(tick);
+  }, []);
 
   const handleBattle = weapon => {
     const {updatedEnemy, playerWon} = battleRound(player, enemy, weapon);
@@ -105,9 +110,7 @@ function App() {
                 >
                   Use medkit
                 </Button>
-                <Button onClick={() => scavenge(player, dispatch)}>
-                  scavenge
-                </Button>
+                <ScavengeButton />
               </div>
             </>
           )}

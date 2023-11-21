@@ -13,7 +13,7 @@ const initalState = {
       new BoltAction({quantity: 1}),
       new Pistol({quantity: 1}),
       new Medkit({quantity: 5}),
-      new Grenade({quantity: 82183829}),
+      new Grenade({quantity: 3}),
       // {name: "Secret Documents", quantity: 29109310},
     ],
   }),
@@ -27,10 +27,11 @@ function reducer(state, action) {
     case "startScavenge":
       return {...state, scavengeTimer: action.payload};
     case "tick":
+      console.log("balls (tick)");
       return {
         ...state,
         scavengeTimer:
-          state.scavengeTimer - 1 === 0
+          state.scavengeTimer === 0
             ? state.scavengeTimer
             : state.scavengeTimer - 1,
       };

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {GrAddCircle} from "react-icons/gr";
 import {GiPerpendicularRings} from "react-icons/gi";
 import {usePlayer} from "../context/PlayerContext";
+import ProgressBar from "./ProgressBar";
 
 const HudContainer = styled.header`
   position: relative;
@@ -43,7 +44,7 @@ const LevelIndicator = styled.div`
   font-size: 4.8rem;
 `;
 
-const Stat = styled.p`
+const Stat = styled.div`
   margin: 0;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
@@ -51,6 +52,7 @@ const Stat = styled.p`
   /* Align icons to center, also add some gap so its not dogsht */
   display: flex;
   flex-direction: column;
+  gap: 0.6rem;
   align-items: flex-start;
 
   & span {
@@ -134,7 +136,9 @@ export default function HUD() {
         <span>
           <GiPerpendicularRings /> {player.xp} / {player.maxXp}
         </span>
-        <progress
+        <ProgressBar
+          background="#0F2443"
+          fill="#174383"
           value={player.xp - (player.level > 1 ? player.lastMaxXp : 0)}
           max={player.maxXp - (player.level > 1 ? player.lastMaxXp : 0)}
         />
@@ -143,7 +147,12 @@ export default function HUD() {
         <span>
           <GrAddCircle /> {player.health} / {player.maxHealth}
         </span>
-        <progress value={player.health} max={player.maxHealth} color="red" />
+        <ProgressBar
+          background="#280303"
+          fill="#560A0A"
+          value={player.health}
+          max={player.maxHealth}
+        />
       </Stat>
 
       {popups.map(({id, content, ...rest}) => (
