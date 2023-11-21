@@ -1,6 +1,11 @@
 import {createGlobalStyle, keyframes} from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
+
+    :root {
+        --light-theme: #d3cbbf;
+    }
+
   html {
     font-size: 62.5%; /* 1 rem = 10px */
     background-size: cover; // Cover the entire background
@@ -27,7 +32,7 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     /* background-color: #f4f4f4; */
     background: rgba(244, 244, 244, 1) url("https://www.theworldwar.org/sites/default/files/styles/hero/public/2022-01/trench-warfare-hero.jpg?itok=GPMwVCMU") center/cover no-repeat;
-    color: #D3CBBF;
+    color: var(--light-theme);
   }
 
   h1 {
@@ -39,14 +44,16 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Special Elite', cursive;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // A little shadow for depth
   }
-`;
 
-export const fadeOut = keyframes`
-  from {
-    opacity: 1;
+  /* Animations */
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
   }
-  to {
-    opacity: 0;
+
+  @keyframes fadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
   }
 `;
 

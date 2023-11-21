@@ -16,14 +16,18 @@ import {randomNumber} from "./utils/helpers";
 import {BoltAction, Pistol} from "./game-scripts/items/guns";
 import {Medkit} from "./game-scripts/items/inventoryItems";
 import scavenge from "./game-scripts/scavenge";
+import styled from "styled-components";
 
 preloadSounds();
+
+const Container = styled.main`
+  max-width: 90vw;
+  margin: 0 auto;
+`;
 
 function App() {
   const {player, setPlayer, updatePlayer} = usePlayer();
   const [enemy, setEnemy] = useState(new Character({meleeDamage: 10})); // Example enemy
-
-  const [showInventory, setShowInventory] = useState(false);
 
   const handleBattle = weapon => {
     const {updatedEnemy, playerWon} = battleRound(player, enemy, weapon);
@@ -73,18 +77,13 @@ function App() {
 
       <div>
         <HUD player={player} />
-        <main>
+        <Container>
           {player.health === 0 ? (
             <h1>You died. refresh the page to restart</h1>
           ) : (
             <>
               <h1>WW2 Text Adventure Game</h1>
-              <Button onClick={() => setShowInventory(!showInventory)}>
-                Toggle inventory
-              </Button>
-              {showInventory && (
-                <Inventory onClose={() => setShowInventory(false)} />
-              )}
+              <Inventory />
               <p>
                 Enemy: {enemy.health} HP | Weapon:{" "}
                 {enemy.primaryWeapon?.name || "Bare hands"}
@@ -113,8 +112,10 @@ function App() {
             </>
           )}
 
-          <p>&copy; 2023 stockriderj &lt;3</p>
-        </main>
+          <p style={{position: "absolute", bottom: 0}}>
+            &copy; 2023 stockriderj &lt;3
+          </p>
+        </Container>
       </div>
 
       <Toaster position="bottom-right" reverseOrder={true} />

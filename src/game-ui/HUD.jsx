@@ -132,6 +132,7 @@ export default function HUD({player}) {
         <GrAddCircle /> {player.health} / {player.maxHealth}
       </Stat>
 
+      {/* {popups.map(popup => popup)} */}
       {popups}
     </HudContainer>
   );
