@@ -76,7 +76,6 @@ export default function HUD({player}) {
   const [popups, setPopups] = useState([]);
   const xpDisplayRef = useRef(null);
   const lvlDisplayRef = useRef(null);
-  // const oldLvl = useRef(player.level);
 
   const addPopup = (content, ref, animation) => {
     if (ref.current) {
@@ -114,7 +113,10 @@ export default function HUD({player}) {
         <span>
           <GiPerpendicularRings /> {player.xp} / {player.maxXp}
         </span>
-        <progress value={player.xp} max={player.maxXp} />
+        <progress
+          value={player.xp - player.lastMaxXp}
+          max={player.maxXp - player.lastMaxXp}
+        />
       </Stat>
       <Stat>
         <span>
