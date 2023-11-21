@@ -2,7 +2,6 @@ import styled from "styled-components";
 import {usePlayer} from "../context/PlayerContext";
 
 import Button from "./Button";
-import Draggable from "./Draggable";
 import {useState} from "react";
 
 const InventoryContainer = styled.div`
@@ -20,9 +19,10 @@ const InventoryContainer = styled.div`
   margin-top: 6rem; /* To account for the fixed HUD */
   padding: 2rem;
 
-  animation: ${props => (props.isvisible ? "fadeIn" : "fadeOut")} 0.5s ease-out;
-  opacity: ${props => (props.isvisible ? 1 : 0)};
-  z-index: ${props => (props.isvisible ? 999 : -999)};
+  animation: ${props => (props.isvisible === "true" ? "fadeIn" : "fadeOut")}
+    0.5s ease-out;
+  opacity: ${props => (props.isvisible === "true" ? 1 : 0)};
+  z-index: ${props => (props.isvisible === "true" ? 999 : -999)};
   transition: opacity 0.5s ease;
 
   @media (max-width: 600px) {
@@ -89,7 +89,7 @@ const ItemInfo = styled.div`
 
 export default function Inventory() {
   const {player, updatePlayer} = usePlayer();
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   function handleEquip(item, itemType) {
     player.equip(item, itemType);
@@ -99,8 +99,8 @@ export default function Inventory() {
   return (
     <>
       <Button onClick={() => setIsVisible(!isVisible)}>Toggle inventory</Button>
-      <InventoryContainer isvisible={isVisible} handle=".inventory-header">
-        <InventoryHeader className="inventory-header">
+      <InventoryContainer isvisible={isVisible.toString()}>
+        <InventoryHeader>
           <InventoryHeading>Inventory</InventoryHeading>
           <Close size="small" onClick={() => setIsVisible(false)}>
             X

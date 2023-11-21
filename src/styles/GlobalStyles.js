@@ -13,8 +13,6 @@ const GlobalStyles = createGlobalStyle`
   }
 
   * {
-    font-family: 'Special Elite', cursive;
-
     &::selection {
         background: none;
         text-shadow: none;
@@ -22,6 +20,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    font-family: 'Special Elite', cursive;
     cursor: default;
     width: 100vw;
     height: 100vh;
@@ -55,31 +54,34 @@ const GlobalStyles = createGlobalStyle`
     from {opacity: 1;}
     to {opacity: 0;}
   }
-`;
 
-export const jumpIn = keyframes`
-0% {
-    opacity: 0;
-}
-50% {
-    opacity: 1;
-    margin-top: 25px;
-    transform: scale(2);
-}
-100% {
-    opacity: 0;
-       margin-top: 0;
-    transform: none;
-}
-`;
+  @keyframes jumpIn {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+        margin-top: 25px;
+        transform: scale(2);
+    }
+    100% {
+        opacity: 0;
+        margin-top: 0;
+        transform: none;
+    }
+  }
 
-export const fadeOutDrop = keyframes`
-  from {
+  @keyframes fadeOutDrop { 
+    0% {
+    opacity: 0;
+  }
+  40% {
     opacity: 1;
   }
-  to {
+  100% {
     opacity: 0;
     margin-top: 25px;
+  }
   }
 `;
 

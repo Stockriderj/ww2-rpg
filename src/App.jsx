@@ -36,7 +36,7 @@ function App() {
     setEnemy(updatedEnemy); // Update enemy state
 
     if (playerWon) {
-      player.inventory.map(item => {
+      player.inventory.forEach(item => {
         if (item?.type === "Gun") {
           const newAmmo = randomNumber(0, 10);
           if (newAmmo === 0) return;
