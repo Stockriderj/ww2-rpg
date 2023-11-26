@@ -13,7 +13,7 @@ import {Character} from "./game-scripts/characters";
 import {usePlayer} from "./context/PlayerContext";
 import preloadSounds from "./game-scripts/preload-sounds";
 import {randomNumber, stackItems} from "./utils/helpers";
-import {BoltAction, Pistol} from "./game-scripts/items/guns";
+import {BoltAction, Pistol} from "./game-scripts/items/inventoryItems";
 import styled from "styled-components";
 import {ScavengeButton} from "./game-ui/ScavengeButton";
 
@@ -36,6 +36,7 @@ function App() {
 
   const handleBattle = weapon => {
     const {updatedEnemy, playerWon} = battleRound(player, enemy, weapon);
+    dispatch({type: "update"});
 
     setEnemy(updatedEnemy);
 
@@ -72,6 +73,7 @@ function App() {
           : player.addItem(item.name, item.quantity);
       });
       toast(`You looted ${stackedText} from the enemy!`);
+      dispatch({type: "update"});
 
       let enemyWeapon = determineEnemyWeapon(randomNumber(1, 5));
 
@@ -125,13 +127,16 @@ function App() {
                     Attack with {player.secondaryWeapon.name}
                   </Button>
                 )}
-                <Button
-                  onClick={() => {
-                    medkit.actions.use.run({player});
-                  }}
-                >
-                  Use medkit
-                </Button>
+                {medkit && (
+                  <Button
+                    onClick={() => {
+                      medkit.actions.use.run({player});
+                      dispatch({type: "update"});
+                    }}
+                  >
+                    Use medkit
+                  </Button>
+                )}
                 <ScavengeButton />
               </div>
             </>

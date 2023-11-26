@@ -60,9 +60,10 @@ export class Grenade extends Item {
       use: {
         name: "Throw Grenade",
         run() {
-          if (this.quantity <= 0) return;
+          if (this.quantity <= 0) return false;
           new Audio("sounds/grenade-explosion.mp3").play();
           this.quantity--;
+          return true;
         },
       },
     };

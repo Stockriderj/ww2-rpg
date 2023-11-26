@@ -56,6 +56,11 @@ class Character {
     this[itemType] !== item ? (this[itemType] = item) : (this[itemType] = null);
     new Audio("sounds/equip.mp3").play();
   }
+
+  checkInventory() {
+    this.inventory = this.inventory.filter(item => item.checkQuantity());
+    if (this.secondaryWeapon?.quantity === 0) this.secondaryWeapon = null;
+  }
 }
 
 class Player extends Character {
@@ -95,11 +100,14 @@ class Player extends Character {
   }
 
   addItem(itemName, quantity) {
+    console.log(itemName, this.inventory);
+
     let existingItem = this.inventory.filter(item => {
       if (item?.name === itemName) return item;
     });
+    console.log(existingItem);
 
-    existingItem
+    existingItem.length
       ? (existingItem[0].quantity += quantity)
       : this.inventory.push(new items[itemName]({quantity}));
   }

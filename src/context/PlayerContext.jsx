@@ -1,7 +1,11 @@
 import {createContext, useContext, useReducer, useState} from "react";
-import {BoltAction, Pistol} from "../game-scripts/items/guns";
 import {Player} from "../game-scripts/characters";
-import {Grenade, Medkit} from "../game-scripts/items/inventoryItems";
+import {
+  BoltAction,
+  Pistol,
+  Grenade,
+  Medkit,
+} from "../game-scripts/items/inventoryItems";
 
 const PlayerContext = createContext();
 
@@ -24,6 +28,9 @@ function reducer(state, action) {
   switch (action.type) {
     case "startScavenge":
       return {...state, scavengeTimer: action.payload};
+    case "update":
+      state.player.checkInventory();
+      return {...state};
     case "tick":
       return {
         ...state,

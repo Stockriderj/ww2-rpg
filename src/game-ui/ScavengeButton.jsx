@@ -44,6 +44,8 @@ export function ScavengeButton() {
       stackedItems.length
         ? toast.success(`You found ${stackedText}!`, {id: loadingToast.current})
         : toast.error("You didn't find anything.", {id: loadingToast.current});
+
+      dispatch({type: "update"});
     }
   }, [scavengeTimer]);
 
