@@ -3,13 +3,14 @@ import {usePlayer} from "../context/PlayerContext";
 
 import Button from "./Button";
 import {useState} from "react";
+import {useActions} from "../context/ActionsContext";
 
 const InventoryContainer = styled.div`
   position: absolute;
   top: 0;
   right: 0;
   overflow: scroll;
-  height: 100%;
+  height: 100vh;
   width: fit-content;
   background: rgba(0, 0, 0, 0.9)
     url("https://plus.unsplash.com/premium_photo-1675695700239-44153e6bf430?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGFwZXIlMjB0ZXh0dXJlfGVufDB8fDB8fHww");
@@ -107,7 +108,7 @@ const ItemActions = styled.div`
 
 export default function Inventory() {
   const {player, dispatch} = usePlayer();
-  const [isVisible, setIsVisible] = useState(false);
+  const {isVisible, setIsVisible} = useActions();
 
   function handleEquip(item, itemType) {
     player.equip(item, itemType);
@@ -116,7 +117,6 @@ export default function Inventory() {
 
   return (
     <>
-      <Button onClick={() => setIsVisible(!isVisible)}>Toggle inventory</Button>
       <InventoryContainer isvisible={isVisible.toString()}>
         <InventoryHeader>
           <Close size="small" onClick={() => setIsVisible(false)}>

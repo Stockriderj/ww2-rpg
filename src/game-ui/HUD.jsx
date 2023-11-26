@@ -31,6 +31,11 @@ const HudContainer = styled.header`
   }
 `;
 
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 const LevelIndicator = styled.div`
   position: relative;
 
@@ -148,28 +153,30 @@ export default function HUD() {
   return (
     <HudContainer>
       <LevelIndicator ref={lvlDisplayRef}>{player.level}</LevelIndicator>
-      <Stat ref={xpDisplayRef}>
-        <span>
-          <GiPerpendicularRings /> {player.xp} / {player.maxXp}
-        </span>
-        <ProgressBar
-          background="#0F2443"
-          fill="#174383"
-          value={player.xp - (player.level > 1 ? player.lastMaxXp : 0)}
-          max={player.maxXp - (player.level > 1 ? player.lastMaxXp : 0)}
-        />
-      </Stat>
-      <Stat ref={healthDisplayRef}>
-        <span>
-          <GrAddCircle /> {player.health} / {player.maxHealth}
-        </span>
-        <ProgressBar
-          background="#280303"
-          fill="#560A0A"
-          value={player.health}
-          max={player.maxHealth}
-        />
-      </Stat>
+      <Row>
+        <Stat ref={xpDisplayRef}>
+          <span>
+            <GiPerpendicularRings /> {player.xp} / {player.maxXp}
+          </span>
+          <ProgressBar
+            background="#0F2443"
+            fill="#174383"
+            value={player.xp - (player.level > 1 ? player.lastMaxXp : 0)}
+            max={player.maxXp - (player.level > 1 ? player.lastMaxXp : 0)}
+          />
+        </Stat>
+        <Stat ref={healthDisplayRef}>
+          <span>
+            <GrAddCircle /> {player.health} / {player.maxHealth}
+          </span>
+          <ProgressBar
+            background="#280303"
+            fill="#560A0A"
+            value={player.health}
+            max={player.maxHealth}
+          />
+        </Stat>
+      </Row>
 
       {popups.map(({id, content, ...rest}) => (
         <PopupContainer key={id} {...rest}>

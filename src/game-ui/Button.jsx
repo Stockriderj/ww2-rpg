@@ -28,6 +28,7 @@ const sizes = {
 const StyledButton = styled.button`
   font-family: Arial, Arial, Helvetica, sans-serif;
   font-weight: bolder;
+  color: #000;
   border: none;
   cursor: pointer;
 

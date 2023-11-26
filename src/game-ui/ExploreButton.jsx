@@ -6,6 +6,8 @@ import {checkProbability, randomNumber, stackItems} from "../utils/helpers";
 import Button from "./Button";
 import {spawnRandomCharacter} from "../game-scripts/characters";
 
+import {GiTreasureMap} from "react-icons/gi";
+
 const exploreDrops = [
   {
     chance: 20,
@@ -64,6 +66,7 @@ export function ExploreButton({enemy, setEnemy}) {
 
   return (
     <Button onClick={startExplore} disabled={isScavenging.current || enemy}>
+      <GiTreasureMap />
       {isScavenging.current
         ? `Exploring... ${exploreTimer}sec`
         : "Explore! (5sec)"}

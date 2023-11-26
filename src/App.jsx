@@ -5,7 +5,6 @@ import toast, {Toaster} from "react-hot-toast";
 
 // Components
 import HUD from "./game-ui/HUD";
-// import Inventory from "./game-ui/Inventory";
 import Inventory from "./game-ui/Inventory";
 import Button from "./game-ui/Button";
 import {ExploreButton} from "./game-ui/ExploreButton";
@@ -16,6 +15,8 @@ import {Character} from "./game-scripts/characters";
 import {usePlayer} from "./context/PlayerContext";
 import preloadSounds from "./game-scripts/preload-sounds";
 import {randomNumber, stackItems} from "./utils/helpers";
+import Actions from "./game-ui/Actions";
+import {ActionsProvider} from "./context/ActionsContext";
 
 preloadSounds();
 
@@ -23,7 +24,7 @@ const Container = styled.main`
   max-width: 1024px;
   margin: 0 auto;
   padding: 3.6rem;
-  margin-top: 3%;
+  margin-top: 5%;
 `;
 
 function App() {
@@ -89,21 +90,14 @@ function App() {
 
       <div>
         <HUD />
+        <ActionsProvider>
+          <Actions />
+        </ActionsProvider>
         <Container>
           {player.health === 0 ? (
             <h1>You died. refresh the page to restart</h1>
           ) : (
             <>
-              <h1>WW2 Text Adventure Game</h1>
-              {/* <Inventory /> */}
-              <Inventory />
-              {/* more temporary enemy stuff */}
-              {enemy && (
-                <p>
-                  Enemy: {enemy.health} HP | Weapon:{" "}
-                  {enemy.primaryWeapon?.name || "Bare hands"}
-                </p>
-              )}
               <div>
                 <Button onClick={() => handleBattle("primaryWeapon")}>
                   Attack with {player.primaryWeapon?.name || "bare hands"}
@@ -124,6 +118,13 @@ function App() {
                   </Button>
                 )}
                 <ExploreButton enemy={enemy} setEnemy={setEnemy} />
+                {/* more temporary enemy stuff */}
+                {enemy && (
+                  <p>
+                    Enemy: {enemy.health} HP | Weapon:{" "}
+                    {enemy.primaryWeapon?.name || "Bare hands"}
+                  </p>
+                )}
               </div>
             </>
           )}
