@@ -20,7 +20,7 @@ import {ExploreButton} from "./game-ui/ExploreButton";
 preloadSounds();
 
 const Container = styled.main`
-  max-width: 90vw;
+  max-width: 1024px;
   margin: 0 auto;
 `;
 

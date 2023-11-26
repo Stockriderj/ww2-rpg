@@ -23,6 +23,13 @@ const HudContainer = styled.header`
   z-index: 100;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px); // Little blur effect for that frosted glass vibe
+  font-size: 2.4rem;
+
+  @media (max-width: 600px) {
+    padding: 1rem 1.2rem;
+    font-size: 1.2rem;
+    grid-template-columns: 0.5fr 1fr 1fr;
+  }
 `;
 
 const LevelIndicator = styled.div`
@@ -42,6 +49,11 @@ const LevelIndicator = styled.div`
   justify-content: center;
 
   font-size: 4.8rem;
+
+  @media (max-width: 600px) {
+    font-size: 2.4rem;
+    background-size: 42px;
+  }
 `;
 
 const Stat = styled.div`
@@ -54,14 +66,13 @@ const Stat = styled.div`
   flex-direction: column;
   gap: 0.6rem;
   align-items: flex-start;
+  justify-content: center;
 
   & span {
     display: flex;
     align-items: center;
     gap: 0.6rem;
   }
-
-  font-size: ${props => `${props.fontSize * 2.4 || 2.4}rem`};
 `;
 
 const PopupContainer = styled.div`

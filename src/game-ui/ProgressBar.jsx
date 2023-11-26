@@ -7,7 +7,7 @@ const Progress = styled.div`
   overflow: hidden;
 
   & div {
-    height: 20px;
+    height: 1.2rem;
     background: ${props => (props?.fill ? props.fill : "#4caf50")};
     width: ${({value, max}) => (value / max) * 100}%;
 

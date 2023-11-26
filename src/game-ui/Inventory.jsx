@@ -12,7 +12,7 @@ const InventoryContainer = styled.div`
   overflow: scroll;
 
   height: 40%;
-  width: 40%;
+  width: fit-content;
   background: rgba(0, 0, 0, 0.9)
     url("https://plus.unsplash.com/premium_photo-1675695700239-44153e6bf430?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGFwZXIlMjB0ZXh0dXJlfGVufDB8fDB8fHww");
   border-radius: 0 20px 0 0;
@@ -70,10 +70,20 @@ const Item = styled.li`
   margin-bottom: 1rem;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1.8rem;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 3.6rem;
+
+  @media (max-width: 600px) {
+    font-size: 1.2rem;
+
+    & small {
+      font-size: 0.6rem;
+    }
+  }
 `;
 
 const ItemInfo = styled.div`
@@ -84,6 +94,16 @@ const ItemInfo = styled.div`
     background-color: #8b806d;
     width: fit-content;
     color: var(--light-theme);
+  }
+`;
+
+const ItemActions = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.6rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
   }
 `;
 
@@ -119,7 +139,7 @@ export default function Inventory() {
                   )}
                 </div>
               </ItemInfo>
-              <div>
+              <ItemActions>
                 {Object.values(item?.actions || []).map(action => (
                   <Button
                     size="small"
@@ -150,7 +170,7 @@ export default function Inventory() {
                     {player[item.playerSlot] === item ? "Unequip" : "Equip"}
                   </Button>
                 )}
-              </div>
+              </ItemActions>
             </Item>
           ))}
         </ItemList>

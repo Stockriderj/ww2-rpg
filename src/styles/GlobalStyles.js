@@ -27,8 +27,8 @@ const GlobalStyles = createGlobalStyle`
     font-size: 1.6rem; /* Base font size = 16px */
     overflow: hidden;
     margin: 0;
-    margin-top: 14.4rem;
     padding: 0;
+    padding-top: 14.4rem;
     /* background-color: #f4f4f4; */
     background: rgba(244, 244, 244, 1) url("https://www.theworldwar.org/sites/default/files/styles/hero/public/2022-01/trench-warfare-hero.jpg?itok=GPMwVCMU") center/cover no-repeat;
     color: var(--light-theme);
@@ -42,6 +42,13 @@ const GlobalStyles = createGlobalStyle`
   h1, h2, .old-font {
     font-family: 'Special Elite', cursive;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // A little shadow for depth
+  }
+
+  @media (max-width: 600px) {
+
+    h1 {
+      font-size: 2.4rem;
+    }
   }
 
   /* Animations */

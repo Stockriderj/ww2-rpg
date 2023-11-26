@@ -5,12 +5,23 @@ const sizes = {
     font-size: 1.2rem;
     border-radius: 12px;
     padding: 0.8rem 1.2rem;
-    margin: 0 0.6rem;
+
+    @media (max-width: 600px) {
+      font-size: 0.8rem;
+      border-radius: 6px;
+      padding: 0.4rem 0.6rem;
+    }
   `,
   medium: css`
     font-size: 1.8rem;
     border-radius: 10px;
     padding: 1.2rem 2.4rem;
+
+    @media (max-width: 600px) {
+      font-size: 1.2rem;
+      border-radius: 5px;
+      padding: 0.6rem 1.2rem;
+    }
   `,
 };
 
