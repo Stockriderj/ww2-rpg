@@ -6,20 +6,18 @@ import {useState} from "react";
 
 const InventoryContainer = styled.div`
   position: absolute;
-  bottom: 0;
-  left: 0;
-
+  top: 0;
+  right: 0;
   overflow: scroll;
-
-  height: 40%;
+  height: 100%;
   width: fit-content;
   background: rgba(0, 0, 0, 0.9)
     url("https://plus.unsplash.com/premium_photo-1675695700239-44153e6bf430?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGFwZXIlMjB0ZXh0dXJlfGVufDB8fDB8fHww");
-  border-radius: 0 20px 0 0;
-  margin-top: 6rem; /* To account for the fixed HUD */
+  background-size: cover;
   padding: 2rem;
 
-  animation: ${props => (props.isvisible === "true" ? "fadeIn" : "fadeOut")}
+  animation: ${props =>
+      props.isvisible === "true" ? "slideInLeft" : "slideOutLeft"}
     0.5s ease-out;
   opacity: ${props => (props.isvisible === "true" ? 1 : 0)};
   z-index: ${props => (props.isvisible === "true" ? 999 : -999)};
@@ -45,7 +43,7 @@ const InventoryHeading = styled.h2`
   color: #333;
   text-align: center;
   font-size: 2.4rem;
-  margin: 0 2.4rem;
+  margin: 0;
   text-transform: uppercase;
   letter-spacing: 20px;
 
@@ -121,10 +119,10 @@ export default function Inventory() {
       <Button onClick={() => setIsVisible(!isVisible)}>Toggle inventory</Button>
       <InventoryContainer isvisible={isVisible.toString()}>
         <InventoryHeader>
-          <InventoryHeading>Inventory</InventoryHeading>
           <Close size="small" onClick={() => setIsVisible(false)}>
             X
           </Close>
+          <InventoryHeading>Inventory</InventoryHeading>
         </InventoryHeader>
         <ItemList>
           {player.inventory.map(item => (

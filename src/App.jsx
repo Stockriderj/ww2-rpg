@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from "react";
+import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 import toast, {Toaster} from "react-hot-toast";
 
 // Components
 import HUD from "./game-ui/HUD";
+// import Inventory from "./game-ui/Inventory";
 import Inventory from "./game-ui/Inventory";
 import Button from "./game-ui/Button";
+import {ExploreButton} from "./game-ui/ExploreButton";
 
 // Game scripts
 import battleRound from "./game-scripts/battle";
@@ -13,9 +16,6 @@ import {Character} from "./game-scripts/characters";
 import {usePlayer} from "./context/PlayerContext";
 import preloadSounds from "./game-scripts/preload-sounds";
 import {randomNumber, stackItems} from "./utils/helpers";
-import {BoltAction, Pistol} from "./game-scripts/items/inventoryItems";
-import styled from "styled-components";
-import {ExploreButton} from "./game-ui/ExploreButton";
 
 preloadSounds();
 
@@ -95,6 +95,7 @@ function App() {
           ) : (
             <>
               <h1>WW2 Text Adventure Game</h1>
+              {/* <Inventory /> */}
               <Inventory />
               {/* more temporary enemy stuff */}
               {enemy && (

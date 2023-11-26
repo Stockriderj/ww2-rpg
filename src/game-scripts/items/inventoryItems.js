@@ -97,7 +97,7 @@ class Gun extends Item {
   initActions(item) {
     item.actions = {
       use: {
-        name: `Shoot ${item.name}`,
+        name: `Shoot`,
         accepts: ["target"],
         run() {
           if (item.ammunition > 0) {

@@ -89,6 +89,16 @@ const GlobalStyles = createGlobalStyle`
     margin-top: 25px;
   }
   }
+
+  /* slide */
+  @keyframes slideInLeft {
+    from {transform: translateX(100%);}
+    to {transform: translateX(0);}
+  }
+  @keyframes slideOutLeft {
+    from {transform: translateX(0);}
+    to {transform: translateX(100%);}
+  }
 `;
 
 export default GlobalStyles;

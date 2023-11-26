@@ -28,6 +28,8 @@ const battleRound = (player, enemy, weapon) => {
 
   let playerDamage = enemyCanAttack && enemy.calculateDamage("primaryWeapon");
   let enemyDamage = playerCanAttack && player.calculateDamage(weapon);
+
+  console.log(playerDamage, enemyDamage);
   if (enemyCanAttack) {
     player.takeDamage(playerDamage);
     toast(
