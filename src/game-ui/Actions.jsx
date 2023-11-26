@@ -5,6 +5,7 @@ import Inventory from "./Inventory";
 import {GiBackpack, GiTreasureMap} from "react-icons/gi";
 import {ExploreButton} from "./ExploreButton";
 import {usePlayer} from "../context/PlayerContext";
+import toast from "react-hot-toast";
 
 const Sidebar = styled.div`
   position: absolute;
@@ -22,7 +23,10 @@ const Sidebar = styled.div`
   align-items: center;
 `;
 
-const Item = styled.div`
+const Item = styled.button`
+  display: block;
+  border: none;
+  background: none;
   cursor: pointer;
   font-size: 4.2rem;
   padding: 0.4rem;
@@ -40,8 +44,12 @@ const Item = styled.div`
 `;
 
 export default function Actions() {
-  const {dispatch} = usePlayer();
+  const {exploreTimer, enemy, dispatch} = usePlayer();
   const {isVisible, setIsVisible} = useActions();
+
+  function handleExplore() {
+    dispatch({type: "startExplore", payload: 5});
+  }
 
   return (
     <>
@@ -49,7 +57,7 @@ export default function Actions() {
         <Item onClick={() => setIsVisible(!isVisible)}>
           <GiBackpack />
         </Item>
-        <Item onClick={() => dispatch({type: "startExplore", payload: 5})}>
+        <Item onClick={handleExplore} disabled={enemy || exploreTimer > 0}>
           <GiTreasureMap />
         </Item>
       </Sidebar>

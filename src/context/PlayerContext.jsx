@@ -44,6 +44,7 @@ const initalState = {
 function reducer(state, action) {
   switch (action.type) {
     case "startExplore":
+      if (state.enemy) return state;
       return {
         ...state,
         exploreTimer: action.payload,
