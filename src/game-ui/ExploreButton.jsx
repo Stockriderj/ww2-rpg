@@ -24,18 +24,15 @@ export function ExploreButton({enemy, setEnemy}) {
     if (exploreTimer === 0 && isScavenging.current) {
       isScavenging.current = false;
 
-      let droppedItems = [];
-      let enemyFound = checkProbability(100) ? true : false;
+      const numItemsToSpawn = randomNumber(0, 5);
+      const droppedItems = [];
 
-      for (let i = 0; i < randomNumber(2, 5); i++) {
-        droppedItems = [
-          ...droppedItems,
-          ...exploreDrops.flatMap(drop =>
-            checkProbability(drop.chance)
-              ? drop.items[randomNumber(0, drop.items.length - 1)]
-              : []
-          ),
-        ];
+      for (let i = 0; i < numItemsToSpawn; i++) {
+        const drop = exploreDrops.find(drop => checkProbability(drop.chance));
+        if (drop) {
+          const randomItem = drop.items[randomNumber(0, drop.items.length - 1)];
+          droppedItems.push(randomItem);
+        }
       }
 
       const {stackedItems, stackedText} = stackItems(droppedItems);
@@ -48,6 +45,7 @@ export function ExploreButton({enemy, setEnemy}) {
         : toast.error("You didn't find anything.", {id: loadingToast.current});
 
       // enemy stuff
+      let enemyFound = checkProbability(20) ? true : false;
       if (enemyFound) {
         setEnemy(spawnRandomCharacter());
         toast("You encountered an enemy!");
