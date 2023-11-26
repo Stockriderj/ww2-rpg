@@ -21,32 +21,32 @@ const initalState = {
       // {name: "Secret Documents", quantity: 29109310},
     ],
   }),
-  scavengeTimer: 0,
+  exploreTimer: 0,
 };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "startScavenge":
-      return {...state, scavengeTimer: action.payload};
+    case "startExplore":
+      return {...state, exploreTimer: action.payload};
     case "update":
       state.player.checkInventory();
       return {...state};
     case "tick":
       return {
         ...state,
-        scavengeTimer: Math.max(0, state.scavengeTimer - 1),
+        exploreTimer: Math.max(0, state.exploreTimer - 1),
       };
   }
 }
 
 function PlayerProvider({children}) {
-  const [{player, scavengeTimer}, dispatch] = useReducer(reducer, initalState);
+  const [{player, exploreTimer}, dispatch] = useReducer(reducer, initalState);
 
   return (
     <PlayerContext.Provider
       value={{
         player,
-        scavengeTimer,
+        exploreTimer,
         dispatch,
       }}
     >

@@ -53,6 +53,7 @@ const battleRound = (player, enemy, weapon) => {
     );
   }
 
+  let updatedEnemy = enemy;
   // Check if enemy is defeated
   if (enemy.health <= 0) {
     console.log("Enemy defeated!");
@@ -61,12 +62,14 @@ const battleRound = (player, enemy, weapon) => {
     toast(
       `+${enemy.maxHealth}XP - You have defeated an enemy with ${playerWeaponName}.`
     );
+
+    updatedEnemy = null;
   }
   if (player.health <= 0) {
     toast.error(`You've been defeated by an enemy's ${enemyWeaponName}`);
   }
 
-  return {updatedPlayer: player, updatedEnemy: enemy, playerWon};
+  return {updatedPlayer: player, updatedEnemy, playerWon};
 };
 
 export default battleRound;

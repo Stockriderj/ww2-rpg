@@ -15,7 +15,7 @@ import preloadSounds from "./game-scripts/preload-sounds";
 import {randomNumber, stackItems} from "./utils/helpers";
 import {BoltAction, Pistol} from "./game-scripts/items/inventoryItems";
 import styled from "styled-components";
-import {ScavengeButton} from "./game-ui/ScavengeButton";
+import {ExploreButton} from "./game-ui/ExploreButton";
 
 preloadSounds();
 
@@ -26,14 +26,16 @@ const Container = styled.main`
 
 function App() {
   const {player, dispatch} = usePlayer();
-  const [enemy, setEnemy] = useState(new Character({meleeDamage: 10})); // Example enemy
+  const [enemy, setEnemy] = useState(null); // Example enemy
 
   useEffect(() => {
     const tick = setInterval(() => dispatch({type: "tick"}), 1000);
 
     return () => clearInterval(tick);
   }, []);
+  new Character({meleeDamage: 10});
 
+  // battle stuff
   const handleBattle = weapon => {
     const {updatedEnemy, playerWon} = battleRound(player, enemy, weapon);
     dispatch({type: "update"});
@@ -74,30 +76,8 @@ function App() {
       });
       toast(`You looted ${stackedText} from the enemy!`);
       dispatch({type: "update"});
-
-      let enemyWeapon = determineEnemyWeapon(randomNumber(1, 5));
-
-      setEnemy(
-        new Character({
-          meleeDamage: player.xp / 100,
-          primaryWeapon: enemyWeapon,
-        })
-      );
     }
   };
-
-  function determineEnemyWeapon(enemyWeaponNum) {
-    switch (enemyWeaponNum) {
-      case 5:
-        return new BoltAction({quantity: 1});
-      case 2:
-      case 3:
-      case 4:
-        return new Pistol({quantity: 1});
-      default:
-        return null;
-    }
-  }
 
   const medkit = player.inventory.filter(item => item.name === "Medkit")[0];
 
@@ -114,10 +94,13 @@ function App() {
             <>
               <h1>WW2 Text Adventure Game</h1>
               <Inventory />
-              <p>
-                Enemy: {enemy.health} HP | Weapon:{" "}
-                {enemy.primaryWeapon?.name || "Bare hands"}
-              </p>
+              {/* more temporary enemy stuff */}
+              {enemy && (
+                <p>
+                  Enemy: {enemy.health} HP | Weapon:{" "}
+                  {enemy.primaryWeapon?.name || "Bare hands"}
+                </p>
+              )}
               <div>
                 <Button onClick={() => handleBattle("primaryWeapon")}>
                   Attack with {player.primaryWeapon?.name || "bare hands"}
@@ -137,7 +120,7 @@ function App() {
                     Use medkit
                   </Button>
                 )}
-                <ScavengeButton />
+                <ExploreButton enemy={enemy} setEnemy={setEnemy} />
               </div>
             </>
           )}

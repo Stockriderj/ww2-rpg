@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
-import {items} from "./items/inventoryItems";
+import {BoltAction, Pistol, items} from "./items/inventoryItems";
+import {randomNumber} from "../utils/helpers";
 
 /**
  * Creates a new character. Parameters must be placed in an object.
@@ -100,12 +101,9 @@ class Player extends Character {
   }
 
   addItem(itemName, quantity) {
-    console.log(itemName, this.inventory);
-
     let existingItem = this.inventory.filter(item => {
       if (item?.name === itemName) return item;
     });
-    console.log(existingItem);
 
     existingItem.length
       ? (existingItem[0].quantity += quantity)
@@ -123,6 +121,26 @@ class Player extends Character {
           `You would have gotten ${quantity} ${gunName} Ammo, but you don't have that gun! Don't worry, this feature will be fixed by Stockriderj in the future (when he stops being lazy)`
         );
   }
+}
+
+export function spawnRandomCharacter() {
+  let enemyWeapon;
+  switch (randomNumber(1, 5)) {
+    case 5:
+      enemyWeapon = new BoltAction({quantity: 1});
+      break;
+    case 4:
+      enemyWeapon = new Pistol({quantity: 1});
+      break;
+    case 3:
+    case 2:
+    default:
+      enemyWeapon = null;
+  }
+
+  return new Character({
+    primaryWeapon: enemyWeapon,
+  });
 }
 
 export {Character, Player};

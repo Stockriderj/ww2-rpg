@@ -1,11 +1,12 @@
 import {useEffect, useRef} from "react";
 import toast from "react-hot-toast";
 import {usePlayer} from "../context/PlayerContext";
-import {randomNumber, stackItems} from "../utils/helpers";
+import {checkProbability, randomNumber, stackItems} from "../utils/helpers";
 
 import Button from "./Button";
+import {spawnRandomCharacter} from "../game-scripts/characters";
 
-const scavengeDrops = [
+const exploreDrops = [
   {
     chance: 20,
     items: ["Medkit", "Grenade"],
@@ -14,22 +15,23 @@ const scavengeDrops = [
 
 // implement flavor texts later (when i feel like it)
 
-export function ScavengeButton() {
-  const {player, scavengeTimer, dispatch} = usePlayer();
+export function ExploreButton({enemy, setEnemy}) {
+  const {player, exploreTimer, dispatch} = usePlayer();
   const isScavenging = useRef(false);
   const loadingToast = useRef(null);
 
   useEffect(() => {
-    if (scavengeTimer === 0 && isScavenging.current) {
+    if (exploreTimer === 0 && isScavenging.current) {
       isScavenging.current = false;
 
       let droppedItems = [];
+      let enemyFound = checkProbability(100) ? true : false;
 
       for (let i = 0; i < randomNumber(2, 5); i++) {
         droppedItems = [
           ...droppedItems,
-          ...scavengeDrops.flatMap(drop =>
-            randomNumber(0, 100) <= drop.chance
+          ...exploreDrops.flatMap(drop =>
+            checkProbability(drop.chance)
               ? drop.items[randomNumber(0, drop.items.length - 1)]
               : []
           ),
@@ -45,21 +47,27 @@ export function ScavengeButton() {
         ? toast.success(`You found ${stackedText}!`, {id: loadingToast.current})
         : toast.error("You didn't find anything.", {id: loadingToast.current});
 
+      // enemy stuff
+      if (enemyFound) {
+        setEnemy(spawnRandomCharacter());
+        toast("You encountered an enemy!");
+      }
+
       dispatch({type: "update"});
     }
-  }, [scavengeTimer]);
+  }, [exploreTimer]);
 
-  function startScavenge() {
-    dispatch({type: "startScavenge", payload: 5});
-    loadingToast.current = toast.loading("Scavenging...");
+  function startExplore() {
+    dispatch({type: "startExplore", payload: 5});
+    loadingToast.current = toast.loading("Exploring...");
     isScavenging.current = true;
   }
 
   return (
-    <Button onClick={startScavenge} disabled={isScavenging.current}>
+    <Button onClick={startExplore} disabled={isScavenging.current || enemy}>
       {isScavenging.current
-        ? `Scavenging... ${scavengeTimer}sec`
-        : "Scavenge! (5sec)"}
+        ? `Exploring... ${exploreTimer}sec`
+        : "Explore! (5sec)"}
     </Button>
   );
 }
