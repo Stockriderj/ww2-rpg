@@ -19,10 +19,8 @@ const InventoryContainer = styled.div`
 
   animation: ${props =>
       props.isvisible === "true" ? "slideInLeft" : "slideOutLeft"}
-    0.5s ease-out;
-  opacity: ${props => (props.isvisible === "true" ? 1 : 0)};
-  z-index: ${props => (props.isvisible === "true" ? 999 : -999)};
-  transition: opacity 0.5s ease;
+    0.5s ease-out forwards;
+  z-index: 999;
 
   @media (max-width: 600px) {
     width: 20rem;
