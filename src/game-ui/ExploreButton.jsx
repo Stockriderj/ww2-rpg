@@ -45,10 +45,11 @@ export function ExploreButton({enemy, setEnemy}) {
         : toast.error("You didn't find anything.", {id: loadingToast.current});
 
       // enemy stuff
-      let enemyFound = checkProbability(20) ? true : false;
+      let enemyFound = checkProbability(50) ? true : false;
       if (enemyFound) {
         setEnemy(spawnRandomCharacter());
         toast("You encountered an enemy!");
+        new Audio("sounds/bad-to-the-bone.mp3").play();
       }
 
       dispatch({type: "update"});

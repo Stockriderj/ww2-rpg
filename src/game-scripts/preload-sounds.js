@@ -6,6 +6,7 @@ const sounds = [
   "grenade-explosion",
   "equip",
   "xp",
+  "bad-to-the-bone",
 ];
 
 export default function preloadSounds() {

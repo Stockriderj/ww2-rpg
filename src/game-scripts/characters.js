@@ -116,7 +116,7 @@ class Player extends Character {
     });
 
     gun
-      ? (gun.ammunition += quantity)
+      ? (gun[0].ammunition += quantity)
       : toast.error(
           `You would have gotten ${quantity} ${gunName} Ammo, but you don't have that gun! Don't worry, this feature will be fixed by Stockriderj in the future (when he stops being lazy)`
         );
