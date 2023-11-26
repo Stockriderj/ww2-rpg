@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
-import toast, {Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
 
 // Components
 import HUD from "./game-ui/HUD";
-import Inventory from "./game-ui/Inventory";
 import Button from "./game-ui/Button";
 import {ExploreButton} from "./game-ui/ExploreButton";
 
@@ -28,8 +27,7 @@ const Container = styled.main`
 `;
 
 function App() {
-  const {player, dispatch} = usePlayer();
-  const [enemy, setEnemy] = useState(null); // Example enemy
+  const {player, enemy, dispatch} = usePlayer();
 
   useEffect(() => {
     const tick = setInterval(() => dispatch({type: "tick"}), 1000);
@@ -43,7 +41,7 @@ function App() {
     const {updatedEnemy, playerWon} = battleRound(player, enemy, weapon);
     dispatch({type: "update"});
 
-    setEnemy(updatedEnemy);
+    dispatch({type: "setEnemy", payload: updatedEnemy});
 
     if (playerWon) {
       let battleRewards = [];
@@ -117,7 +115,7 @@ function App() {
                     Use medkit
                   </Button>
                 )}
-                <ExploreButton enemy={enemy} setEnemy={setEnemy} />
+                {/* <ExploreButton enemy={enemy} /> */}
                 {/* more temporary enemy stuff */}
                 {enemy && (
                   <p>
@@ -130,12 +128,16 @@ function App() {
           )}
 
           <p style={{position: "absolute", bottom: 0}}>
-            &copy; 2023 stockriderj &lt;3
+            <span>&copy; 2023 stockriderj &lt;3</span>{" "}
+            <a
+              href="https://github.com/Stockriderj/ww2-rpg/wiki/Gameplay"
+              target="_blank"
+            >
+              How to play
+            </a>
           </p>
         </Container>
       </div>
-
-      <Toaster position="bottom-right" reverseOrder={true} />
     </>
   );
 }

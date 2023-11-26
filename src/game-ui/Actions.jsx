@@ -1,8 +1,10 @@
 import styled from "styled-components";
-import Inventory from "./Inventory";
-import {useState} from "react";
-import Button from "./Button";
 import {useActions} from "../context/ActionsContext";
+
+import Inventory from "./Inventory";
+import {GiBackpack, GiTreasureMap} from "react-icons/gi";
+import {ExploreButton} from "./ExploreButton";
+import {usePlayer} from "../context/PlayerContext";
 
 const Sidebar = styled.div`
   position: absolute;
@@ -18,18 +20,38 @@ const Sidebar = styled.div`
 
   display: flex;
   align-items: center;
-  justify-content: center;
+`;
+
+const Item = styled.div`
+  cursor: pointer;
+  font-size: 4.2rem;
+  padding: 0.4rem;
+  transform: rotate(90deg);
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    background-color: #ddd;
+  }
+
+  &:active {
+    background-color: gray;
+  }
 `;
 
 export default function Actions() {
+  const {dispatch} = usePlayer();
   const {isVisible, setIsVisible} = useActions();
 
   return (
     <>
       <Sidebar>
-        <Button onClick={() => setIsVisible(!isVisible)}>
-          Toggle inventory
-        </Button>
+        <Item onClick={() => setIsVisible(!isVisible)}>
+          <GiBackpack />
+        </Item>
+        <Item onClick={() => dispatch({type: "startExplore", payload: 5})}>
+          <GiTreasureMap />
+        </Item>
       </Sidebar>
       <Inventory />
     </>

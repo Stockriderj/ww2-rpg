@@ -43,6 +43,18 @@ const GlobalStyles = createGlobalStyle`
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // A little shadow for depth
   }
 
+  a {
+    color: white;
+  }
+
+  a:hover {
+    color: #ddd;
+  }
+
+  a:active {
+    color: gray;
+  }
+
   @media (max-width: 600px) {
 
     h1 {
