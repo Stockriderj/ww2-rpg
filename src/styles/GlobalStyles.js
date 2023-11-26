@@ -22,13 +22,12 @@ const GlobalStyles = createGlobalStyle`
   body {
     font-family: 'Special Elite', cursive;
     cursor: default;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     font-size: 1.6rem; /* Base font size = 16px */
     overflow: hidden;
     margin: 0;
     padding: 0;
-    padding-top: 14.4rem;
     /* background-color: #f4f4f4; */
     background: rgba(244, 244, 244, 1) url("https://www.theworldwar.org/sites/default/files/styles/hero/public/2022-01/trench-warfare-hero.jpg?itok=GPMwVCMU") center/cover no-repeat;
     color: var(--light-theme);

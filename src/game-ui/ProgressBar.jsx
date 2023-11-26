@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Progress = styled.div`
-  width: 75%;
+  width: 100%;
   background: ${props => (props?.background ? props.background : "#eee")};
   border-radius: 20px;
   overflow: hidden;

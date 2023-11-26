@@ -7,13 +7,12 @@ import ProgressBar from "./ProgressBar";
 
 const HudContainer = styled.header`
   position: relative;
-  display: grid;
-  grid-template-columns: 0.5fr 1fr 1fr 3fr;
+  display: flex;
+  justify-content: flex-start;
+  justify-items: flex-start;
+  gap: 2.4rem;
 
   background-color: rgba(26, 26, 26, 0.6);
-  /* background: center
-    url("https://driverguides.berlin/wp-content/uploads/2019/10/ED1FCEEF-024A-463F-82AE-18F376E3DDA5.jpeg")
-    no-repeat; */
   background-size: cover;
   color: #d3cbbf;
   padding: 2rem 7.2rem;
@@ -28,7 +27,7 @@ const HudContainer = styled.header`
   @media (max-width: 600px) {
     padding: 1rem 1.2rem;
     font-size: 1.2rem;
-    grid-template-columns: 0.5fr 1fr 1fr;
+    gap: 1.2rem;
   }
 `;
 
@@ -36,7 +35,6 @@ const LevelIndicator = styled.div`
   position: relative;
 
   width: 69px;
-  height: 100%;
   background: url("level-badge.png") no-repeat center;
   background-size: 69px;
   color: #fff8ee;
@@ -52,12 +50,15 @@ const LevelIndicator = styled.div`
 
   @media (max-width: 600px) {
     font-size: 2.4rem;
+    width: 42px;
     background-size: 42px;
   }
 `;
 
 const Stat = styled.div`
   margin: 0;
+  padding: 0 1.2rem;
+  width: 32rem;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
 
@@ -72,6 +73,10 @@ const Stat = styled.div`
     display: flex;
     align-items: center;
     gap: 0.6rem;
+  }
+
+  @media (max-width: 600px) {
+    width: 7.2rem;
   }
 `;
 

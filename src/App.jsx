@@ -22,6 +22,8 @@ preloadSounds();
 const Container = styled.main`
   max-width: 1024px;
   margin: 0 auto;
+  padding: 3.6rem;
+  margin-top: 3%;
 `;
 
 function App() {
