@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 // Components
 import HUD from "./game-ui/HUD";
 import Button from "./game-ui/Button";
-import {ExploreButton} from "./game-ui/ExploreButton";
+import Actions from "./game-ui/Actions";
 
 // Game scripts
 import battleRound from "./game-scripts/battle";
@@ -14,7 +14,6 @@ import {Character} from "./game-scripts/characters";
 import {usePlayer} from "./context/PlayerContext";
 import preloadSounds from "./game-scripts/preload-sounds";
 import {randomNumber, stackItems} from "./utils/helpers";
-import Actions from "./game-ui/Actions";
 import {ActionsProvider} from "./context/ActionsContext";
 
 preloadSounds();
@@ -22,8 +21,12 @@ preloadSounds();
 const Container = styled.main`
   max-width: 1024px;
   margin: 0 auto;
-  padding: 3.6rem;
-  margin-top: 5%;
+  margin-top: 12rem;
+  padding: 0 72px;
+
+  /* @media (max-width: 600px) {
+    margin-top: 6rem;
+  } */
 `;
 
 function App() {
@@ -97,13 +100,17 @@ function App() {
           ) : (
             <>
               <div>
-                <Button onClick={() => handleBattle("primaryWeapon")}>
-                  Attack with {player.primaryWeapon?.name || "bare hands"}
-                </Button>
-                {player?.secondaryWeapon && (
-                  <Button onClick={() => handleBattle("secondaryWeapon")}>
-                    Attack with {player.secondaryWeapon.name}
-                  </Button>
+                {enemy && (
+                  <>
+                    <Button onClick={() => handleBattle("primaryWeapon")}>
+                      Attack with {player.primaryWeapon?.name || "bare hands"}
+                    </Button>
+                    {player?.secondaryWeapon && (
+                      <Button onClick={() => handleBattle("secondaryWeapon")}>
+                        Attack with {player.secondaryWeapon.name}
+                      </Button>
+                    )}
+                  </>
                 )}
                 {medkit && (
                   <Button

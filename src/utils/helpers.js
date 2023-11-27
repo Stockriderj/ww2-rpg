@@ -2,6 +2,10 @@ export function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+export function pickFromArray(array) {
+  return array[randomNumber(0, array.length - 1)];
+}
+
 export function checkProbability(threshold) {
   return randomNumber(0, 100) <= threshold ? true : false;
 }

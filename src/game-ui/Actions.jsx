@@ -3,9 +3,8 @@ import {useActions} from "../context/ActionsContext";
 
 import Inventory from "./Inventory";
 import {GiBackpack, GiTreasureMap} from "react-icons/gi";
-import {ExploreButton} from "./ExploreButton";
 import {usePlayer} from "../context/PlayerContext";
-import toast from "react-hot-toast";
+import Button from "./Button";
 
 const Sidebar = styled.div`
   position: absolute;
@@ -23,24 +22,16 @@ const Sidebar = styled.div`
   align-items: center;
 `;
 
-const Item = styled.button`
+const Item = styled(Button)`
   display: block;
-  border: none;
   background: none;
   cursor: pointer;
-  font-size: 4.2rem;
-  padding: 0.4rem;
+  border-radius: 0;
+  font-size: 42px;
+  padding: 4px;
   transform: rotate(90deg);
   display: flex;
   align-items: center;
-
-  &:hover {
-    background-color: #ddd;
-  }
-
-  &:active {
-    background-color: gray;
-  }
 `;
 
 export default function Actions() {

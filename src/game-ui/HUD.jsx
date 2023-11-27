@@ -18,30 +18,31 @@ const HudContainer = styled.header`
   padding: 2rem 7.2rem;
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 100vw;
   z-index: 100;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px); // Little blur effect for that frosted glass vibe
   font-size: 2.4rem;
 
-  @media (max-width: 600px) {
+  /* @media (max-width: 600px) {
     padding: 1rem 1.2rem;
     font-size: 1.2rem;
     gap: 1.2rem;
-  }
+  } */
 `;
 
 const Row = styled.div`
   display: flex;
   flex-direction: row;
+  width: 75%;
 `;
 
 const LevelIndicator = styled.div`
   position: relative;
 
-  width: 69px;
+  width: 6.9rem;
   background: url("level-badge.png") no-repeat center;
-  background-size: 69px;
+  background-size: 6.9rem;
   color: #fff8ee;
   text-align: center;
   font-weight: bold;
@@ -53,17 +54,17 @@ const LevelIndicator = styled.div`
 
   font-size: 4.8rem;
 
-  @media (max-width: 600px) {
+  /* @media (max-width: 600px) {
     font-size: 2.4rem;
     width: 42px;
     background-size: 42px;
-  }
+  } */
 `;
 
 const Stat = styled.div`
   margin: 0;
   padding: 0 1.2rem;
-  width: 32rem;
+  flex-grow: 1;
   font-weight: bold;
   font-family: Arial, Helvetica, sans-serif;
 
@@ -80,9 +81,9 @@ const Stat = styled.div`
     gap: 0.6rem;
   }
 
-  @media (max-width: 600px) {
+  /* @media (max-width: 600px) {
     width: 7.2rem;
-  }
+  } */
 `;
 
 const PopupContainer = styled.div`

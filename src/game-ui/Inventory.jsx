@@ -8,7 +8,7 @@ import {useActions} from "../context/ActionsContext";
 const InventoryContainer = styled.div`
   position: absolute;
   top: 0;
-  right: 0;
+  right: ${props => (props.isvisible === "true" ? "0" : "-100%")};
   overflow: scroll;
   height: 100vh;
   width: fit-content;
@@ -17,14 +17,12 @@ const InventoryContainer = styled.div`
   background-size: cover;
   padding: 2rem;
 
-  animation: ${props =>
-      props.isvisible === "true" ? "slideInLeft" : "slideOutLeft"}
-    0.5s ease-out forwards;
+  transition: right 0.5s ease-in-out; // Smooth transition for sliding in and out
   z-index: 999;
-
+  /* 
   @media (max-width: 600px) {
     width: 20rem;
-  }
+  } */
 `;
 
 const ItemList = styled.ul`
@@ -47,7 +45,6 @@ const InventoryHeading = styled.h2`
   letter-spacing: 20px;
 
   @media (max-width: 600px) {
-    margin: 0;
     letter-spacing: 0;
   }
 `;
@@ -74,13 +71,13 @@ const Item = styled.li`
   justify-content: space-between;
   gap: 3.6rem;
 
-  @media (max-width: 600px) {
+  /* @media (max-width: 600px) {
     font-size: 1.2rem;
 
     & small {
       font-size: 0.6rem;
     }
-  }
+  } */
 `;
 
 const ItemInfo = styled.div`

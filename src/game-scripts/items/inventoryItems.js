@@ -35,6 +35,10 @@ export class Medkit extends Item {
         accepts: ["player"],
         run({player}) {
           if (this.quantity <= 0) return;
+          if (player.health === player.maxHealth) {
+            toast.error("You're already at full health.");
+            return;
+          }
           player.health = player.maxHealth;
           this.quantity--;
           toast(

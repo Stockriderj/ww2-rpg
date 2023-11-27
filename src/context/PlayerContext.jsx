@@ -12,7 +12,12 @@ import {
   Grenade,
   Medkit,
 } from "../game-scripts/items/inventoryItems";
-import {checkProbability, randomNumber, stackItems} from "../utils/helpers";
+import {
+  checkProbability,
+  pickFromArray,
+  randomNumber,
+  stackItems,
+} from "../utils/helpers";
 import toast from "react-hot-toast";
 
 const PlayerContext = createContext();
@@ -94,7 +99,7 @@ function PlayerProvider({children}) {
     for (let i = 0; i < numItemsToSpawn; i++) {
       const drop = exploreDrops.find(drop => checkProbability(drop.chance));
       if (drop) {
-        const randomItem = drop.items[randomNumber(0, drop.items.length - 1)];
+        const randomItem = pickFromArray(drop.items);
         droppedItems.push(randomItem);
       }
     }
