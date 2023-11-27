@@ -60,6 +60,7 @@ const GlobalStyles = createGlobalStyle`
   @media (max-width: 600px) {
     html {
       font-size: 31.25%; /* 50% of base size, 1rem = 5px */
+      background-color: red;
     }
 
     h1 {

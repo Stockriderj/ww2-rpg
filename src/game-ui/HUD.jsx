@@ -22,12 +22,6 @@ const HudContainer = styled.header`
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(5px); // Little blur effect for that frosted glass vibe
   font-size: 2.4rem;
-
-  /* @media (max-width: 600px) {
-    padding: 1rem 1.2rem;
-    font-size: 1.2rem;
-    gap: 1.2rem;
-  } */
 `;
 
 const Row = styled.div`

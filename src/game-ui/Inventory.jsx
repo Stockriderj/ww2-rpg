@@ -2,7 +2,6 @@ import styled from "styled-components";
 import {usePlayer} from "../context/PlayerContext";
 
 import Button from "./Button";
-import {useState} from "react";
 import {useActions} from "../context/ActionsContext";
 
 const InventoryContainer = styled.div`
@@ -21,10 +20,6 @@ const InventoryContainer = styled.div`
   transform: ${props =>
     props.isvisible === "true" ? "translateX(0)" : "translateX(100%)"};
   transition: transform 0.5s ease-in-out; // Smooth transition for sliding in and out
-  /* 
-  @media (max-width: 600px) {
-    width: 20rem;
-  } */
 `;
 
 const ItemList = styled.ul`
@@ -72,14 +67,6 @@ const Item = styled.li`
   align-items: center;
   justify-content: space-between;
   gap: 3.6rem;
-
-  /* @media (max-width: 600px) {
-    font-size: 1.2rem;
-
-    & small {
-      font-size: 0.6rem;
-    }
-  } */
 `;
 
 const ItemInfo = styled.div`
