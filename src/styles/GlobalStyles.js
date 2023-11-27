@@ -26,7 +26,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     font-family: 'Special Elite', cursive;
     cursor: default;
-    font-size: 1.6rem; /* Base font size = 16px */
+    /*font-size: 1.6rem; /* Base font size = 16px */
     overflow: hidden;
     margin: 0;
     padding: 0;
@@ -60,7 +60,6 @@ const GlobalStyles = createGlobalStyle`
   @media (max-width: 600px) {
     html {
       font-size: 31.25%; /* 50% of base size, 1rem = 5px */
-      background-color: red;
     }
 
     h1 {

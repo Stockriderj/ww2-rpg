@@ -3,7 +3,7 @@ import styled, {css} from "styled-components";
 const sizes = {
   small: css`
     font-size: 1.2rem;
-    border-radius: 12px;
+    border-radius: 1.2rem;
     padding: 0.8rem 1.2rem;
     /* 
     @media (max-width: 600px) {
@@ -14,7 +14,7 @@ const sizes = {
   `,
   medium: css`
     font-size: 1.8rem;
-    border-radius: 10px;
+    border-radius: 1rem;
     padding: 1.2rem 2.4rem;
     /* 
     @media (max-width: 600px) {
