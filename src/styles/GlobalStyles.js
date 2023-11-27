@@ -27,7 +27,7 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Special Elite', cursive;
     cursor: default;
     font-size: 1.6rem; /* Base font size = 16px */
-    overflow: scroll;
+    overflow: hidden;
     margin: 0;
     padding: 0;
     /* background-color: #f4f4f4; */
