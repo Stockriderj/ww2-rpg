@@ -16,6 +16,21 @@
   </head>
   <body>
     <div id="root"></div>
+
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      function displayRemValue() {
+        const rootFontSize = parseFloat(
+          getComputedStyle(document.documentElement).fontSize
+        );
+        document.getElementById(
+          "remValueDisplay"
+        ).innerText = `1rem = ${rootFontSize}px`;
+      }
+
+      // Call this function on page load and on window resize
+      window.onload = displayRemValue;
+      window.onresize = displayRemValue;
+    </script>
   </body>
 </html>

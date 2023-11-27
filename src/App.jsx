@@ -142,6 +142,7 @@ function App() {
             >
               How to play
             </a>
+            <div id="remValueDisplay"></div>
           </p>
         </Container>
       </div>

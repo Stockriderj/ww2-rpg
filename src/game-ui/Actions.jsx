@@ -15,6 +15,7 @@ const Sidebar = styled.div`
   color: black;
   width: 50px;
   height: 100%;
+  box-shadow: 10px 0 5px rgba(0, 0, 0, 0.2);
 
   display: flex;
   flex-direction: column;

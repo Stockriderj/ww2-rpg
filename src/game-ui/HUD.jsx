@@ -11,7 +11,7 @@ const HudContainer = styled.header`
   justify-items: flex-start;
   gap: 2.4rem;
 
-  background-color: rgba(26, 26, 26, 0.6);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8));
   background-size: cover;
   color: #d3cbbf;
   padding: 2rem 7.2rem;
@@ -19,7 +19,7 @@ const HudContainer = styled.header`
   top: 0;
   width: 100vw;
   z-index: 100;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 1);
   backdrop-filter: blur(5px); // Little blur effect for that frosted glass vibe
   font-size: 2.4rem;
 `;
@@ -46,12 +46,6 @@ const LevelIndicator = styled.div`
   justify-content: center;
 
   font-size: 4.8rem;
-
-  /* @media (max-width: 600px) {
-    font-size: 2.4rem;
-    width: 42px;
-    background-size: 42px;
-  } */
 `;
 
 const Stat = styled.div`
