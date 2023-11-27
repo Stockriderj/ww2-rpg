@@ -6,7 +6,6 @@ import {usePlayer} from "../context/PlayerContext";
 import ProgressBar from "./ProgressBar";
 
 const HudContainer = styled.header`
-  position: relative;
   display: flex;
   justify-content: flex-start;
   justify-items: flex-start;

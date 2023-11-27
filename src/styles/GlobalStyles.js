@@ -8,11 +8,15 @@ const GlobalStyles = createGlobalStyle`
 
   html {
     font-size: 62.5%; /* 1 rem = 10px */
+    width: 100vw;
+    height: 100vh;
     background-size: cover; // Cover the entire background
     background-attachment: fixed; // Keeps the background stationary during scroll
   }
 
   * {
+    box-sizing: border-box;
+
     &::selection {
         background: none;
         text-shadow: none;
@@ -22,10 +26,8 @@ const GlobalStyles = createGlobalStyle`
   body {
     font-family: 'Special Elite', cursive;
     cursor: default;
-    width: 100%;
-    height: 100vh;
     font-size: 1.6rem; /* Base font size = 16px */
-    overflow: hidden;
+    overflow: scroll;
     margin: 0;
     padding: 0;
     /* background-color: #f4f4f4; */

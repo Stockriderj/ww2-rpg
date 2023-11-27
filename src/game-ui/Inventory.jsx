@@ -6,9 +6,9 @@ import {useState} from "react";
 import {useActions} from "../context/ActionsContext";
 
 const InventoryContainer = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
-  right: ${props => (props.isvisible === "true" ? "0" : "-100%")};
+  right: 0;
   overflow: scroll;
   height: 100vh;
   width: fit-content;
@@ -16,9 +16,11 @@ const InventoryContainer = styled.div`
     url("https://plus.unsplash.com/premium_photo-1675695700239-44153e6bf430?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGFwZXIlMjB0ZXh0dXJlfGVufDB8fDB8fHww");
   background-size: cover;
   padding: 2rem;
-
-  transition: right 0.5s ease-in-out; // Smooth transition for sliding in and out
   z-index: 999;
+
+  transform: ${props =>
+    props.isvisible === "true" ? "translateX(0)" : "translateX(100%)"};
+  transition: transform 0.5s ease-in-out; // Smooth transition for sliding in and out
   /* 
   @media (max-width: 600px) {
     width: 20rem;
