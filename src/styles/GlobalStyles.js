@@ -26,7 +26,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     font-family: 'Special Elite', cursive;
     cursor: default;
-    /*font-size: 1.6rem; /* Base font size = 16px */
+    font-size: 1.6rem; /* Base font size = 16px */
     overflow: hidden;
     margin: 0;
     padding: 0;
