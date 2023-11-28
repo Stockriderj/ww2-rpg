@@ -53,7 +53,7 @@ const Stat = styled.div`
   padding: 0 1.2rem;
   flex-grow: 1;
   font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Tourney", sans-serif;
 
   /* Align icons to center, also add some gap so its not dogsht */
   display: flex;
@@ -67,10 +67,6 @@ const Stat = styled.div`
     align-items: center;
     gap: 0.6rem;
   }
-
-  /* @media (max-width: 600px) {
-    width: 7.2rem;
-  } */
 `;
 
 const PopupContainer = styled.div`
@@ -79,7 +75,7 @@ const PopupContainer = styled.div`
   top: ${props => props.position.top}px;
   font-size: 3.6rem;
   color: ${props => props.color};
-  font-family: "Special Elite", cursive;
+  font-family: "Tourney", sans-serif;
   font-weight: bolder;
   animation: ${props => props.animation} 1s ease-in-out forwards;
 `;

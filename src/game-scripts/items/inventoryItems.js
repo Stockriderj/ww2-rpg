@@ -28,6 +28,7 @@ export class Medkit extends Item {
   constructor({quantity = 1}) {
     super({quantity});
     this.name = "Medkit";
+    this.type = "Medkit";
 
     this.actions = {
       use: {
@@ -124,6 +125,7 @@ export class BoltAction extends Gun {
     super({damage: 70, ammunition: 20, quantity});
     this.name = "Bolt Action Rifle";
     this.ranged = true;
+    this.subType = "Bolt Action";
 
     this.shootSound = "sounds/bolt-action.mp3";
     this.initActions(this);
@@ -136,6 +138,7 @@ export class Pistol extends Gun {
     this.name = "Pistol";
     this.ranged = false;
     this.playerSlot = "secondaryWeapon";
+    this.subType = "Pistol";
 
     this.shootSound = "sounds/pistol.mp3";
     this.initActions(this);

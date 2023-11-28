@@ -4,6 +4,7 @@ const GlobalStyles = createGlobalStyle`
 
     :root {
         --light-theme: #d3cbbf;
+        --medium-theme: #8b806d;
     }
 
   html {
@@ -40,8 +41,13 @@ const GlobalStyles = createGlobalStyle`
     text-align: center;
   }
 
+  h2 {
+    font-size: 2.4rem;
+  }
+
   h1, h2, .old-font {
-    font-family: 'Special Elite', cursive;
+    font-family: "Tourney", sans-serif;
+    font-weight: 400;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); // A little shadow for depth
   }
 

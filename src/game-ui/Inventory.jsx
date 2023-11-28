@@ -1,8 +1,25 @@
 import styled from "styled-components";
 import {usePlayer} from "../context/PlayerContext";
-
-import Button from "./Button";
 import {useActions} from "../context/ActionsContext";
+
+import {
+  GiFirstAidKit,
+  GiGrenade,
+  GiLeeEnfield,
+  GiStickFrame,
+  GiWaltherPpk,
+} from "react-icons/gi";
+import Button from "./Button";
+import InventoryItem from "./InventoryItem";
+import Tooltip from "./Tooltip";
+
+const Close = styled(Button)`
+  position: absolute;
+  margin: 0;
+  font-size: 1.2rem;
+  background: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
 
 const InventoryContainer = styled.div`
   position: fixed;
@@ -14,6 +31,7 @@ const InventoryContainer = styled.div`
   background: rgba(0, 0, 0, 0.9)
     url("https://plus.unsplash.com/premium_photo-1675695700239-44153e6bf430?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGFwZXIlMjB0ZXh0dXJlfGVufDB8fDB8fHww");
   background-size: cover;
+  box-shadow: -10px 0 5px rgba(0, 0, 0, 0.2);
   padding: 2rem;
   z-index: 999;
 
@@ -36,127 +54,94 @@ const InventoryHeader = styled.header`
 const InventoryHeading = styled.h2`
   color: #333;
   text-align: center;
-  font-size: 2.4rem;
+  font-size: 3.6rem;
+  text-align: center;
+  flex-grow: 1;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 20px;
-
-  @media (max-width: 600px) {
-    letter-spacing: 0;
-  }
 `;
 
-const Close = styled(Button)`
-  margin: 0;
-  font-size: 1.2rem;
-  background: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-const Item = styled.li`
-  background-color: var(--light-theme);
-  color: #333;
-  border: 1px solid #ddd;
-  padding: 1rem 2.4rem;
-  margin-bottom: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-size: 1.8rem;
+const PlayerView = styled.div`
+  position: relative;
+  background: url("https://upload.wikimedia.org/wikipedia/en/4/4d/Shrek_%28character%29.png")
+    center no-repeat;
+  background-size: 30rem;
+  width: 100%;
+  height: 50rem;
 
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 3.6rem;
+  justify-content: space-around;
 `;
 
-const ItemInfo = styled.div`
+const SlotCol = styled.div`
   display: flex;
   flex-direction: column;
-
-  & div {
-    background-color: #8b806d;
-    width: fit-content;
-    color: var(--light-theme);
-  }
+  justify-content: space-evenly;
 `;
 
-const ItemActions = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 0.6rem;
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-  }
+const PlayerSlot = styled.div`
+  position: relative;
+  cursor: help;
+  font-size: 6.4rem;
+  color: var(--light-theme);
+  height: 8.6rem;
+  width: 8.6rem;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  background-color: var(--medium-theme);
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.4);
 `;
+
+export function getIcon(item) {
+  switch (item?.type) {
+    case "Gun":
+      switch (item.subType) {
+        case "Bolt Action":
+          return <GiLeeEnfield />;
+        case "Pistol":
+          return <GiWaltherPpk />;
+      }
+    case "Medkit":
+      return <GiFirstAidKit />;
+    case "Grenade":
+      return <GiGrenade />;
+    default:
+      return <GiStickFrame />;
+  }
+}
 
 export default function Inventory() {
-  const {player, dispatch} = usePlayer();
+  const {player} = usePlayer();
   const {isVisible, setIsVisible} = useActions();
 
-  function handleEquip(item, itemType) {
-    player.equip(item, itemType);
-    dispatch({type: "update"});
-  }
-
   return (
-    <>
-      <InventoryContainer isvisible={isVisible.toString()}>
-        <InventoryHeader>
-          <Close size="small" onClick={() => setIsVisible(false)}>
-            X
-          </Close>
-          <InventoryHeading>Inventory</InventoryHeading>
-        </InventoryHeader>
-        <ItemList>
-          {player.inventory.map(item => (
-            <Item key={item.name}>
-              <ItemInfo>
-                {item.name}
-                <div>
-                  {" "}
-                  <small>x{item.quantity}</small>{" "}
-                  {item?.ammunition !== undefined && (
-                    <small>x{item.ammunition} Ammo</small>
-                  )}
-                </div>
-              </ItemInfo>
-              <ItemActions>
-                {Object.values(item?.actions || []).map(action => (
-                  <Button
-                    size="small"
-                    onClick={() => {
-                      let params = {};
-                      (action?.accepts || []).map(dependency => {
-                        switch (dependency) {
-                          case "player":
-                            params.player = player;
-                          case "target":
-                          //   params.target = enemy;
-                        }
-                      });
-                      action.run(params);
-                      dispatch({type: "update"});
-                    }}
-                    key={action.name}
-                  >
-                    {action.name}
-                  </Button>
-                ))}
-                {item?.damage > 0 && (
-                  <Button
-                    size="small"
-                    playSound={false}
-                    onClick={() => handleEquip(item, item.playerSlot)}
-                  >
-                    {player[item.playerSlot] === item ? "Unequip" : "Equip"}
-                  </Button>
-                )}
-              </ItemActions>
-            </Item>
+    <InventoryContainer isvisible={isVisible.toString()}>
+      <InventoryHeader>
+        <Close size="small" onClick={() => setIsVisible(false)}>
+          X
+        </Close>
+        <InventoryHeading>Inventory</InventoryHeading>
+      </InventoryHeader>
+      <ItemList>
+        {player.inventory.map(item => (
+          <InventoryItem item={item} key={item.name} />
+        ))}
+      </ItemList>
+
+      <PlayerView>
+        <SlotCol>
+          {["primaryWeapon", "secondaryWeapon"].map(slot => (
+            <PlayerSlot className={slot} key={slot}>
+              {getIcon(player[slot])}
+              <Tooltip parent={slot}>
+                {player[slot]?.name || "No weapon"}
+              </Tooltip>
+            </PlayerSlot>
           ))}
-        </ItemList>
-      </InventoryContainer>
-    </>
+        </SlotCol>
+        <SlotCol />
+        <SlotCol />
+      </PlayerView>
+    </InventoryContainer>
   );
 }
