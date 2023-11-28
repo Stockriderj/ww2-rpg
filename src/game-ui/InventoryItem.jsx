@@ -89,6 +89,8 @@ function InventoryItem({item}) {
                 switch (dependency) {
                   case "player":
                     params.player = player;
+                  case "dispatch":
+                    params.dispatch = dispatch;
                   case "target":
                   //   params.target = enemy;
                 }

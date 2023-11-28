@@ -116,6 +116,8 @@ function PlayerProvider({children}) {
       toast("You encountered an enemy!");
       new Audio("sounds/bad-to-the-bone.mp3").play();
     }
+
+    dispatch({type: "update"});
   }
 
   return (

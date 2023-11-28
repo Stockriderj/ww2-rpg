@@ -1,4 +1,4 @@
-import {memo, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import {GrAddCircle} from "react-icons/gr";
 import {GiPerpendicularRings} from "react-icons/gi";
@@ -9,8 +9,9 @@ const HudContainer = styled.header`
   display: flex;
   justify-content: flex-start;
   justify-items: flex-start;
-  gap: 2.4rem;
+  gap: 4.8rem;
 
+  font-family: "Tourney", sans-serif;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8));
   background-size: cover;
   color: #d3cbbf;
@@ -39,7 +40,6 @@ const LevelIndicator = styled.div`
   color: #fff8ee;
   text-align: center;
   font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
 
   display: flex;
   align-items: center;
@@ -53,7 +53,6 @@ const Stat = styled.div`
   padding: 0 1.2rem;
   flex-grow: 1;
   font-weight: bold;
-  font-family: "Tourney", sans-serif;
 
   /* Align icons to center, also add some gap so its not dogsht */
   display: flex;
@@ -75,7 +74,7 @@ const PopupContainer = styled.div`
   top: ${props => props.position.top}px;
   font-size: 3.6rem;
   color: ${props => props.color};
-  font-family: "Tourney", sans-serif;
+  /* font-family: "Tourney", sans-serif; */
   font-weight: bolder;
   animation: ${props => props.animation} 1s ease-in-out forwards;
 `;
@@ -137,30 +136,29 @@ export default function HUD() {
   return (
     <HudContainer>
       <LevelIndicator ref={lvlDisplayRef}>{player.level}</LevelIndicator>
-      <Row>
-        <Stat ref={xpDisplayRef}>
-          <span>
-            <GiPerpendicularRings /> {player.xp} / {player.maxXp}
-          </span>
-          <ProgressBar
-            background="#0F2443"
-            fill="#174383"
-            value={player.xp - (player.level > 1 ? player.lastMaxXp : 0)}
-            max={player.maxXp - (player.level > 1 ? player.lastMaxXp : 0)}
-          />
-        </Stat>
-        <Stat ref={healthDisplayRef}>
-          <span>
-            <GrAddCircle /> {player.health} / {player.maxHealth}
-          </span>
-          <ProgressBar
-            background="#280303"
-            fill="#560A0A"
-            value={player.health}
-            max={player.maxHealth}
-          />
-        </Stat>
-      </Row>
+      <Stat ref={xpDisplayRef}>
+        <span>
+          <GiPerpendicularRings /> {player.xp} / {player.maxXp}
+        </span>
+        <ProgressBar
+          background="#0F2443"
+          fill="#174383"
+          value={player.xp - (player.level > 1 ? player.lastMaxXp : 0)}
+          max={player.maxXp - (player.level > 1 ? player.lastMaxXp : 0)}
+        />
+      </Stat>
+      <Stat ref={healthDisplayRef}>
+        <span>
+          <GrAddCircle /> {player.health} / {player.maxHealth}
+        </span>
+        <ProgressBar
+          background="#280303"
+          fill="#560A0A"
+          value={player.health}
+          max={player.maxHealth}
+        />
+      </Stat>
+      <Stat />
 
       {popups.map(({id, content, ...rest}) => (
         <PopupContainer key={id} {...rest}>

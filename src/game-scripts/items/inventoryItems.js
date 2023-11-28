@@ -86,16 +86,26 @@ export class BombingOrder extends Item {
     this.actions = {
       use: {
         name: "Use",
-        accepts: ["player"],
+        accepts: ["player", "dispatch"],
         run({player}) {
           if (this.quantity <= 0) return;
-          new Audio("sounds/grenade-explosion.mp3").play();
-          alert(
-            "BOOM!!!!!!!!!! (I'm going to make this more epic in the future but for now all u get is this alert lol)"
-          );
-          // add real bombing sound later lol
           this.quantity--;
-          player.addXp(100000);
+          new Audio("sounds/carpet-bomb.mp3").play();
+
+          const bombToast = toast.loading("(22sec) Bombing...");
+          let timer = 22;
+          const bombInterval = setInterval(() => {
+            timer--;
+            toast.loading(`(${timer}sec) Bombing...`, {
+              id: bombToast,
+            });
+          }, 1000);
+          setTimeout(() => {
+            clearInterval(bombInterval);
+            player.addXp(100000);
+            toast.success("Target destroyed!", {id: bombToast});
+            dispatch({type: "update"});
+          }, 22000);
         },
       },
     };
