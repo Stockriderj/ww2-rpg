@@ -1,16 +1,11 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import {createContext, useContext, useEffect, useReducer} from "react";
 import {Player, spawnRandomCharacter} from "../game-scripts/characters";
 import {
   BoltAction,
   Pistol,
   Grenade,
   Medkit,
+  BombingOrder,
 } from "../game-scripts/items/inventoryItems";
 import {
   checkProbability,
@@ -38,6 +33,7 @@ const initalState = {
       new Pistol({quantity: 1}),
       new Medkit({quantity: 5}),
       new Grenade({quantity: 3}),
+      new BombingOrder({quantity: 1}),
       // {name: "Secret Documents", quantity: 29109310},
     ],
   }),

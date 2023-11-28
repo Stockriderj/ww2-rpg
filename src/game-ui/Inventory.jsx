@@ -3,6 +3,7 @@ import {usePlayer} from "../context/PlayerContext";
 import {useActions} from "../context/ActionsContext";
 
 import {
+  GiCarpetBombing,
   GiFirstAidKit,
   GiGrenade,
   GiLeeEnfield,
@@ -100,6 +101,11 @@ export function getIcon(item) {
           return <GiLeeEnfield />;
         case "Pistol":
           return <GiWaltherPpk />;
+      }
+    case "Order":
+      switch (item.subType) {
+        case "Bombing":
+          return <GiCarpetBombing />;
       }
     case "Medkit":
       return <GiFirstAidKit />;

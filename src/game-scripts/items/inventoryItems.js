@@ -76,6 +76,33 @@ export class Grenade extends Item {
   }
 }
 
+export class BombingOrder extends Item {
+  constructor({quantity}) {
+    super({quantity});
+    this.name = "Order - Carpet Bombing";
+    this.type = "Order";
+    this.subType = "Bombing";
+
+    this.actions = {
+      use: {
+        name: "Use",
+        accepts: ["player"],
+        run({player}) {
+          if (this.quantity <= 0) return;
+          new Audio("sounds/grenade-explosion.mp3").play();
+          alert(
+            "BOOM!!!!!!!!!! (I'm going to make this more epic in the future but for now all u get is this alert lol)"
+          );
+          // add real bombing sound later lol
+          this.quantity--;
+          player.addXp(100000);
+        },
+      },
+    };
+    this.actions.use.run = this.actions.use.run.bind(this);
+  }
+}
+
 // GUNS
 
 /**
