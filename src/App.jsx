@@ -50,32 +50,31 @@ function App() {
       let battleRewards = [];
       let rewardNames = [];
 
-      player.inventory.forEach(item => {
+      updatedEnemy.inventory.forEach(item => {
         if (item?.type === "Gun") {
-          const newAmmo = randomNumber(0, 10);
+          const newAmmo = Math.round(item.ammunition / randomNumber(2, 3));
           if (newAmmo === 0) return;
           battleRewards.push({
             type: "ammo",
             name: item.name,
             quantity: newAmmo,
           });
-          rewardNames.push(`x${newAmmo} ${item.name} Ammo`);
+          rewardNames.push(`${newAmmo} ${item.name} Ammo`);
         }
       });
-
-      const {stackedText} = stackItems(
-        rewardNames.map(name => [name]),
-        false
-      );
 
       battleRewards.forEach(item => {
         item?.type === "ammo"
           ? player.addAmmo(item.name, item.quantity)
           : player.addItem(item.name, item.quantity);
       });
-      toast(`You looted ${stackedText} from the enemy!`);
+      if (battleRewards.length)
+        toast(
+          `${rewardNames.map(reward => `[+${reward}] `)}- You loot the enemy.`
+        );
 
-      dispatch({type: "update"});
+      dispatch({type: "setEnemy", payload: null});
+      // dispatch({type: "update"});
     }
   };
 

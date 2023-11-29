@@ -159,7 +159,7 @@ class Gun extends Item {
 
 export class BoltAction extends Gun {
   constructor({quantity = 1}) {
-    super({damage: 70, ammunition: 20, quantity});
+    super({damage: 70, ammunition: 5, quantity});
     this.name = "Bolt Action Rifle";
     this.ranged = true;
     this.subType = "Bolt Action";
@@ -171,7 +171,7 @@ export class BoltAction extends Gun {
 
 export class Pistol extends Gun {
   constructor({quantity = 1}) {
-    super({damage: 30, ammunition: 100, quantity});
+    super({damage: 30, ammunition: 20, quantity});
     this.name = "Pistol";
     this.ranged = false;
     this.playerSlot = "secondaryWeapon";

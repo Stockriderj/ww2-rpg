@@ -11,7 +11,6 @@ import {
   GiWaltherPpk,
 } from "react-icons/gi";
 import Button from "./Button";
-import InventoryItem from "./InventoryItem";
 import Tooltip from "./Tooltip";
 import Item from "./Item";
 

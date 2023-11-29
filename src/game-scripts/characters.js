@@ -149,6 +149,7 @@ export function spawnRandomCharacter() {
 
   return new Character({
     primaryWeapon: enemyWeapon,
+    inventory: [enemyWeapon],
     meleeDamage: 10,
   });
 }

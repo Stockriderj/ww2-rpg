@@ -66,8 +66,6 @@ const battleRound = (player, enemy, weapon) => {
     toast(
       `[+${enemy.maxHealth}XP] [+${addedGold} Gold] - You have defeated an enemy with ${playerWeaponName}.`
     );
-
-    updatedEnemy = null;
   }
   if (player.health <= 0) {
     toast.error(`You've been defeated by an enemy's ${enemyWeaponName}`);
