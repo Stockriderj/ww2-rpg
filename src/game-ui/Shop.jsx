@@ -13,7 +13,12 @@ import {
 } from "react-icons/gi";
 import Button from "./Button";
 import Tooltip from "./Tooltip";
-import {Grenade, Medkit} from "../game-scripts/items/inventoryItems";
+import {
+  BoltActionAmmobox,
+  Grenade,
+  Medkit,
+  PistolAmmobox,
+} from "../game-scripts/items/inventoryItems";
 import Item from "./Item";
 import toast from "react-hot-toast";
 
@@ -78,52 +83,20 @@ const PlayerSlot = styled.div`
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.4);
 `;
 
-export function getIcon(item) {
-  switch (item?.type) {
-    case "Gun":
-      switch (item.subType) {
-        case "Bolt Action":
-          return <GiLeeEnfield />;
-        case "Pistol":
-          return <GiWaltherPpk />;
-      }
-    case "Order":
-      switch (item.subType) {
-        case "Bombing":
-          return <GiCarpetBombing />;
-      }
-    case "Medkit":
-      return <GiFirstAidKit />;
-    case "Grenade":
-      return <GiGrenade />;
-    default:
-      return <GiStickFrame />;
-  }
-}
-
 export default function Shop() {
   const {player, dispatch} = usePlayer();
   const shopItems = [
     {item: new Medkit({quantity: 1}), price: 20},
     {item: new Grenade({quantity: 1}), price: 20},
-    {
-      item: {
-        name: "Bolt Action Ammobox",
-        type: "Ammo",
-        quantity: 5,
-      },
-      gun: "Bolt Action Rifle",
-      price: 10,
-    },
+    {item: new BoltActionAmmobox({quantity: 5}), price: 10},
+    {item: new PistolAmmobox({quantity: 7}), price: 10},
   ];
   const {isVisible, setIsVisible} = useActions();
 
   function handleBuy(item) {
     if (player.gold < item.price) return toast.error("You can't afford that.");
     player.gold -= item.price;
-    item.item?.type === "Ammo"
-      ? player.addAmmo(item.gun, item.item.quantity)
-      : player.addItem(item.item.name, item.item.quantity);
+    player.addItem(item.item.name, item.item.quantity);
     dispatch({type: "update"});
     toast(`You bought a ${item.item.name} for ${item.price} gold.`);
   }

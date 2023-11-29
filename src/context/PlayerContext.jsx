@@ -31,7 +31,7 @@ const exploreDrops = [
 const initalState = {
   player: new Player({
     meleeDamage: 10,
-    gold: 50,
+    gold: 0,
     primaryWeapon: null,
     inventory: [
       new BoltAction({quantity: 1}),

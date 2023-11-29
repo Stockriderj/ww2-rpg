@@ -109,6 +109,7 @@ class Player extends Character {
     }
   }
 
+  // If "items[itemName] is not a constructor" is thrown, then the item is not listed in items array
   addItem(itemName, quantity = 1) {
     let existingItem = this.inventory.filter(item => {
       if (item?.name === itemName) return item;

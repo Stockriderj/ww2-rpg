@@ -112,7 +112,7 @@ export function getIcon(item) {
       return <GiFirstAidKit />;
     case "Grenade":
       return <GiGrenade />;
-    case "Ammo":
+    case "Ammobox":
       return <GiAmmoBox />;
     default:
       return <GiStickFrame />;

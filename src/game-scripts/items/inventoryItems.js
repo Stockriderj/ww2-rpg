@@ -116,6 +116,44 @@ export class BombingOrder extends Item {
 // GUNS
 
 /**
+ * @param {string} gun gun name
+ * @param {number} quantity ammo count
+ */
+class Ammobox extends Item {
+  constructor(gun, quantity) {
+    super({quantity});
+    this.type = "Ammobox";
+    this.name = `${gun} Ammobox`;
+    this.gun = gun;
+
+    this.actions = {
+      use: {
+        name: "Use",
+        accepts: ["player", "dispatch"],
+        run({player, dispatch}) {
+          player.addAmmo(this.gun, 1);
+          this.quantity--;
+          dispatch({type: "update"});
+        },
+      },
+    };
+    this.actions.use.run = this.actions.use.run.bind(this);
+  }
+}
+
+export class BoltActionAmmobox extends Ammobox {
+  constructor({quantity}) {
+    super("Bolt Action Rifle", quantity);
+  }
+}
+
+export class PistolAmmobox extends Ammobox {
+  constructor({quantity}) {
+    super("Pistol", quantity);
+  }
+}
+
+/**
  * Creates a new gun. Parameters must be placed in an object.
  * @param {number} damage How much damage the gun does
  * @param {number} ammunition How much ammunition the gun has on default
@@ -188,5 +226,7 @@ export const items = {
   Grenade,
   "Bolt Action Rifle": BoltAction,
   Pistol,
+  "Bolt Action Rifle Ammobox": BoltActionAmmobox,
+  "Pistol Ammobox": PistolAmmobox,
   "Carpet Bombing Order": BombingOrder,
 };
