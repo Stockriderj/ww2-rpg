@@ -87,7 +87,7 @@ export class BombingOrder extends Item {
       use: {
         name: "Use",
         accepts: ["player", "dispatch"],
-        run({player}) {
+        run({player, dispatch}) {
           if (this.quantity <= 0) return;
           this.quantity--;
           new Audio("sounds/carpet-bomb.mp3").play();
@@ -103,7 +103,7 @@ export class BombingOrder extends Item {
           setTimeout(() => {
             clearInterval(bombInterval);
             player.addXp(100000);
-            toast.success("Target destroyed!", {id: bombToast});
+            toast.success("[+100000XP] - Target bombed!", {id: bombToast});
             dispatch({type: "update"});
           }, 22000);
         },
@@ -183,4 +183,10 @@ export class Pistol extends Gun {
 }
 
 // Items for referencing elsewhere
-export const items = {Medkit, Grenade, "Bolt Action Rifle": BoltAction, Pistol};
+export const items = {
+  Medkit,
+  Grenade,
+  "Bolt Action Rifle": BoltAction,
+  Pistol,
+  "Carpet Bombing Order": BombingOrder,
+};

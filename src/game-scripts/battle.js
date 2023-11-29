@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import {randomNumber} from "../utils/helpers";
 
 const battleRound = (player, enemy, weapon) => {
   const playerWeapon = player[weapon] || "";
@@ -50,18 +51,20 @@ const battleRound = (player, enemy, weapon) => {
     );
   } else {
     toast.error(
-      `As you ran towards the enemy to attack with your ${playerWeaponName}, they shot you with their ${enemyWeaponName}, causing you to fall to the ground and crawl back to cover.`
+      `As you run towards the enemy to attack with your ${playerWeaponName}, they shoot you with a ${enemyWeaponName}, causing you to fall to the ground and crawl back to cover.`
     );
   }
 
   let updatedEnemy = enemy;
   // Check if enemy is defeated
   if (enemy.health <= 0) {
-    console.log("Enemy defeated!");
     playerWon = true;
+
+    const addedGold = randomNumber(10, 30);
+    player.addGold(addedGold);
     player.addXp(enemy.maxHealth);
     toast(
-      `+${enemy.maxHealth}XP - You have defeated an enemy with ${playerWeaponName}.`
+      `[+${enemy.maxHealth}XP] [+${addedGold} Gold] - You have defeated an enemy with ${playerWeaponName}.`
     );
 
     updatedEnemy = null;

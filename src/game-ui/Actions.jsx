@@ -2,9 +2,10 @@ import styled from "styled-components";
 import {useActions} from "../context/ActionsContext";
 
 import Inventory from "./Inventory";
-import {GiBackpack, GiTreasureMap} from "react-icons/gi";
+import {GiBackpack, GiShop, GiTreasureMap} from "react-icons/gi";
 import {usePlayer} from "../context/PlayerContext";
 import Button from "./Button";
+import Shop from "./Shop";
 
 const Sidebar = styled.div`
   position: absolute;
@@ -42,17 +43,25 @@ export default function Actions() {
     dispatch({type: "startExplore", payload: 5});
   }
 
+  function handleVisible(el) {
+    setIsVisible(isVisible === el ? "" : el);
+  }
+
   return (
     <>
       <Sidebar>
         <Item onClick={handleExplore} disabled={enemy || exploreTimer > 0}>
           <GiTreasureMap />
         </Item>
-        <Item onClick={() => setIsVisible(!isVisible)}>
+        <Item onClick={() => handleVisible("shop")} disabled={enemy}>
+          <GiShop />
+        </Item>
+        <Item onClick={() => handleVisible("inventory")}>
           <GiBackpack />
         </Item>
       </Sidebar>
       <Inventory />
+      <Shop />
     </>
   );
 }

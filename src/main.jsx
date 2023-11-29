@@ -8,6 +8,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <PlayerProvider>
     <App />
 
-    <Toaster position="bottom-right" reverseOrder={true} />
+    <Toaster
+      position="bottom-right"
+      reverseOrder={true}
+      toastOptions={{duration: 5000}}
+    />
   </PlayerProvider>
 );

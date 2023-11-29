@@ -63,11 +63,6 @@ function App() {
         }
       });
 
-      if (randomNumber(1, 5) === 1) {
-        battleRewards.push({name: "Medkit", quantity: 1});
-        rewardNames.push("x1 Medkit");
-      }
-
       const {stackedText} = stackItems(
         rewardNames.map(name => [name]),
         false
@@ -79,6 +74,7 @@ function App() {
           : player.addItem(item.name, item.quantity);
       });
       toast(`You looted ${stackedText} from the enemy!`);
+
       dispatch({type: "update"});
     }
   };

@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import {GrAddCircle} from "react-icons/gr";
-import {GiPerpendicularRings} from "react-icons/gi";
+import {GiGoldBar, GiPerpendicularRings} from "react-icons/gi";
 import {usePlayer} from "../context/PlayerContext";
 import ProgressBar from "./ProgressBar";
 
@@ -85,7 +85,9 @@ export default function HUD() {
   const xpDisplayRef = useRef(null);
   const lvlDisplayRef = useRef(null);
   const healthDisplayRef = useRef(null);
+  const goldDisplayRef = useRef(null);
   const oldHealth = useRef(100);
+  const oldGold = useRef(0);
 
   const addPopup = (content, ref, color, animation) => {
     if (ref.current) {
@@ -133,6 +135,20 @@ export default function HUD() {
     oldHealth.current = player.health;
   }, [player.health]);
 
+  // add a popup when gold changes
+  useEffect(() => {
+    if (oldGold.current !== player.gold)
+      addPopup(
+        `${oldGold.current > player.gold ? "-" : "+"}${Math.abs(
+          player.gold - oldGold.current
+        )}`,
+        goldDisplayRef,
+        "gold",
+        "jumpIn"
+      );
+    oldGold.current = player.gold;
+  }, [player.gold]);
+
   return (
     <HudContainer>
       <LevelIndicator ref={lvlDisplayRef}>{player.level}</LevelIndicator>
@@ -157,6 +173,11 @@ export default function HUD() {
           value={player.health}
           max={player.maxHealth}
         />
+      </Stat>
+      <Stat ref={goldDisplayRef}>
+        <span>
+          <GiGoldBar /> {player.gold}
+        </span>
       </Stat>
       <Stat />
 

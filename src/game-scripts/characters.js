@@ -67,6 +67,7 @@ class Character {
 class Player extends Character {
   constructor({
     meleeDamage,
+    gold,
     level = 1,
     primaryWeapon = null,
     secondaryWeapon = null,
@@ -74,6 +75,7 @@ class Player extends Character {
   }) {
     super({meleeDamage, level, primaryWeapon, secondaryWeapon, inventory});
 
+    this.gold = gold;
     this.addedXp;
     this.lastMaxXp = this.maxXp;
   }
@@ -82,6 +84,13 @@ class Player extends Character {
    * Grants xp to the player. The leveling up system follows a Fibonacci sequence.
    * @param {number} amount
    */
+  addGold(amount) {
+    if (amount > 0) {
+      this.gold += amount;
+      new Audio("sounds/xp.mp3").play();
+    }
+  }
+
   addXp(amount) {
     if (amount > 0) {
       this.xp += amount;
@@ -100,7 +109,7 @@ class Player extends Character {
     }
   }
 
-  addItem(itemName, quantity) {
+  addItem(itemName, quantity = 1) {
     let existingItem = this.inventory.filter(item => {
       if (item?.name === itemName) return item;
     });

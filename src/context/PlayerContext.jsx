@@ -22,18 +22,23 @@ const exploreDrops = [
     chance: 20,
     items: ["Medkit", "Grenade"],
   },
+  {
+    chance: 1,
+    items: ["Carpet Bombing Order"],
+  },
 ];
 
 const initalState = {
   player: new Player({
     meleeDamage: 10,
+    gold: 0,
     primaryWeapon: null,
     inventory: [
       new BoltAction({quantity: 1}),
       new Pistol({quantity: 1}),
-      new Medkit({quantity: 5}),
-      new Grenade({quantity: 3}),
-      new BombingOrder({quantity: 1}),
+      new Medkit({quantity: 2}),
+      new Grenade({quantity: 1}),
+      // new BombingOrder({quantity: 1}),
       // {name: "Secret Documents", quantity: 29109310},
     ],
   }),
@@ -89,7 +94,7 @@ function PlayerProvider({children}) {
   }, [exploreTimer]);
 
   function finishExplore() {
-    const numItemsToSpawn = randomNumber(0, 5);
+    const numItemsToSpawn = randomNumber(1, 5);
     const droppedItems = [];
 
     for (let i = 0; i < numItemsToSpawn; i++) {

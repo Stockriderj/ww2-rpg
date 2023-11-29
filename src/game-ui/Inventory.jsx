@@ -13,6 +13,7 @@ import {
 import Button from "./Button";
 import InventoryItem from "./InventoryItem";
 import Tooltip from "./Tooltip";
+import Item from "./Item";
 
 const Close = styled(Button)`
   position: absolute;
@@ -117,20 +118,60 @@ export function getIcon(item) {
 }
 
 export default function Inventory() {
-  const {player} = usePlayer();
+  const {player, dispatch} = usePlayer();
   const {isVisible, setIsVisible} = useActions();
 
+  function handleEquip(item, itemType) {
+    player.equip(item, itemType);
+    dispatch({type: "update"});
+  }
+
   return (
-    <InventoryContainer isvisible={isVisible.toString()}>
+    <InventoryContainer isvisible={(isVisible === "inventory").toString()}>
       <InventoryHeader>
-        <Close size="small" onClick={() => setIsVisible(false)}>
+        <Close size="small" onClick={() => setIsVisible("")}>
           X
         </Close>
         <InventoryHeading>Inventory</InventoryHeading>
       </InventoryHeader>
       <ItemList>
         {player.inventory.map(item => (
-          <InventoryItem item={item} key={item.name} />
+          <Item item={item} key={item.name}>
+            <>
+              {Object.values(item?.actions || []).map(action => (
+                <Button
+                  size="small"
+                  onClick={() => {
+                    let params = {};
+                    (action?.accepts || []).map(dependency => {
+                      switch (dependency) {
+                        case "player":
+                          params.player = player;
+                        case "dispatch":
+                          params.dispatch = dispatch;
+                        case "target":
+                        //   params.target = enemy;
+                      }
+                    });
+                    action.run(params);
+                    dispatch({type: "update"});
+                  }}
+                  key={action.name}
+                >
+                  {action.name}
+                </Button>
+              ))}
+              {item?.damage > 0 && (
+                <Button
+                  size="small"
+                  playSound={false}
+                  onClick={() => handleEquip(item, item.playerSlot)}
+                >
+                  {player[item.playerSlot] === item ? "Unequip" : "Equip"}
+                </Button>
+              )}
+            </>
+          </Item>
         ))}
       </ItemList>
 
