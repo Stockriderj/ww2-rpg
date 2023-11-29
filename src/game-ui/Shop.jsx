@@ -104,15 +104,26 @@ export function getIcon(item) {
 export default function Shop() {
   const {player, dispatch} = usePlayer();
   const shopItems = [
-    {item: new Medkit({quantity: 1}), price: 10},
-    {item: new Grenade({quantity: 1}), price: 10},
+    {item: new Medkit({quantity: 1}), price: 20},
+    {item: new Grenade({quantity: 1}), price: 20},
+    {
+      item: {
+        name: "Bolt Action Ammobox",
+        type: "Ammo",
+        quantity: 5,
+      },
+      gun: "Bolt Action Rifle",
+      price: 10,
+    },
   ];
   const {isVisible, setIsVisible} = useActions();
 
   function handleBuy(item) {
     if (player.gold < item.price) return toast.error("You can't afford that.");
     player.gold -= item.price;
-    player.addItem(item.item.name, 1);
+    item.item?.type === "Ammo"
+      ? player.addAmmo(item.gun, item.item.quantity)
+      : player.addItem(item.item.name, item.item.quantity);
     dispatch({type: "update"});
     toast(`You bought a ${item.item.name} for ${item.price} gold.`);
   }

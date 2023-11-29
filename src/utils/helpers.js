@@ -7,7 +7,7 @@ export function pickFromArray(array) {
 }
 
 export function checkProbability(threshold) {
-  return randomNumber(0, 100) <= threshold ? true : false;
+  return Math.random() * 100 <= threshold ? true : false;
 }
 
 /**

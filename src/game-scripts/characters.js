@@ -124,7 +124,7 @@ class Player extends Character {
       if (item?.name === gunName) return item;
     });
 
-    gun
+    gun.length
       ? (gun[0].ammunition += quantity)
       : toast.error(
           `You would have gotten ${quantity} ${gunName} Ammo, but you don't have that gun! Don't worry, this feature will be fixed by Stockriderj in the future (when he stops being lazy)`

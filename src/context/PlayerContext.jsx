@@ -23,7 +23,7 @@ const exploreDrops = [
     items: ["Medkit", "Grenade"],
   },
   {
-    chance: 1,
+    chance: 0.1,
     items: ["Carpet Bombing Order"],
   },
 ];
@@ -31,7 +31,7 @@ const exploreDrops = [
 const initalState = {
   player: new Player({
     meleeDamage: 10,
-    gold: 0,
+    gold: 50,
     primaryWeapon: null,
     inventory: [
       new BoltAction({quantity: 1}),

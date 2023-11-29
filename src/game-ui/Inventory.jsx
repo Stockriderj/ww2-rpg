@@ -3,6 +3,7 @@ import {usePlayer} from "../context/PlayerContext";
 import {useActions} from "../context/ActionsContext";
 
 import {
+  GiAmmoBox,
   GiCarpetBombing,
   GiFirstAidKit,
   GiGrenade,
@@ -111,6 +112,8 @@ export function getIcon(item) {
       return <GiFirstAidKit />;
     case "Grenade":
       return <GiGrenade />;
+    case "Ammo":
+      return <GiAmmoBox />;
     default:
       return <GiStickFrame />;
   }
