@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 import {getIcon} from "./Inventory";
+import {GiBullets, GiMachineGunMagazine} from "react-icons/gi";
 
 const StyledItem = styled.li`
   background-color: var(--light-theme);
@@ -42,6 +43,28 @@ const ItemText = styled.div`
     background-color: var(--medium-theme);
     width: fit-content;
     color: var(--light-theme);
+    border-radius: 5px;
+  }
+
+  & small {
+    padding: 0.2rem;
+    font-family: "Gluten", sans-serif;
+    flex-grow: 1;
+
+    display: flex;
+    justify-content: space-between;
+  }
+
+  & small span {
+    display: flex;
+    gap: 0.1rem;
+    align-items: center;
+    padding: 0 0.2rem;
+    border-right: 2px solid var(--light-theme);
+  }
+
+  & small span:last-child {
+    border-right: none;
   }
 `;
 
@@ -63,12 +86,19 @@ function Item({item, children}) {
         <ItemText>
           {item.name}
           <div>
-            <small>x{item.quantity}</small>{" "}
-            {item?.ammunition !== undefined && (
-              <small>
-                x{item.ammoLoad} Loaded | x{item.ammunition} Ammo
-              </small>
-            )}
+            <small>
+              <span>x{item.quantity}</span>
+              {item?.ammunition !== undefined && (
+                <>
+                  <span>
+                    <GiMachineGunMagazine /> {item.ammoLoad}
+                  </span>{" "}
+                  <span>
+                    <GiBullets /> {item.ammunition}
+                  </span>
+                </>
+              )}
+            </small>
           </div>
         </ItemText>
       </ItemInfo>

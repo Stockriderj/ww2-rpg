@@ -203,7 +203,6 @@ class Gun extends Item {
               this.ammunition
             );
 
-            console.log(ammoToTransfer);
             this.ammoLoad += ammoToTransfer;
             this.ammunition -= ammoToTransfer; // Will not go negative as it transfers only available ammo
           } else {
