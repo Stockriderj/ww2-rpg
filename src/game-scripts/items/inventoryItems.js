@@ -197,9 +197,15 @@ class Gun extends Item {
           if (this.ammunition === 0) return toast.error("You are out of ammo.");
 
           new Audio("sounds/reload.mp3").play();
-          if (this.ammunition >= this.maxAmmoLoad) {
-            this.ammoLoad = this.maxAmmoLoad;
-            this.ammunition -= this.maxAmmoLoad;
+          if (this.ammunition > 0) {
+            const ammoToTransfer = Math.min(
+              this.maxAmmoLoad - this.ammoLoad,
+              this.ammunition
+            );
+
+            console.log(ammoToTransfer);
+            this.ammoLoad += ammoToTransfer;
+            this.ammunition -= ammoToTransfer; // Will not go negative as it transfers only available ammo
           } else {
             this.ammoLoad = this.ammunition;
             this.ammunition = 0;
