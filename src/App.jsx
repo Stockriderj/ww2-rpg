@@ -100,7 +100,7 @@ function App() {
                     <Button onClick={() => handleBattle("primaryWeapon")}>
                       Attack with {player.primaryWeapon?.name || "bare hands"}
                     </Button>
-                    {player?.primaryWeapon && (
+                    {player.primaryWeapon?.ammunition > 0 && (
                       <Button onClick={player.primaryWeapon.actions.reload.run}>
                         Reload {player.primaryWeapon?.name}
                       </Button>
@@ -110,11 +110,13 @@ function App() {
                         <Button onClick={() => handleBattle("secondaryWeapon")}>
                           Attack with {player.secondaryWeapon.name}
                         </Button>
-                        <Button
-                          onClick={player.secondaryWeapon.actions.reload.run}
-                        >
-                          Reload {player.secondaryWeapon?.name}
-                        </Button>
+                        {player.secondaryWeapon?.ammunition > 0 && (
+                          <Button
+                            onClick={player.secondaryWeapon.actions.reload.run}
+                          >
+                            Reload {player.secondaryWeapon?.name}
+                          </Button>
+                        )}
                       </>
                     )}
                   </>
