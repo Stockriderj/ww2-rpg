@@ -162,61 +162,84 @@ export class PistolAmmobox extends Ammobox {
  * @returns {Object} A gun
  */
 class Gun extends Item {
-  constructor({damage, ammunition, quantity = 1}) {
+  constructor({damage, ammunition, maxAmmoLoad, quantity = 1, shootSound}) {
     super({quantity});
     this.type = "Gun";
     this.ranged = true;
     this.playerSlot = "primaryWeapon";
-    this.name = "Gun";
     this.damage = damage;
+    this.maxAmmoLoad = maxAmmoLoad;
     this.ammunition = ammunition;
+    this.ammoLoad = 0;
+    this.shootSound = shootSound;
 
-    this.shootSound = "sounds/bolt-action.mp3";
-  }
-
-  initActions(item) {
-    item.actions = {
+    this.actions = {
       use: {
-        name: `Shoot`,
+        name: "Shoot",
         accepts: ["target"],
         run() {
-          if (item.ammunition > 0) {
-            item.ammunition--;
-            new Audio(item.shootSound).play();
+          if (this.ammoLoad > 0) {
+            this.ammoLoad--;
+            new Audio(this.shootSound).play();
             return true;
           } else {
             new Audio("sounds/no-ammo.mp3").play();
-            toast.error("You're out of ammo.");
+            toast.error("There isn't any ammo in the magazine.");
             return false;
           }
         },
       },
+      reload: {
+        name: "Reload",
+        run() {
+          if (this.ammoLoad === this.maxAmmoLoad)
+            return toast.error("The magazine is already full.");
+          if (this.ammunition === 0) return toast.error("You are out of ammo.");
+
+          new Audio("sounds/reload.mp3").play();
+          if (this.ammunition >= this.maxAmmoLoad) {
+            this.ammoLoad = this.maxAmmoLoad;
+            this.ammunition -= this.maxAmmoLoad;
+          } else {
+            this.ammoLoad = this.ammunition;
+            this.ammunition = 0;
+          }
+        },
+      },
     };
+    this.actions.use.run = this.actions.use.run.bind(this);
+    this.actions.reload.run = this.actions.reload.run.bind(this);
   }
 }
 
 export class BoltAction extends Gun {
   constructor({quantity = 1}) {
-    super({damage: 70, ammunition: 5, quantity});
+    super({
+      damage: 70,
+      ammunition: 5,
+      quantity,
+      maxAmmoLoad: 5,
+      shootSound: "sounds/bolt-action.mp3",
+    });
     this.name = "Bolt Action Rifle";
     this.ranged = true;
     this.subType = "Bolt Action";
-
-    this.shootSound = "sounds/bolt-action.mp3";
-    this.initActions(this);
   }
 }
 
 export class Pistol extends Gun {
   constructor({quantity = 1}) {
-    super({damage: 30, ammunition: 20, quantity});
+    super({
+      damage: 30,
+      ammunition: 20,
+      quantity,
+      maxAmmoLoad: 10,
+      shootSound: "sounds/pistol.mp3",
+    });
     this.name = "Pistol";
     this.ranged = false;
     this.playerSlot = "secondaryWeapon";
     this.subType = "Pistol";
-
-    this.shootSound = "sounds/pistol.mp3";
-    this.initActions(this);
   }
 }
 

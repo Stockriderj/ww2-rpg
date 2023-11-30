@@ -65,7 +65,9 @@ function Item({item, children}) {
           <div>
             <small>x{item.quantity}</small>{" "}
             {item?.ammunition !== undefined && (
-              <small>x{item.ammunition} Ammo</small>
+              <small>
+                x{item.ammoLoad} Loaded | x{item.ammunition} Ammo
+              </small>
             )}
           </div>
         </ItemText>

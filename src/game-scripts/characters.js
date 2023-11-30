@@ -30,16 +30,13 @@ class Character {
 
   calculateDamage(weapon) {
     if (this.health === 0) return 0; // you cant deal damage if ur dead
-    switch (weapon) {
-      case "primaryWeapon":
-        if (this.primaryWeapon?.actions.use.run()) {
-          return this.primaryWeapon.damage;
-        } else {
-          return Math.round(this.meleeDamage * (this.health / 100));
-        }
-      case "secondaryWeapon":
-        this.secondaryWeapon.actions.use.run();
-        return this.secondaryWeapon.damage;
+    if (this[weapon]?.actions.use.run()) {
+      return {damage: this[weapon].damage, ranged: this[weapon].ranged};
+    } else {
+      return {
+        damage: Math.round(this.meleeDamage * (this.health / 100)),
+        ranged: false,
+      };
     }
   }
 
@@ -55,7 +52,7 @@ class Character {
 
   equip(item, itemType) {
     this[itemType] !== item ? (this[itemType] = item) : (this[itemType] = null);
-    new Audio("sounds/equip.mp3").play();
+    new Audio("sounds/reload.mp3").play();
   }
 
   checkInventory() {
@@ -146,6 +143,7 @@ export function spawnRandomCharacter() {
     case 2:
     default:
       enemyWeapon = null;
+      enemyWeapon = new BoltAction({quantity: 1});
   }
 
   return new Character({

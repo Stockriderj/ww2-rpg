@@ -3,37 +3,44 @@ import {randomNumber} from "../utils/helpers";
 
 const battleRound = (player, enemy, weapon) => {
   const playerWeapon = player[weapon] || "";
-  const enemyWeapon = enemy["primaryWeapon"] || "";
+  const enemySlot = enemy["primaryWeapon"]
+    ? "primaryWeapon"
+    : "secondaryWeapon";
+  const enemyWeapon = enemy[enemySlot] || "";
   const playerWeaponName = player[weapon]?.name || "bare hands";
-  const enemyWeaponName = enemy.primaryWeapon?.name || "bare hands";
+  const enemyWeaponName = enemy[enemySlot]?.name || "bare hands";
+
+  // enemy bot stuff
+  if (enemyWeapon.ammoLoad === 0) {
+    enemyWeapon.actions.reload.run();
+    toast("You glimpse at your enemy and catch them reloading.");
+  }
 
   //   Initialize damage variables
-  let playerCanAttack = true;
-  let enemyCanAttack = true;
+  let playerWon = false;
+  let {damage: playerDamage, ranged: playerRanged} =
+    player.calculateDamage(weapon);
+  let {damage: enemyDamage, ranged: enemyRanged} =
+    enemy.calculateDamage(enemySlot);
 
   //   RANGE - Characters with ranged weapons can attack without the enemy being able to deal damage back to them
-  switch (`${playerWeapon?.ranged === true} ${enemyWeapon?.ranged === true}`) {
+  switch (`${playerRanged} ${enemyRanged}`) {
     case "true true":
       break; // Both sides have ranged weapons. Both can deal damage
     case "true false":
-      enemyCanAttack = false; // The player has a ranged weapon and the enemy doesn't.
+      enemyDamage = 0; // The player has a ranged weapon and the enemy doesn't.
       break;
     case "false true":
-      playerCanAttack = false; // Opposite of the one above
+      playerDamage = 0; // Opposite of the one above
       break;
     case "false false":
       break; // Both sides are melee. Both can deal damage
   }
 
-  let playerWon = false;
-
-  let playerDamage = enemyCanAttack && enemy.calculateDamage("primaryWeapon");
-  let enemyDamage = playerCanAttack && player.calculateDamage(weapon);
-
-  if (enemyCanAttack) {
-    player.takeDamage(playerDamage);
+  if (enemyDamage > 0) {
+    player.takeDamage(enemyDamage);
     toast(
-      `The enemy dealt ${playerDamage} damage to you with their ${enemyWeaponName}.`
+      `The enemy dealt ${enemyDamage} damage to you with their ${enemyWeaponName}.`
     );
   } else {
     toast(
@@ -44,10 +51,10 @@ const battleRound = (player, enemy, weapon) => {
       } with your ${playerWeaponName}.`
     );
   }
-  if (playerCanAttack) {
-    enemy.takeDamage(enemyDamage);
+  if (playerDamage > 0) {
+    enemy.takeDamage(playerDamage);
     toast(
-      `You dealt ${enemyDamage} damage to the enemy with your ${playerWeaponName}.`
+      `You dealt ${playerDamage} damage to the enemy with your ${playerWeaponName}.`
     );
   } else {
     toast.error(

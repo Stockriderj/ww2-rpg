@@ -1,12 +1,13 @@
 const sounds = [
+  "bad-to-the-bone",
   "bolt-action",
+  "carpet-bomb",
   "click",
+  "grenade-explosion",
   "no-ammo",
   "pistol",
-  "grenade-explosion",
-  "equip",
+  "reload",
   "xp",
-  "bad-to-the-bone",
 ];
 
 export default function preloadSounds() {
