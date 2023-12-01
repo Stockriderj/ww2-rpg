@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import {usePlayer} from "../context/PlayerContext";
-import {useActions} from "../context/ActionsContext";
 
 import {
   GiAmmoBox,
@@ -14,53 +13,11 @@ import {
 import Button from "./Button";
 import Tooltip from "./Tooltip";
 import Item from "./Item";
-
-const Close = styled(Button)`
-  position: absolute;
-  margin: 0;
-  font-size: 1.2rem;
-  background: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-const InventoryContainer = styled.div`
-  position: fixed;
-  top: 0;
-  right: 0;
-  overflow: scroll;
-  height: 100vh;
-  width: fit-content;
-  background: rgba(0, 0, 0, 0.9)
-    url("https://plus.unsplash.com/premium_photo-1675695700239-44153e6bf430?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGFwZXIlMjB0ZXh0dXJlfGVufDB8fDB8fHww");
-  background-size: cover;
-  box-shadow: -10px 0 5px rgba(0, 0, 0, 0.2);
-  padding: 2rem;
-  z-index: 999;
-
-  transform: ${props =>
-    props.isvisible === "true" ? "translateX(0)" : "translateX(100%)"};
-  transition: transform 0.5s ease-in-out; // Smooth transition for sliding in and out
-`;
+import SidePanel from "./SidePanel";
 
 const ItemList = styled.ul`
   list-style: none;
   padding: 0;
-`;
-
-const InventoryHeader = styled.header`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const InventoryHeading = styled.h2`
-  color: #333;
-  text-align: center;
-  font-size: 3.6rem;
-  text-align: center;
-  flex-grow: 1;
-  margin: 0;
-  text-transform: uppercase;
 `;
 
 const PlayerView = styled.div`
@@ -94,34 +51,28 @@ const PlayerSlot = styled.div`
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.4);
 `;
 
+const iconMapping = {
+  Gun: {
+    "Bolt Action": GiLeeEnfield,
+    Pistol: GiWaltherPpk,
+  },
+  Order: {
+    Bombing: GiCarpetBombing,
+  },
+  Medkit: GiFirstAidKit,
+  Grenade: GiGrenade,
+  Ammobox: GiAmmoBox,
+};
+
 export function getIcon(item) {
-  switch (item?.type) {
-    case "Gun":
-      switch (item.subType) {
-        case "Bolt Action":
-          return <GiLeeEnfield />;
-        case "Pistol":
-          return <GiWaltherPpk />;
-      }
-    case "Order":
-      switch (item.subType) {
-        case "Bombing":
-          return <GiCarpetBombing />;
-      }
-    case "Medkit":
-      return <GiFirstAidKit />;
-    case "Grenade":
-      return <GiGrenade />;
-    case "Ammobox":
-      return <GiAmmoBox />;
-    default:
-      return <GiStickFrame />;
-  }
+  const IconComponent = item?.subType
+    ? iconMapping[item.type]?.[item.subType]
+    : iconMapping[item?.type];
+  return IconComponent ? <IconComponent /> : <GiStickFrame />;
 }
 
 export default function Inventory() {
   const {player, dispatch} = usePlayer();
-  const {isVisible, setIsVisible} = useActions();
 
   function handleEquip(item, itemType) {
     player.equip(item, itemType);
@@ -129,13 +80,7 @@ export default function Inventory() {
   }
 
   return (
-    <InventoryContainer isvisible={(isVisible === "inventory").toString()}>
-      <InventoryHeader>
-        <Close size="small" onClick={() => setIsVisible("")}>
-          X
-        </Close>
-        <InventoryHeading>Inventory</InventoryHeading>
-      </InventoryHeader>
+    <SidePanel name="inventory">
       <ItemList>
         {player.inventory.map(item => (
           <Item item={item} key={item.name}>
@@ -194,6 +139,6 @@ export default function Inventory() {
         <SlotCol />
         <SlotCol />
       </PlayerView>
-    </InventoryContainer>
+    </SidePanel>
   );
 }
