@@ -2,10 +2,16 @@ import styled from "styled-components";
 import {useActions} from "../context/ActionsContext";
 
 import Inventory from "./Inventory";
-import {GiBackpack, GiShop, GiTreasureMap} from "react-icons/gi";
+import {
+  GiBackpack,
+  GiBrodieHelmet,
+  GiShop,
+  GiTreasureMap,
+} from "react-icons/gi";
 import {usePlayer} from "../context/PlayerContext";
 import Button from "./Button";
 import Shop from "./Shop";
+import PlayerView from "./PlayerView";
 
 const Sidebar = styled.div`
   position: absolute;
@@ -50,6 +56,9 @@ export default function Actions() {
   return (
     <>
       <Sidebar>
+        <Item onClick={() => handleVisible("player")}>
+          <GiBrodieHelmet />
+        </Item>
         <Item onClick={handleExplore} disabled={enemy || exploreTimer > 0}>
           <GiTreasureMap />
         </Item>
@@ -62,6 +71,7 @@ export default function Actions() {
       </Sidebar>
       <Inventory />
       <Shop />
+      <PlayerView />
     </>
   );
 }
