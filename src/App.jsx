@@ -1,84 +1,35 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 import toast from "react-hot-toast";
 
 // Components
 import HUD from "./game-ui/HUD";
-import Button from "./game-ui/Button";
 import Actions from "./game-ui/Actions";
 
 // Game scripts
-import battleRound from "./game-scripts/battle";
-import {Character} from "./game-scripts/characters";
 import {usePlayer} from "./context/PlayerContext";
 import preloadSounds from "./game-scripts/preload-sounds";
-import {randomNumber, stackItems} from "./utils/helpers";
 import {ActionsProvider} from "./context/ActionsContext";
+import Battle from "./game-ui/Battle";
 
 preloadSounds();
 
 const Container = styled.main`
-  max-width: 1024px;
-  margin: 0 auto;
-  margin-top: 12rem;
-  padding: 0 72px;
-
-  /* @media (max-width: 600px) {
-    margin-top: 6rem;
-  } */
+  margin-top: 9.5rem;
+  padding-left: 50px;
+  width: 100%;
+  height: 80vh;
 `;
 
 function App() {
-  const {player, enemy, dispatch} = usePlayer();
+  const {enemy, dispatch} = usePlayer();
 
   useEffect(() => {
     const tick = setInterval(() => dispatch({type: "tick"}), 1000);
 
     return () => clearInterval(tick);
   }, []);
-  new Character({meleeDamage: 10});
-
-  // battle stuff
-  const handleBattle = weapon => {
-    const {updatedEnemy, playerWon} = battleRound(player, enemy, weapon);
-    dispatch({type: "update"});
-
-    dispatch({type: "setEnemy", payload: updatedEnemy});
-
-    if (playerWon) {
-      let battleRewards = [];
-      let rewardNames = [];
-
-      updatedEnemy.inventory.forEach(item => {
-        if (item?.type === "Gun") {
-          const newAmmo = Math.round(item.ammunition / randomNumber(2, 3));
-          if (newAmmo === 0) return;
-          battleRewards.push({
-            type: "ammo",
-            name: item.name,
-            quantity: newAmmo,
-          });
-          rewardNames.push(`${newAmmo} ${item.name} Ammo`);
-        }
-      });
-
-      battleRewards.forEach(item => {
-        item?.type === "ammo"
-          ? player.addAmmo(item.name, item.quantity)
-          : player.addItem(item.name, item.quantity);
-      });
-      if (battleRewards.length)
-        toast(
-          `${rewardNames.map(reward => `[+${reward}] `)}- You loot the enemy.`
-        );
-
-      dispatch({type: "setEnemy", payload: null});
-      // dispatch({type: "update"});
-    }
-  };
-
-  const medkit = player.inventory.filter(item => item.name === "Medkit")[0];
 
   return (
     <>
@@ -90,58 +41,7 @@ function App() {
           <Actions />
         </ActionsProvider>
         <Container>
-          {player.health === 0 ? (
-            <h1>You died. refresh the page to restart</h1>
-          ) : (
-            <>
-              <div>
-                {enemy && (
-                  <>
-                    <Button onClick={() => handleBattle("primaryWeapon")}>
-                      Attack with {player.primaryWeapon?.name || "bare hands"}
-                    </Button>
-                    {player.primaryWeapon?.ammunition > 0 && (
-                      <Button onClick={player.primaryWeapon.actions.reload.run}>
-                        Reload {player.primaryWeapon?.name}
-                      </Button>
-                    )}
-                    {player?.secondaryWeapon && (
-                      <>
-                        <Button onClick={() => handleBattle("secondaryWeapon")}>
-                          Attack with {player.secondaryWeapon.name}
-                        </Button>
-                        {player.secondaryWeapon?.ammunition > 0 && (
-                          <Button
-                            onClick={player.secondaryWeapon.actions.reload.run}
-                          >
-                            Reload {player.secondaryWeapon?.name}
-                          </Button>
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-                {medkit && (
-                  <Button
-                    onClick={() => {
-                      medkit.actions.use.run({player});
-                      dispatch({type: "update"});
-                    }}
-                  >
-                    Use medkit
-                  </Button>
-                )}
-                {/* <ExploreButton enemy={enemy} /> */}
-                {/* more temporary enemy stuff */}
-                {enemy && (
-                  <p>
-                    Enemy: {enemy.health} HP | Weapon:{" "}
-                    {enemy.primaryWeapon?.name || "Bare hands"}
-                  </p>
-                )}
-              </div>
-            </>
-          )}
+          {enemy && <Battle />}
 
           <p style={{position: "absolute", bottom: 0}}>
             <span>&copy; 2023 stockriderj &lt;3</span>{" "}

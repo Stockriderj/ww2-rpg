@@ -176,7 +176,8 @@ class Gun extends Item {
     this.actions = {
       use: {
         name: "Shoot",
-        accepts: ["target"],
+        inventoryIgnore: true,
+        // accepts: ["target"],
         run() {
           if (this.ammoLoad > 0) {
             this.ammoLoad--;

@@ -23,7 +23,7 @@ const exploreDrops = [
     items: ["Medkit", "Grenade"],
   },
   {
-    chance: 0.1,
+    chance: 0.5,
     items: ["Carpet Bombing Order"],
   },
 ];

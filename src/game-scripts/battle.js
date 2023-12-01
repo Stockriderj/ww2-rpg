@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import {randomNumber} from "../utils/helpers";
+import {checkProbability, randomNumber} from "../utils/helpers";
 
 const battleRound = (player, enemy, weapon) => {
   const playerWeapon = player[weapon] || "";
@@ -37,6 +37,14 @@ const battleRound = (player, enemy, weapon) => {
       break; // Both sides are melee. Both can deal damage
   }
 
+  if (checkProbability(20)) {
+    toast("You missed.");
+    playerDamage = 0;
+  }
+  if (checkProbability(50)) {
+    toast("The enemy missed.");
+    enemyDamage = 0;
+  }
   if (enemyDamage > 0) {
     player.takeDamage(enemyDamage);
     toast(

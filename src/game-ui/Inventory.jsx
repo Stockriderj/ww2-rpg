@@ -140,29 +140,32 @@ export default function Inventory() {
         {player.inventory.map(item => (
           <Item item={item} key={item.name}>
             <>
-              {Object.values(item?.actions || []).map(action => (
-                <Button
-                  size="small"
-                  onClick={() => {
-                    let params = {};
-                    (action?.accepts || []).map(dependency => {
-                      switch (dependency) {
-                        case "player":
-                          params.player = player;
-                        case "dispatch":
-                          params.dispatch = dispatch;
-                        case "target":
-                        //   params.target = enemy;
-                      }
-                    });
-                    action.run(params);
-                    dispatch({type: "update"});
-                  }}
-                  key={action.name}
-                >
-                  {action.name}
-                </Button>
-              ))}
+              {Object.values(item?.actions || []).map(
+                action =>
+                  action?.inventoryIgnore !== true && (
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        let params = {};
+                        (action?.accepts || []).map(dependency => {
+                          switch (dependency) {
+                            case "player":
+                              params.player = player;
+                            case "dispatch":
+                              params.dispatch = dispatch;
+                            case "target":
+                            //   params.target = enemy;
+                          }
+                        });
+                        action.run(params);
+                        dispatch({type: "update"});
+                      }}
+                      key={action.name}
+                    >
+                      {action.name}
+                    </Button>
+                  )
+              )}
               {item?.damage > 0 && (
                 <Button
                   size="small"
