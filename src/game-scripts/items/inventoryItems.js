@@ -52,30 +52,6 @@ export class Medkit extends Item {
   }
 }
 
-export class Grenade extends Item {
-  constructor({quantity}) {
-    super({quantity});
-    this.name = "Grenade";
-    this.type = "Grenade";
-    this.playerSlot = "secondaryWeapon";
-    this.ranged = true;
-    this.damage = 100;
-
-    this.actions = {
-      use: {
-        name: "Throw Grenade",
-        run() {
-          if (this.quantity <= 0) return false;
-          new Audio("sounds/grenade-explosion.mp3").play();
-          this.quantity--;
-          return true;
-        },
-      },
-    };
-    this.actions.use.run = this.actions.use.run.bind(this);
-  }
-}
-
 export class BombingOrder extends Item {
   constructor({quantity}) {
     super({quantity});
@@ -106,6 +82,42 @@ export class BombingOrder extends Item {
             toast.success("[+100000XP] - Target bombed!", {id: bombToast});
             dispatch({type: "update"});
           }, 22000);
+        },
+      },
+    };
+    this.actions.use.run = this.actions.use.run.bind(this);
+  }
+}
+
+// WEAPONS -----------
+
+export class Knife extends Item {
+  constructor({quantity = 1}) {
+    super({quantity});
+    this.type = "Melee";
+    this.range = 2;
+    this.playerSlot = "secondaryWeapon";
+    this.damage = 100;
+  }
+}
+
+export class Grenade extends Item {
+  constructor({quantity}) {
+    super({quantity});
+    this.name = "Grenade";
+    this.type = "Grenade";
+    this.playerSlot = "secondaryWeapon";
+    this.range = 40;
+    this.damage = 100;
+
+    this.actions = {
+      use: {
+        name: "Throw Grenade",
+        run() {
+          if (this.quantity <= 0) return false;
+          new Audio("sounds/grenade-explosion.mp3").play();
+          this.quantity--;
+          return true;
         },
       },
     };
@@ -162,10 +174,17 @@ export class PistolAmmobox extends Ammobox {
  * @returns {Object} A gun
  */
 class Gun extends Item {
-  constructor({damage, ammunition, maxAmmoLoad, quantity = 1, shootSound}) {
+  constructor({
+    damage,
+    ammunition,
+    maxAmmoLoad,
+    range,
+    quantity = 1,
+    shootSound,
+  }) {
     super({quantity});
     this.type = "Gun";
-    this.ranged = true;
+    this.range = range;
     this.playerSlot = "primaryWeapon";
     this.damage = damage;
     this.maxAmmoLoad = maxAmmoLoad;
@@ -224,11 +243,11 @@ export class BoltAction extends Gun {
       damage: 70,
       ammunition: 5,
       quantity,
+      range: 500,
       maxAmmoLoad: 5,
       shootSound: "sounds/bolt-action.mp3",
     });
     this.name = "Bolt Action Rifle";
-    this.ranged = true;
     this.subType = "Bolt Action";
   }
 }
@@ -238,12 +257,12 @@ export class Pistol extends Gun {
     super({
       damage: 30,
       ammunition: 20,
+      range: 50,
       quantity,
       maxAmmoLoad: 10,
       shootSound: "sounds/pistol.mp3",
     });
     this.name = "Pistol";
-    this.ranged = false;
     this.playerSlot = "secondaryWeapon";
     this.subType = "Pistol";
   }
@@ -253,6 +272,7 @@ export class Pistol extends Gun {
 export const items = {
   Medkit,
   Grenade,
+  Knife,
   "Bolt Action Rifle": BoltAction,
   Pistol,
   "Bolt Action Rifle Ammobox": BoltActionAmmobox,

@@ -45,6 +45,7 @@ const initalState = {
   exploreTimer: -1, // if === 0, finish exploration code runs. we dont want that to run all the time
   exploreToast: null,
   enemy: null,
+  battleDistance: null,
 };
 
 function reducer(state, action) {
@@ -58,7 +59,12 @@ function reducer(state, action) {
     case "setExploreToast":
       return {...state, exploreToast: action.payload};
     case "setEnemy":
-      return {...state, enemy: action.payload};
+      return {
+        ...state,
+        enemy: action.payload,
+      };
+    case "setBattleDistance":
+      return {...state, battleDistance: action.payload};
     case "update":
       state.player.checkInventory();
       return {...state};
@@ -72,10 +78,10 @@ function reducer(state, action) {
 }
 
 function PlayerProvider({children}) {
-  const [{player, exploreTimer, exploreToast, enemy}, dispatch] = useReducer(
-    reducer,
-    initalState
-  );
+  const [
+    {player, exploreTimer, exploreToast, enemy, battleDistance},
+    dispatch,
+  ] = useReducer(reducer, initalState);
 
   useEffect(() => {
     if (exploreTimer === 0) finishExplore();
@@ -117,6 +123,7 @@ function PlayerProvider({children}) {
     // enemy stuff
     let enemyFound = checkProbability(50) ? true : false;
     if (enemyFound) {
+      dispatch({type: "setBattleDistance", payload: randomNumber(1, 400)});
       dispatch({type: "setEnemy", payload: spawnRandomCharacter()});
       toast("You encountered an enemy!");
       new Audio("sounds/bad-to-the-bone.mp3").play();
@@ -131,6 +138,7 @@ function PlayerProvider({children}) {
         player,
         exploreTimer,
         enemy,
+        battleDistance,
         dispatch,
       }}
     >

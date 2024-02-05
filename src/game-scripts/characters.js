@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import {BoltAction, Pistol, items} from "./items/inventoryItems";
-import {randomNumber} from "../utils/helpers";
+import {checkProbability, randomNumber} from "../utils/helpers";
 
 /**
  * Creates a new character. Parameters must be placed in an object.
@@ -9,6 +9,7 @@ import {randomNumber} from "../utils/helpers";
  */
 class Character {
   constructor({
+    name = "NPC",
     meleeDamage,
     level = 1,
     primaryWeapon = null,
@@ -19,6 +20,7 @@ class Character {
     this.secondaryWeapon = secondaryWeapon;
     this.meleeDamage = meleeDamage;
     this.inventory = inventory;
+    this.name = name;
 
     this.level = level;
     this.maxXp = 100;
@@ -28,22 +30,67 @@ class Character {
     this.health = this.maxHealth;
   }
 
-  calculateDamage(weapon) {
-    if (this.health === 0) return 0; // you cant deal damage if ur dead
-    if (this[weapon]?.actions.use.run()) {
-      return {damage: this[weapon].damage, ranged: this[weapon].ranged};
-    } else {
-      return {
-        damage: Math.round(this.meleeDamage * (this.health / 100)),
-        ranged: false,
-      };
+  prepareAttack(weaponSlot, range) {
+    function checkMiss(weaponRange) {
+      console.log((range / weaponRange) * 0.95 * 100);
+      return checkProbability((range / weaponRange) * 0.95 * 100); // super complex range formula :o
+    }
+
+    // can't directly deal damage. they must deal at the same time
+    const weapon = this[weaponSlot];
+    console.log(weapon);
+    if (this.health === 0) return {flavorText: ""}; // you cant deal damage if dead
+    switch (weapon.type) {
+      case "Gun":
+      case "Grenade":
+        const flavorTexts = {Gun: {miss: `[${this.name}] Shoots and misses.`, hit: `[${this.name}] Fires their ${weapon.name}, dealing ${weapon.damage} damage.`}, Grenade: {miss: `[${this.name}] Chucks a ${weapon.name}. Misses by a long shot.`, hit: `[${this.name}] Throws their ${weapon.name}. Boom!`}}
+
+        if (weapon.actions.use.run()) {
+          // // If the weapon is out range
+          if (checkMiss(weapon.range)) {
+            return {
+              damage: 0,
+              flavorText: flavorTexts[weapon.type].miss,
+            };
+          } else {
+            return {
+              damage: weapon.damage,
+              flavorText: flavorTexts[weapon.type].hit,
+            };
+          }
+        }
+
+      default: // melee weapon
+        if (
+          (weapon.type === "Melee" && range > weapon.range) ||
+          (weapon.type === "Gun" && range > 3)
+        ) {
+          // if out of range
+          return {
+            damage: 0,
+            flavorText: `[${this.name}] Swings their ${weapon.name} uselessly as the enemy taunts them from ${range} meters away.`,
+          };
+        } else {
+          // if in range
+          if (weapon.type === "Melee") {
+            return {
+              damage: weapon.damage,
+              flavorText: `[${this.name}] Swings their ${weapon.name}, dealing ${weapon.damage} damage.`,
+            };
+          } else if (weapon.type === "Gun") {
+            return {
+              damage: Math.round(this.meleeDamage * (this.health / 100)),
+              flavorText: `[${this.name}] Presses the trigger and hears a clicking sound. Frustrated, they smack the enemy with their ${weapon.name} instead, dealing ${damage} damage.`,
+            };
+          }
+        }
     }
   }
 
-  attack(target) {
-    target.health -= this.calculateDamage();
-    if (target.health < 0) target.health = 0;
-  }
+  // attack(target) {
+  //   target.health -= this.calculateDamage();
+  //   if (target.health < 0) target.health = 0;
+  // }
 
   takeDamage(dmg) {
     this.health -= dmg;
@@ -70,7 +117,14 @@ class Player extends Character {
     secondaryWeapon = null,
     inventory = [],
   }) {
-    super({meleeDamage, level, primaryWeapon, secondaryWeapon, inventory});
+    super({
+      name: "Player",
+      meleeDamage,
+      level,
+      primaryWeapon,
+      secondaryWeapon,
+      inventory,
+    });
 
     this.gold = gold;
     this.addedXp;

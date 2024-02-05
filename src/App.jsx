@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 import toast from "react-hot-toast";
@@ -89,7 +89,7 @@ const OptionText = styled.p`
 `;
 
 function App() {
-  const {player, enemy, dispatch} = usePlayer();
+  const {player, enemy, battleDistance, dispatch} = usePlayer();
 
   useEffect(() => {
     const tick = setInterval(() => dispatch({type: "tick"}), 1000);
@@ -100,8 +100,13 @@ function App() {
   const medkit = player.inventory.filter(item => item.name === "Medkit")[0];
 
   // battle stuff
-  const handleBattle = weapon => {
-    const {updatedEnemy, playerWon} = battleRound(player, enemy, weapon);
+  function handleBattle(weapon) {
+    const {updatedEnemy, playerWon} = battleRound(
+      player,
+      battleDistance,
+      enemy,
+      weapon
+    );
     dispatch({type: "update"});
 
     dispatch({type: "setEnemy", payload: updatedEnemy});
@@ -136,7 +141,7 @@ function App() {
       dispatch({type: "setEnemy", payload: null});
       // dispatch({type: "update"});
     }
-  };
+  }
 
   return (
     <>
@@ -149,7 +154,7 @@ function App() {
         <Container>
           <HUD />
 
-          {enemy && <Battle />}
+          {enemy && <Battle battleDistance={battleDistance} />}
           <BattleOptions>
             <div>
               <OptionText>{player.primaryWeapon?.name || "None"}</OptionText>

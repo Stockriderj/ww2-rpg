@@ -27,7 +27,7 @@ const Container = styled.div`
 
   transform: ${props =>
     props.isvisible === "true" ? "translateX(0)" : "translateX(100%)"};
-  transition: transform 0.5s ease-in-out; // Smooth transition for sliding in and out
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); // Smooth transition for sliding in and out
 `;
 
 const Header = styled.header`

@@ -29,7 +29,7 @@ const Character = styled.div`
   }
 `;
 
-export default function Battle() {
+export default function Battle({battleDistance}) {
   const {enemy} = usePlayer();
 
   return (
@@ -37,6 +37,8 @@ export default function Battle() {
       <Character>
         <h2>you</h2>
       </Character>
+
+      <p>Distance: {battleDistance} meters</p>
 
       <Character>
         <h2>{enemy.health} HP</h2>
