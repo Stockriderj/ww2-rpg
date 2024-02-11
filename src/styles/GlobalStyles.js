@@ -31,8 +31,8 @@ const GlobalStyles = createGlobalStyle`
     overflow: hidden;
     margin: 0;
     padding: 0;
-    /* background-color: #f4f4f4; */
-    background: rgba(244, 244, 244, 1) url("https://www.theworldwar.org/sites/default/files/styles/hero/public/2022-01/trench-warfare-hero.jpg?itok=GPMwVCMU") center/cover no-repeat;
+    background-color: #272522;
+    /* background: rgba(244, 244, 244, 1) url("https://www.theworldwar.org/sites/default/files/styles/hero/public/2022-01/trench-warfare-hero.jpg?itok=GPMwVCMU") center/cover no-repeat; */
     color: var(--light-theme);
   }
 

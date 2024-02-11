@@ -12,7 +12,7 @@ const HudContainer = styled.header`
   gap: 4.8rem;
 
   font-family: "Tourney", sans-serif;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8));
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
   background-size: cover;
   color: #d3cbbf;
   padding: 2rem 7.2rem;
@@ -20,7 +20,7 @@ const HudContainer = styled.header`
   top: 0;
   width: 100vw;
   z-index: 100;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 1);
+  /* box-shadow: 0 5px 10px rgba(0, 0, 0, 1); */
   backdrop-filter: blur(5px); // Little blur effect for that frosted glass vibe
   font-size: 2.4rem;
   height: 9.5rem;

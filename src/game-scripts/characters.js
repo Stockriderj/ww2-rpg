@@ -43,7 +43,16 @@ class Character {
     switch (weapon.type) {
       case "Gun":
       case "Grenade":
-        const flavorTexts = {Gun: {miss: `[${this.name}] Shoots and misses.`, hit: `[${this.name}] Fires their ${weapon.name}, dealing ${weapon.damage} damage.`}, Grenade: {miss: `[${this.name}] Chucks a ${weapon.name}. Misses by a long shot.`, hit: `[${this.name}] Throws their ${weapon.name}. Boom!`}}
+        const flavorTexts = {
+          Gun: {
+            miss: `[${this.name}] Shoots and misses.`,
+            hit: `[${this.name}] Fires their ${weapon.name}, dealing ${weapon.damage} damage.`,
+          },
+          Grenade: {
+            miss: `[${this.name}] Chucks a ${weapon.name}. Misses by a long shot.`,
+            hit: `[${this.name}] Throws their ${weapon.name}. Boom!`,
+          },
+        };
 
         if (weapon.actions.use.run()) {
           // // If the weapon is out range
